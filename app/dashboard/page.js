@@ -20,7 +20,6 @@ export default function Dashboard() {
       try {
         const meRes = await api.get('/api/auth/me');
         setUser(meRes.data);
-
         const statusRes = await api.get('/api/stripe/seller/status');
         setStripeStatus(statusRes.data);
       } catch {
@@ -29,7 +28,6 @@ export default function Dashboard() {
         setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
@@ -39,7 +37,7 @@ export default function Dashboard() {
       const res = await api.post('/api/stripe/seller/create');
       window.location.href = res.data.url;
     } catch (err) {
-      setMsg(err.response?.data?.error || 'Error al crear cuenta de vendedor.');
+      setMsg(err.response?.data?.error || 'Error al crear cuenta.');
     }
   };
 
@@ -55,7 +53,7 @@ export default function Dashboard() {
 
   const handleLogout = () => {
     localStorage.clear();
-    router.push('/login');
+    router.push('/');
   };
 
   if (loading) return <div className="spinner">Cargando...</div>;
@@ -63,84 +61,100 @@ export default function Dashboard() {
   return (
     <>
       <nav className="nav">
-        <span className="nav-logo">🛍️ Marketplace</span>
+        <Link href="/" style={{ textDecoration: 'none' }}>
+          <span className="nav-logo">Argen<span>talk</span> 🧉</span>
+        </Link>
         <div className="nav-links">
-          <Link href="/pay">Hacer pago</Link>
+          <Link href="/explorar">Explorar</Link>
           <button
             onClick={handleLogout}
-            style={{ width: 'auto', padding: '6px 14px', fontSize: 13, background: '#eee', color: '#444' }}
+            style={{ width: 'auto', padding: '6px 14px', fontSize: 13, background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none' }}
           >
             Salir
           </button>
         </div>
       </nav>
 
-      <div className="container">
-        <div className="card">
-          <h1>Dashboard</h1>
-          <p style={{ color: '#888', marginBottom: 20, fontSize: 14 }}>{user?.email}</p>
+      <div style={{ maxWidth: 480, margin: '0 auto', padding: '24px 20px' }}>
 
-          {msg && <div className="error">{msg}</div>}
+        {msg && <div className="error">{msg}</div>}
 
-          <div className="stat-grid">
-            <div className="stat-box">
-              <div className="stat-label">Rol</div>
-              <div className="stat-value" style={{ fontSize: 16 }}>
-                {user?.role === 'seller' ? '🏪 Vendedor' : '🛒 Comprador'}
-              </div>
-            </div>
-            <div className="stat-box">
-              <div className="stat-label">Cuenta Stripe</div>
-              <div className="stat-value" style={{ fontSize: 14 }}>
-                {!stripeStatus?.hasAccount && <span className="badge badge-gray">Sin cuenta</span>}
-                {stripeStatus?.hasAccount && !stripeStatus?.onboardingComplete && (
-                  <span className="badge badge-yellow">Pendiente</span>
-                )}
-                {stripeStatus?.onboardingComplete && (
-                  <span className="badge badge-green">✓ Activa</span>
-                )}
-              </div>
-            </div>
+        <div className="card" style={{ textAlign: 'center' }}>
+          <div style={{
+            width: 72, height: 72, borderRadius: '50%',
+            background: '#EBF2FF', color: '#003DA5',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 28, fontWeight: 700, margin: '0 auto 12px'
+          }}>
+            {(user?.nombre || user?.email || 'A')[0].toUpperCase()}
           </div>
-
-          {/* Vendedor sin cuenta Stripe */}
-          {user?.role === 'seller' && !stripeStatus?.hasAccount && (
-            <div>
-              <p style={{ fontSize: 14, color: '#555', marginBottom: 16 }}>
-                Conecta tu cuenta de Stripe para empezar a recibir pagos con comisión del 10%.
-              </p>
-              <button onClick={handleCreateSellerAccount}>
-                Conectar con Stripe →
-              </button>
-            </div>
-          )}
-
-          {/* Vendedor con onboarding pendiente */}
-          {stripeStatus?.hasAccount && !stripeStatus?.onboardingComplete && (
-            <div>
-              <p style={{ fontSize: 14, color: '#555', marginBottom: 16 }}>
-                Tu cuenta de Stripe está pendiente de verificación.
-              </p>
-              <button onClick={handleResumeOnboarding}>
-                Completar verificación →
-              </button>
-            </div>
-          )}
-
-          {/* Vendedor activo */}
-          {stripeStatus?.onboardingComplete && (
-            <div className="success">
-              ✅ Tu cuenta de Stripe está activa. Ya puedes recibir pagos.
-            </div>
-          )}
-
-          {/* Comprador */}
-          {user?.role === 'buyer' && (
-            <Link href="/pay">
-              <button>Hacer un pago →</button>
-            </Link>
-          )}
+          <div style={{ fontWeight: 600, fontSize: 18 }}>{user?.nombre || 'Sin nombre'}</div>
+          <div style={{ color: '#888', fontSize: 14, marginTop: 4 }}>{user?.email}</div>
+          <div style={{ marginTop: 8 }}>
+            <span className="badge badge-blue">
+              {user?.role === 'seller' ? '🏠 Anfitrión' : '🌎 Viajero'}
+            </span>
+          </div>
         </div>
+
+        {user?.role === 'seller' && (
+          <>
+            <div className="card">
+              <h2 style={{ marginBottom: 14 }}>Tu cuenta Stripe</h2>
+
+              {!stripeStatus?.hasAccount && (
+                <div>
+                  <p style={{ fontSize: 14, color: '#555', marginBottom: 16 }}>
+                    Conectá tu cuenta de Stripe para empezar a recibir pagos. Argentalk cobra un 15% de comisión por cada contacto.
+                  </p>
+                  <button className="btn-orange" onClick={handleCreateSellerAccount}>
+                    Conectar con Stripe →
+                  </button>
+                </div>
+              )}
+
+              {stripeStatus?.hasAccount && !stripeStatus?.onboardingComplete && (
+                <div>
+                  <p style={{ fontSize: 14, color: '#555', marginBottom: 16 }}>
+                    Tu cuenta está pendiente de verificación.
+                  </p>
+                  <button className="btn-orange" onClick={handleResumeOnboarding}>
+                    Completar verificación →
+                  </button>
+                </div>
+              )}
+
+              {stripeStatus?.onboardingComplete && (
+                <div className="success">
+                  ✅ Tu cuenta está activa. Ya podés recibir pagos.
+                </div>
+              )}
+            </div>
+
+            <Link href="/perfil">
+              <button style={{ marginBottom: 12 }}>
+                ✏️ Editar mi perfil de anfitrión
+              </button>
+            </Link>
+          </>
+        )}
+
+        {user?.role === 'buyer' && (
+          <div className="card">
+            <h2 style={{ marginBottom: 14 }}>¿Qué querés hacer?</h2>
+            <Link href="/explorar">
+              <button className="btn-orange" style={{ marginBottom: 12 }}>
+                🔍 Buscar anfitriones
+              </button>
+            </Link>
+            <Link href="/cultura/mate">
+              <button className="btn-secondary">
+                🧉 Aprender sobre la cultura argentina
+              </button>
+            </Link>
+          </div>
+        )}
+
       </div>
     </>
   );
