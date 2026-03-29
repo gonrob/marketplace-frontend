@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -15,54 +14,49 @@ export default function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) { router.push('/login'); return; }
-    const fetchData = async () => {
+    const load = async () => {
       try {
-        const meRes = await api.get('/api/auth/me');
-        setUser(meRes.data);
-        const statusRes = await api.get('/api/stripe/seller/status');
-        setStripeStatus(statusRes.data);
+        const me = await api.get('/api/auth/me');
+        setUser(me.data);
+        const st = await api.get('/api/stripe/seller/status');
+        setStripeStatus(st.data);
       } catch {
         router.push('/login');
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+    load();
   }, []);
 
-  const handleCreateSellerAccount = async () => {
+  const connectStripe = async () => {
     try {
-      setMsg('');
       const res = await api.post('/api/stripe/seller/create');
       window.location.href = res.data.url;
     } catch (err) {
-      setMsg(err.response?.data?.error || 'Error al crear cuenta.');
+      setMsg(err.response?.data?.error || 'Error.');
     }
   };
 
-  const handleResumeOnboarding = async () => {
+  const resumeOnboarding = async () => {
     try {
-      setMsg('');
       const res = await api.get('/api/stripe/seller/onboarding');
       window.location.href = res.data.url;
     } catch (err) {
-      setMsg(err.response?.data?.error || 'Error al obtener link.');
+      setMsg(err.response?.data?.error || 'Error.');
     }
   };
 
-  const handleVerificar = async () => {
+  const verificarIdentidad = async () => {
     try {
       const res = await api.post('/api/stripe/verify/identity');
       window.location.href = res.data.url;
     } catch (err) {
-      alert('Error al iniciar verificacion');
+      setMsg('Error al iniciar verificacion.');
     }
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    router.push('/');
-  };
+  const logout = () => { localStorage.clear(); router.push('/'); };
 
   if (loading) return <div className="spinner">Cargando...</div>;
 
@@ -70,15 +64,15 @@ export default function Dashboard() {
     <>
       <nav className="nav">
         <Link href="/" style={{ textDecoration: 'none' }}>
-          <span className="nav-logo">Argen<span>talk</span></span>
+          <span className="nav-logo">Argen<span>talk</span> 🧉</span>
         </Link>
         <div className="nav-links">
           <Link href="/explorar">Explorar</Link>
-          <button onClick={handleLogout} style={{ width: 'auto', padding: '6px 14px', fontSize: 13, background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none' }}>Salir</button>
+          <button onClick={logout} className="btn-sm" style={{ background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white' }}>Salir</button>
         </div>
       </nav>
 
-      <div style={{ maxWidth: 480, margin: '0 auto', padding: '24px 20px' }}>
+      <div className="container">
         {msg && <div className="error">{msg}</div>}
 
         <div className="card" style={{ textAlign: 'center' }}>
@@ -93,20 +87,20 @@ export default function Dashboard() {
         </div>
 
         {user?.role === 'seller' && (
-          <div>
+          <>
             <div className="card">
-              <h2 style={{ marginBottom: 14 }}>Tu cuenta Stripe</h2>
+              <h2>Tu cuenta Stripe</h2>
               {!stripeStatus?.hasAccount && (
-                <div>
-                  <p style={{ fontSize: 14, color: '#555', marginBottom: 16 }}>Conecta tu cuenta de Stripe para recibir pagos. Argentalk cobra 15% por cada contacto.</p>
-                  <button className="btn-orange" onClick={handleCreateSellerAccount}>Conectar con Stripe</button>
-                </div>
+                <>
+                  <p style={{ fontSize: 14, color: '#555', marginBottom: 16 }}>Conecta Stripe para recibir pagos. Argentalk cobra 15% por cada contacto.</p>
+                  <button className="btn-orange" onClick={connectStripe}>Conectar con Stripe</button>
+                </>
               )}
               {stripeStatus?.hasAccount && !stripeStatus?.onboardingComplete && (
-                <div>
+                <>
                   <p style={{ fontSize: 14, color: '#555', marginBottom: 16 }}>Tu cuenta esta pendiente de verificacion.</p>
-                  <button className="btn-orange" onClick={handleResumeOnboarding}>Completar verificacion</button>
-                </div>
+                  <button className="btn-orange" onClick={resumeOnboarding}>Completar verificacion</button>
+                </>
               )}
               {stripeStatus?.onboardingComplete && (
                 <div className="success">Tu cuenta esta activa. Ya podes recibir pagos.</div>
@@ -118,20 +112,20 @@ export default function Dashboard() {
             </Link>
 
             {!user?.verificado && (
-              <button className="btn-secondary" style={{ marginBottom: 12 }} onClick={handleVerificar}>
+              <button className="btn-secondary" style={{ marginBottom: 12 }} onClick={verificarIdentidad}>
                 Verificar identidad (DNI o Pasaporte)
               </button>
             )}
 
             {user?.verificado && (
-              <div className="success" style={{ marginBottom: 12 }}>Identidad verificada</div>
+              <div className="success">Identidad verificada</div>
             )}
-          </div>
+          </>
         )}
 
         {user?.role === 'buyer' && (
           <div className="card">
-            <h2 style={{ marginBottom: 14 }}>Que queres hacer?</h2>
+            <h2>Que queres hacer?</h2>
             <Link href="/explorar">
               <button className="btn-orange" style={{ marginBottom: 12 }}>Buscar anfitriones</button>
             </Link>

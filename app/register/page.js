@@ -1,5 +1,4 @@
 'use client';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -15,7 +14,6 @@ export default function Register() {
     e.preventDefault();
     setError('');
     setLoading(true);
-
     try {
       const res = await api.post('/api/auth/register', form);
       localStorage.setItem('token', res.data.token);
@@ -29,55 +27,37 @@ export default function Register() {
   };
 
   return (
-    <div className="container">
-      <div className="card">
-        <h1>Crear cuenta</h1>
-
-        {error && <div className="error">{error}</div>}
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              type="email"
-              placeholder="tu@email.com"
-              value={form.email}
-              onChange={e => setForm({ ...form, email: e.target.value })}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Contraseña</label>
-            <input
-              type="password"
-              placeholder="Mínimo 6 caracteres"
-              value={form.password}
-              onChange={e => setForm({ ...form, password: e.target.value })}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>Tipo de cuenta</label>
-            <select
-              value={form.role}
-              onChange={e => setForm({ ...form, role: e.target.value })}
-            >
-              <option value="buyer">Comprador</option>
-              <option value="seller">Vendedor (cobrar pagos)</option>
-            </select>
-          </div>
-
-          <button type="submit" disabled={loading}>
-            {loading ? 'Creando cuenta...' : 'Crear cuenta'}
-          </button>
-        </form>
-
-        <div className="link">
-          ¿Ya tienes cuenta? <Link href="/login">Iniciar sesión</Link>
+    <>
+      <nav className="nav">
+        <Link href="/" style={{ textDecoration: 'none' }}>
+          <span className="nav-logo">Argen<span>talk</span> 🧉</span>
+        </Link>
+      </nav>
+      <div className="container">
+        <div className="card">
+          <h1>Crear cuenta</h1>
+          {error && <div className="error">{error}</div>}
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Email</label>
+              <input type="email" placeholder="tu@email.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
+            </div>
+            <div className="form-group">
+              <label>Contrasena</label>
+              <input type="password" placeholder="Minimo 6 caracteres" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required />
+            </div>
+            <div className="form-group">
+              <label>Tipo de cuenta</label>
+              <select value={form.role} onChange={e => setForm({ ...form, role: e.target.value })}>
+                <option value="buyer">Viajero (buscar anfitriones)</option>
+                <option value="seller">Anfitrion (ofrecer charlas)</option>
+              </select>
+            </div>
+            <button type="submit" disabled={loading}>{loading ? 'Creando cuenta...' : 'Crear cuenta'}</button>
+          </form>
+          <div className="link">Ya tenes cuenta? <Link href="/login">Iniciar sesion</Link></div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

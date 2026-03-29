@@ -1,8 +1,8 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Marketplace - Stripe Connect',
-  description: 'Plataforma de pagos con Stripe Connect'
+  title: 'Argentalk - Hablá con argentinos reales',
+  description: 'Conectá con argentinos, practicá español y viví la cultura'
 };
 
 export default function RootLayout({ children }) {
