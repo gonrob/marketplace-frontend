@@ -133,9 +133,34 @@ export default function Dashboard() {
 
             <Link href="/perfil">
               <button style={{ marginBottom: 12 }}>
+               <Link href="/perfil">
+              <button style={{ marginBottom: 12 }}>
                 ✏️ Editar mi perfil de anfitrión
               </button>
             </Link>
+
+            {!user?.verificado && (
+              <button
+                className="btn-secondary"
+                style={{ marginBottom: 12 }}
+                onClick={async () => {
+                  try {
+                    const res = await api.post('/api/stripe/verify/identity');
+                    window.location.href = res.data.url;
+                  } catch (err) {
+                    alert('Error al iniciar verificación');
+                  }
+                }}
+              >
+                🪪 Verificar identidad (DNI o Pasaporte)
+              </button>
+            )}
+
+            {user?.verificado && (
+              <div className="success" style={{ marginBottom: 12 }}>
+                🪪 Identidad verificada ✅
+              </div>
+            )}
           </>
         )}
 
@@ -150,7 +175,7 @@ export default function Dashboard() {
             <Link href="/cultura/mate">
               <button className="btn-secondary">
                 🧉 Aprender sobre la cultura argentina
-              </button>
+             </button>
             </Link>
           </div>
         )}
