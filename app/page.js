@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <nav className="nav">
-        <span className="nav-logo">🛍️ Marketplace</span>
+        <span className="nav-logo">Argentalk</span>
         <div className="nav-links">
           {loggedIn ? (
             <Link href="/dashboard">Dashboard</Link>
@@ -28,11 +28,11 @@ export default function Home() {
 
       <div className="container" style={{ textAlign: 'center', marginTop: 80 }}>
         <h1 style={{ fontSize: 36, marginBottom: 16 }}>
-          Cobra y paga con Stripe Connect
+          Charlá con argentinos reales
         </h1>
         <p style={{ color: '#666', marginBottom: 32, fontSize: 18 }}>
-          Plataforma marketplace lista para producción.<br />
-          Comisión automática del 10% en cada transacción.
+          Conectá con argentinos, practicaespañol y viví la cultura..<br />
+          
         </p>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
           <Link href="/register">
