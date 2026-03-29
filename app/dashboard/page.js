@@ -15,7 +15,6 @@ export default function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) { router.push('/login'); return; }
-
     const fetchData = async () => {
       try {
         const meRes = await api.get('/api/auth/me');
@@ -48,6 +47,15 @@ export default function Dashboard() {
       window.location.href = res.data.url;
     } catch (err) {
       setMsg(err.response?.data?.error || 'Error al obtener link.');
+    }
+  };
+
+  const handleVerificar = async () => {
+    try {
+      const res = await api.post('/api/stripe/verify/identity');
+      window.location.href = res.data.url;
+    } catch (err) {
+      alert('Error al iniciar verificación');
     }
   };
 
@@ -98,21 +106,19 @@ export default function Dashboard() {
         </div>
 
         {user?.role === 'seller' && (
-          <>
+          <div>
             <div className="card">
               <h2 style={{ marginBottom: 14 }}>Tu cuenta Stripe</h2>
-
               {!stripeStatus?.hasAccount && (
                 <div>
                   <p style={{ fontSize: 14, color: '#555', marginBottom: 16 }}>
-                    Conectá tu cuenta de Stripe para empezar a recibir pagos. Argentalk cobra un 15% de comisión por cada contacto.
+                    Conectá tu cuenta de Stripe para empezar a recibir pagos. Argentalk cobra un 15% por cada contacto.
                   </p>
                   <button className="btn-orange" onClick={handleCreateSellerAccount}>
                     Conectar con Stripe →
                   </button>
                 </div>
               )}
-
               {stripeStatus?.hasAccount && !stripeStatus?.onboardingComplete && (
                 <div>
                   <p style={{ fontSize: 14, color: '#555', marginBottom: 16 }}>
@@ -123,7 +129,6 @@ export default function Dashboard() {
                   </button>
                 </div>
               )}
-
               {stripeStatus?.onboardingComplete && (
                 <div className="success">
                   ✅ Tu cuenta está activa. Ya podés recibir pagos.
@@ -133,8 +138,6 @@ export default function Dashboard() {
 
             <Link href="/perfil">
               <button style={{ marginBottom: 12 }}>
-               <Link href="/perfil">
-              <button style={{ marginBottom: 12 }}>
                 ✏️ Editar mi perfil de anfitrión
               </button>
             </Link>
@@ -143,14 +146,7 @@ export default function Dashboard() {
               <button
                 className="btn-secondary"
                 style={{ marginBottom: 12 }}
-                onClick={async () => {
-                  try {
-                    const res = await api.post('/api/stripe/verify/identity');
-                    window.location.href = res.data.url;
-                  } catch (err) {
-                    alert('Error al iniciar verificación');
-                  }
-                }}
+                onClick={handleVerificar}
               >
                 🪪 Verificar identidad (DNI o Pasaporte)
               </button>
@@ -161,7 +157,7 @@ export default function Dashboard() {
                 🪪 Identidad verificada ✅
               </div>
             )}
-          </>
+          </div>
         )}
 
         {user?.role === 'buyer' && (
@@ -175,7 +171,7 @@ export default function Dashboard() {
             <Link href="/cultura/mate">
               <button className="btn-secondary">
                 🧉 Aprender sobre la cultura argentina
-             </button>
+              </button>
             </Link>
           </div>
         )}
