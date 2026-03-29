@@ -1,0 +1,18 @@
+{
+  "name": "stripe-connect-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001"
+  },
+  "dependencies": {
+    "@stripe/react-stripe-js": "^2.4.0",
+    "@stripe/stripe-js": "^3.0.0",
+    "axios": "^1.6.0",
+    "next": "14",
+    "react": "18",
+    "react-dom": "18"
+  }
+}
