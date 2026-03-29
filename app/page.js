@@ -33,7 +33,7 @@ export default function Home() {
             <button className="btn-orange" style={{ width: 'auto', padding: '13px 28px' }}>Buscar anfitriones</button>
           </Link>
           <Link href="/register">
-            <button style={{ width: 'auto', padding: '13px 28px', background: 'transparent', border: '2px solid white', color: 'white' }}>Ser anfitrion</button>
+            <button style={{ width: 'auto', padding: '13px 28px', background: 'transparent', border: '2px solid white', color: 'white' }}>Inscribirse (Anfitriones & Viajeros)</button>
           </Link>
         </div>
       </div>
