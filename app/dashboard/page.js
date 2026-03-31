@@ -47,8 +47,13 @@ export default function Dashboard() {
         {msg && <div className="error">{msg}</div>}
 
         <div className="card" style={{textAlign:'center'}}>
-          <div style={{width:72,height:72,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,fontWeight:700,margin:'0 auto 12px'}}>
-            {(user?.nombre || user?.email || 'A')[0].toUpperCase()}
+          <div
+            style={{width:80,height:80,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32,fontWeight:700,margin:'0 auto 12px',overflow:'hidden'}}
+          >
+            {user?.foto
+              ? <img src={user.foto} alt="foto" style={{width:'100%',height:'100%',objectFit:'cover'}} />
+              : (user?.nombre || user?.email || 'A')[0].toUpperCase()
+            }
           </div>
           <div style={{fontWeight:600,fontSize:18}}>{user?.nombre || 'Sin nombre'}</div>
           <div style={{color:'#888',fontSize:14,marginTop:4}}>{user?.email}</div>
@@ -76,7 +81,6 @@ export default function Dashboard() {
             <Link href="/perfil">
               <button style={{marginBottom:12}}>✏️ Editar mi perfil</button>
             </Link>
-
             {!user?.verificado && (
               <button className="btn-secondary" style={{marginBottom:12}} onClick={verificar}>
                 🪪 Verificar identidad (DNI o Pasaporte)
@@ -91,6 +95,9 @@ export default function Dashboard() {
         {user?.role === 'buyer' && (
           <div className="card">
             <h2>Que queres hacer?</h2>
+            <Link href="/perfil">
+              <button style={{marginBottom:12}}>✏️ Editar mi perfil</button>
+            </Link>
             <Link href="/explorar">
               <button className="btn-orange" style={{marginBottom:12}}>🔍 Buscar anfitriones</button>
             </Link>

@@ -1,147 +1,117 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import api from '../../lib/api';
 
-const HABS = ['Guia','Profesor','Cocinero','Truco','Mate','Futbol','Musica','Tango','Historia','Espanol','Charla'];
+const ADMIN = 'gonrobtor@gmail.com';
 
-export default function Perfil() {
+export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [form, setForm] = useState({nombre:'',bio:'',precio:10,habilidades:[],ciudad:'',disponible:true});
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const [msg, setMsg] = useState('');
-  const [error, setError] = useState('');
-  const fileRef = useRef(null);
 
   useEffect(() => {
     if (!localStorage.getItem('token')) { router.push('/login'); return; }
-    api.get('/api/auth/me').then(r => {
-      setUser(r.data);
-      setForm({nombre:r.data.nombre||'',bio:r.data.bio||'',precio:r.data.precio||10,habilidades:r.data.habilidades||[],ciudad:r.data.ciudad||'',disponible:r.data.disponible!==false});
-    }).catch(() => router.push('/login')).finally(() => setLoading(false));
+    api.get('/api/auth/me')
+      .then(r => setUser(r.data))
+      .catch(() => router.push('/login'))
+      .finally(() => setLoading(false));
   }, []);
 
-  const toggleH = h => setForm(f => ({...f,habilidades:f.habilidades.includes(h)?f.habilidades.filter(x=>x!==h):[...f.habilidades,h]}));
-
-  const handlePhoto = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setUploading(true);
-    setError('');
+  const verificar = async () => {
     try {
-      const reader = new FileReader();
-      reader.onload = async (ev) => {
-        try {
-          const res = await api.post('/api/upload/photo', { photo: ev.target.result });
-          setUser(u => ({ ...u, foto: res.data.url }));
-          setMsg('Foto actualizada!');
-        } catch (err) {
-          setError('Error al subir foto.');
-        } finally {
-          setUploading(false);
-        }
-      };
-      reader.readAsDataURL(file);
-    } catch {
-      setUploading(false);
-      setError('Error al leer la foto.');
-    }
+      const r = await api.post('/api/stripe/verify/identity');
+      window.location.href = r.data.url;
+    } catch { setMsg('Error al iniciar verificacion.'); }
   };
 
-  const save = async () => {
-    setSaving(true); setMsg(''); setError('');
-    try {
-      await api.put('/api/users/profile', form);
-      setMsg('Perfil actualizado!');
-    } catch (err) {
-      setError(err.response?.data?.error || 'Error al guardar.');
-    } finally { setSaving(false); }
-  };
+  const logout = () => { localStorage.clear(); router.push('/'); };
 
   if (loading) return <div className="spinner">Cargando...</div>;
+
+  const isAdmin = user?.email === ADMIN;
 
   return (
     <>
       <nav className="nav">
         <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Argen<span>talk</span> 🧉</span></Link>
-        <div className="nav-links"><Link href="/dashboard">Dashboard</Link></div>
+        <div className="nav-links">
+          <Link href="/explorar">Explorar</Link>
+          <button onClick={logout} className="btn-sm" style={{background:'rgba(255,255,255,0.2)',border:'none',color:'white'}}>Salir</button>
+        </div>
       </nav>
+
       <div className="container">
-        {msg && <div className="success">{msg}</div>}
-        {error && <div className="error">{error}</div>}
+        {msg && <div className="error">{msg}</div>}
 
-        <div className="card">
-          <h1>Mi perfil</h1>
-          <div style={{textAlign:'center',marginBottom:20}}>
-            <div
-              onClick={() => fileRef.current?.click()}
-              style={{width:90,height:90,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32,fontWeight:700,margin:'0 auto 8px',cursor:'pointer',overflow:'hidden',position:'relative'}}
-            >
-              {user?.foto
-                ? <img src={user.foto} alt="foto" style={{width:'100%',height:'100%',objectFit:'cover'}} />
-                : (user?.nombre||user?.email||'A')[0].toUpperCase()
-              }
-              {uploading && (
-                <div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',background:'rgba(0,0,0,0.5)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontSize:12}}>
-                  Subiendo...
-                </div>
-              )}
-            </div>
-            <input ref={fileRef} type="file" accept="image/*" onChange={handlePhoto} style={{display:'none'}} />
-            <button onClick={() => fileRef.current?.click()} className="btn-secondary" style={{width:'auto',padding:'6px 16px',fontSize:13,marginTop:4}} disabled={uploading}>
-              {uploading ? 'Subiendo...' : 'Cambiar foto'}
-            </button>
-            <div style={{fontSize:12,color:'#888',marginTop:4}}>{user?.email}</div>
+        <div className="card" style={{textAlign:'center'}}>
+          <div
+            onClick={() => router.push('/perfil')}
+            style={{width:80,height:80,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,fontWeight:700,margin:'0 auto 12px',cursor:'pointer',overflow:'hidden'}}
+          >
+            {user?.foto
+              ? <img src={user.foto} alt="foto" style={{width:'100%',height:'100%',objectFit:'cover'}} />
+              : (user?.nombre || user?.email || 'A')[0].toUpperCase()
+            }
+          </div>
+          <div style={{fontSize:12,color:'#888',marginBottom:4}}>Tocá la foto para cambiarla</div>
+          <div style={{fontWeight:600,fontSize:18}}>{user?.nombre || 'Sin nombre'}</div>
+          <div style={{color:'#888',fontSize:14,marginTop:4}}>{user?.email}</div>
+          <div style={{marginTop:8,display:'flex',gap:6,justifyContent:'center',flexWrap:'wrap'}}>
+            <span className="badge badge-blue">{user?.role === 'seller' ? '🏠 Anfitrion' : '🌍 Viajero'}</span>
+            {user?.verificado && <span className="badge badge-green">✓ Verificado</span>}
           </div>
 
-          <div className="form-group">
-            <label>Nombre completo</label>
-            <input placeholder="Ej: Lucas Garcia" value={form.nombre} onChange={e => setForm({...form,nombre:e.target.value})} />
-          </div>
-          <div className="form-group">
-            <label>Ciudad</label>
-            <input placeholder="Ej: Buenos Aires, Mendoza..." value={form.ciudad} onChange={e => setForm({...form,ciudad:e.target.value})} />
-          </div>
-          <div className="form-group">
-            <label>Sobre vos</label>
-            <textarea rows={4} placeholder="Contate un poco..." value={form.bio} onChange={e => setForm({...form,bio:e.target.value})} style={{resize:'vertical'}} />
-          </div>
-          <div className="form-group">
-            <label>Precio por primer contacto (USD)</label>
-            <input type="number" min="1" max="500" value={form.precio} onChange={e => setForm({...form,precio:parseInt(e.target.value)||10})} />
-            <div style={{fontSize:12,color:'#888',marginTop:6}}>
-              Vos recibis USD {Math.round(form.precio*0.85)} — Argentalk cobra 15%
+          {user?.role === 'seller' && (
+            <div style={{display:'flex',gap:12,marginTop:16,justifyContent:'center'}}>
+              <div style={{background:'#f0f4ff',borderRadius:12,padding:'12px 20px',textAlign:'center',flex:1}}>
+                <div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>USD {(user?.ganancias||0).toFixed(2)}</div>
+                <div style={{fontSize:12,color:'#888',marginTop:4}}>Ganancias totales</div>
+              </div>
+              <div style={{background:'#f0fff4',borderRadius:12,padding:'12px 20px',textAlign:'center',flex:1}}>
+                <div style={{fontSize:24,fontWeight:700,color:'#065f46'}}>{user?.totalContactos||0}</div>
+                <div style={{fontSize:12,color:'#888',marginTop:4}}>Contactos</div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
-        <div className="card">
-          <h2>En que sos bueno?</h2>
-          <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-            {HABS.map(h => (
-              <button key={h} onClick={() => toggleH(h)} style={{width:'auto',padding:'8px 16px',borderRadius:20,background:form.habilidades.includes(h)?'#003DA5':'white',color:form.habilidades.includes(h)?'white':'#003DA5',border:'1.5px solid #003DA5',fontSize:14,cursor:'pointer'}}>
-                {h}
+        <Link href="/perfil">
+          <button className="btn-secondary" style={{marginBottom:12}}>✏️ Editar mi perfil</button>
+        </Link>
+
+        {user?.role === 'seller' && (
+          <>
+            {!user?.verificado && (
+              <button className="btn-secondary" style={{marginBottom:12}} onClick={verificar}>
+                🪪 Verificar identidad (DNI o Pasaporte)
               </button>
-            ))}
-          </div>
-        </div>
+            )}
+            {user?.verificado && (
+              <div className="success" style={{marginBottom:12}}>🪪 Identidad verificada ✅</div>
+            )}
+          </>
+        )}
 
-        <div className="card">
-          <h2>Disponibilidad</h2>
-          <div style={{display:'flex',alignItems:'center',gap:12}}>
-            <button onClick={() => setForm({...form,disponible:!form.disponible})} style={{width:'auto',padding:'10px 20px',background:form.disponible?'#22c55e':'#ddd',color:form.disponible?'white':'#666',border:'none',borderRadius:10,fontSize:14,cursor:'pointer'}}>
-              {form.disponible ? '✓ Disponible ahora' : 'No disponible'}
-            </button>
+        {user?.role === 'buyer' && (
+          <div className="card">
+            <h2>Que queres hacer?</h2>
+            <Link href="/explorar">
+              <button className="btn-orange" style={{marginBottom:12}}>🔍 Buscar anfitriones</button>
+            </Link>
+            <Link href="/cultura/mate">
+              <button className="btn-secondary">🧉 Aprender sobre Argentina</button>
+            </Link>
           </div>
-        </div>
+        )}
 
-        <button className="btn-orange" onClick={save} disabled={saving} style={{marginBottom:20}}>
-          {saving ? 'Guardando...' : 'Guardar perfil'}
-        </button>
+        {isAdmin && (
+          <Link href="/admin">
+            <button style={{background:'#1a1a1a',color:'white',marginTop:8}}>⚙️ Panel Admin</button>
+          </Link>
+        )}
       </div>
     </>
   );
