@@ -18,7 +18,18 @@ export default function Home() {
   const [lang, setLang] = useState('es');
   const [showLangs, setShowLangs] = useState(false);
   const t = T[lang];
-  useEffect(() => { setLoggedIn(!!localStorage.getItem('token')); }, []);
+
+  useEffect(() => {
+    setLoggedIn(!!localStorage.getItem('token'));
+    const saved = localStorage.getItem('lang');
+    if (saved && T[saved]) setLang(saved);
+  }, []);
+
+  const changeLang = (code) => {
+    setLang(code);
+    localStorage.setItem('lang', code);
+    setShowLangs(false);
+  };
 
   return (
     <>
@@ -32,7 +43,7 @@ export default function Home() {
             {showLangs && (
               <div style={{position:'absolute',right:0,top:38,background:'white',borderRadius:10,boxShadow:'0 4px 16px rgba(0,0,0,0.15)',padding:8,zIndex:200,minWidth:130}}>
                 {Object.entries(T).map(([code,tx]) => (
-                  <button key={code} onClick={() => {setLang(code);setShowLangs(false);}} style={{width:'100%',padding:'7px 12px',background:lang===code?'#EBF2FF':'white',border:'none',borderRadius:8,cursor:'pointer',textAlign:'left',fontSize:14,color:'#1a1a1a',display:'flex',gap:8}}>
+                  <button key={code} onClick={() => changeLang(code)} style={{width:'100%',padding:'7px 12px',background:lang===code?'#EBF2FF':'white',border:'none',borderRadius:8,cursor:'pointer',textAlign:'left',fontSize:14,color:'#1a1a1a',display:'flex',gap:8}}>
                     <span>{tx.flag}</span><span>{tx.n}</span>
                   </button>
                 ))}
