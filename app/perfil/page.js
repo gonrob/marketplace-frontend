@@ -76,6 +76,17 @@ export default function Perfil() {
     } finally { setSaving(false); }
   };
 
+  const darDeBaja = async () => {
+    if (!confirm('¿Estas seguro que queres dar de baja tu cuenta? Esta accion no se puede deshacer.')) return;
+    try {
+      await api.delete('/api/users/account');
+      localStorage.clear();
+      router.push('/');
+    } catch {
+      setError('Error al dar de baja la cuenta.');
+    }
+  };
+
   if (loading) return <div className="spinner">Cargando...</div>;
   if (!user) return null;
 
@@ -96,7 +107,6 @@ export default function Perfil() {
 
         <div className="card">
           <h1>Mi perfil</h1>
-
           <div style={{textAlign:'center',marginBottom:20}}>
             <div
               onClick={() => fileRef.current?.click()}
@@ -114,7 +124,7 @@ export default function Perfil() {
             </div>
             <input ref={fileRef} type="file" accept="image/*" capture="user" onChange={handlePhoto} style={{display:'none'}} />
             <div style={{fontSize:13,color:'#003DA5',marginTop:4,cursor:'pointer'}} onClick={() => fileRef.current?.click()}>
-              📷 Tocá para cambiar la foto
+              📷 Toca para cambiar la foto
             </div>
             <div style={{fontSize:12,color:'#888',marginTop:2}}>{user?.email}</div>
           </div>
@@ -123,17 +133,14 @@ export default function Perfil() {
             <label>Nombre completo</label>
             <input placeholder="Ej: Lucas Garcia" value={form.nombre} onChange={e => setForm({...form,nombre:e.target.value})} />
           </div>
-
           <div className="form-group">
             <label>Ciudad</label>
             <input placeholder="Ej: Buenos Aires, Mendoza..." value={form.ciudad} onChange={e => setForm({...form,ciudad:e.target.value})} />
           </div>
-
           <div className="form-group">
             <label>Sobre vos</label>
             <textarea rows={4} placeholder="Contate un poco..." value={form.bio} onChange={e => setForm({...form,bio:e.target.value})} style={{resize:'vertical'}} />
           </div>
-
           {user?.role === 'seller' && (
             <div className="form-group">
               <label>Precio por primer contacto (USD)</label>
@@ -167,9 +174,17 @@ export default function Perfil() {
           </div>
         )}
 
-        <button className="btn-orange" onClick={save} disabled={saving} style={{marginBottom:20}}>
+        <button className="btn-orange" onClick={save} disabled={saving} style={{marginBottom:12}}>
           {saving ? 'Guardando...' : 'Guardar perfil'}
         </button>
+
+        <div style={{marginTop:20,paddingTop:20,borderTop:'1px solid #f0f0f0',textAlign:'center'}}>
+          <p style={{fontSize:13,color:'#888',marginBottom:12}}>¿Ya no queres usar Argentalk?</p>
+          <button onClick={darDeBaja} style={{width:'auto',padding:'10px 20px',background:'white',color:'#cc0000',border:'1px solid #cc0000',borderRadius:10,fontSize:14,cursor:'pointer'}}>
+            Dar de baja mi cuenta
+          </button>
+        </div>
+
       </div>
     </>
   );
