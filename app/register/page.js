@@ -9,6 +9,7 @@ export default function Register() {
   const [step, setStep] = useState(1);
   const [role, setRole] = useState('');
   const [form, setForm] = useState({ email:'', password:'', nombre:'', apellido:'', telefono:'', ciudad:'', pais:'', metodoPago:'', cuentaPago:'' });
+  const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const set = (k,v) => setForm(f => ({...f,[k]:v}));
@@ -28,7 +29,11 @@ export default function Register() {
         cuentaPago: form.cuentaPago
       });
       localStorage.setItem('token', res.data.token);
-      router.push('/dashboard');
+      if (role === 'buyer') {
+        router.push('/explorar');
+      } else {
+        router.push('/dashboard');
+      }
     } catch (err) {
       setError(err.response?.data?.error || 'Error al registrarse.');
       setStep(2);
@@ -56,7 +61,7 @@ export default function Register() {
                 <button onClick={() => {setRole('buyer');setStep(2);}} style={{background:'white',color:'#F4A020',border:'2px solid #F4A020',borderRadius:12,padding:20,textAlign:'left',cursor:'pointer'}}>
                   <div style={{fontSize:28,marginBottom:8}}>🌍</div>
                   <div style={{fontWeight:700,fontSize:17,marginBottom:4}}>Viajero / Extranjero</div>
-                  <div style={{fontSize:14,color:'#666'}}>Quiero conocer argentinos y la cultura</div>
+                  <div style={{fontSize:14,color:'#666'}}>Quiero conocer argentinos y la cultura — Gratis para registrarse</div>
                 </button>
               </div>
               <div className="link">Ya tenes cuenta? <Link href="/login">Entrar</Link></div>
@@ -65,7 +70,7 @@ export default function Register() {
 
           {step === 2 && (
             <>
-              <h1>Tus datos</h1>
+              <h1>{role === 'seller' ? 'Tus datos' : 'Tus datos'}</h1>
               {error && <div className="error">{error}</div>}
               <div className="form-group">
                 <label>Nombre</label>
@@ -81,7 +86,22 @@ export default function Register() {
               </div>
               <div className="form-group">
                 <label>Contrasena</label>
-                <input type="password" placeholder="Minimo 6 caracteres" value={form.password} onChange={e => set('password',e.target.value)} required />
+                <div style={{position:'relative'}}>
+                  <input
+                    type={showPass ? 'text' : 'password'}
+                    placeholder="Minimo 6 caracteres"
+                    value={form.password}
+                    onChange={e => set('password',e.target.value)}
+                    style={{paddingRight:50}}
+                    required
+                  />
+                  <button
+                    onClick={() => setShowPass(!showPass)}
+                    style={{position:'absolute',right:12,top:'50%',transform:'translateY(-50%)',width:'auto',padding:'4px 8px',background:'none',border:'none',color:'#888',fontSize:13,cursor:'pointer'}}
+                  >
+                    {showPass ? '🙈' : '👁️'}
+                  </button>
+                </div>
               </div>
               <div className="form-group">
                 <label>Telefono</label>
@@ -104,64 +124,52 @@ export default function Register() {
                 <button onClick={() => {
                   if (!form.nombre || !form.email || !form.password) { setError('Nombre, email y contrasena son obligatorios.'); return; }
                   if (form.password.length < 6) { setError('La contrasena debe tener al menos 6 caracteres.'); return; }
-                  setError(''); setStep(3);
-                }} style={{flex:2}}>Siguiente</button>
+                  setError('');
+                  if (role === 'buyer') { submit(); }
+                  else { setStep(3); }
+                }} style={{flex:2}} disabled={loading}>
+                  {role === 'buyer' ? (loading ? 'Creando...' : 'Registrarme gratis') : 'Siguiente'}
+                </button>
               </div>
+              {role === 'buyer' && (
+                <div style={{marginTop:16,background:'#f0fff4',borderRadius:10,padding:12,fontSize:13,color:'#065f46'}}>
+                  ✅ El registro es gratis. Solo pagas cuando elegis un anfitrion.
+                </div>
+              )}
             </>
           )}
 
-          {step === 3 && (
+          {step === 3 && role === 'seller' && (
             <>
-              <h1>{role === 'seller' ? 'Como queres cobrar?' : 'Como queres pagar?'}</h1>
+              <h1>Como queres cobrar?</h1>
               {error && <div className="error">{error}</div>}
-
-              {role === 'seller' && (
-                <>
-                  <p style={{fontSize:14,color:'#666',marginBottom:16}}>Elegí como vas a recibir tus pagos. Podes cambiarlo despues.</p>
-                  <p style={{fontSize:13,color:'#003DA5',fontWeight:600,marginBottom:12}}>Vos recibis el 85% de cada contacto. Argentalk cobra 15%.</p>
-                  <div style={{display:'flex',flexDirection:'column',gap:10,marginBottom:16}}>
-                    <button onClick={() => set('metodoPago','mercadopago')} style={{background:form.metodoPago==='mercadopago'?'#009ee3':'white',color:form.metodoPago==='mercadopago'?'white':'#009ee3',border:'2px solid #009ee3',borderRadius:12,padding:16,textAlign:'left',cursor:'pointer'}}>
-                      <div style={{fontWeight:700,fontSize:16}}>💙 Mercado Pago</div>
-                      <div style={{fontSize:13,marginTop:4,opacity:0.8}}>Recomendado para Argentina</div>
-                    </button>
-                    <button onClick={() => set('metodoPago','banco')} style={{background:form.metodoPago==='banco'?'#003DA5':'white',color:form.metodoPago==='banco'?'white':'#003DA5',border:'2px solid #003DA5',borderRadius:12,padding:16,textAlign:'left',cursor:'pointer'}}>
-                      <div style={{fontWeight:700,fontSize:16}}>🏦 Cuenta bancaria</div>
-                      <div style={{fontSize:13,marginTop:4,opacity:0.8}}>CBU o alias</div>
-                    </button>
-                  </div>
-                  {form.metodoPago === 'mercadopago' && (
-                    <div className="form-group">
-                      <label>Email o telefono de Mercado Pago</label>
-                      <input placeholder="tu@email.com o +54 9 11..." value={form.cuentaPago} onChange={e => set('cuentaPago',e.target.value)} />
-                    </div>
-                  )}
-                  {form.metodoPago === 'banco' && (
-                    <div className="form-group">
-                      <label>CBU o alias</label>
-                      <input placeholder="tu.alias o 0000000000000000000000" value={form.cuentaPago} onChange={e => set('cuentaPago',e.target.value)} />
-                    </div>
-                  )}
-                </>
+              <p style={{fontSize:14,color:'#666',marginBottom:16}}>Elegí como vas a recibir tus pagos.</p>
+              <p style={{fontSize:13,color:'#003DA5',fontWeight:600,marginBottom:12}}>Vos recibis el 85% de cada contacto. Argentalk cobra 15%.</p>
+              <div style={{display:'flex',flexDirection:'column',gap:10,marginBottom:16}}>
+                <button onClick={() => set('metodoPago','mercadopago')} style={{background:form.metodoPago==='mercadopago'?'#009ee3':'white',color:form.metodoPago==='mercadopago'?'white':'#009ee3',border:'2px solid #009ee3',borderRadius:12,padding:16,textAlign:'left',cursor:'pointer'}}>
+                  <div style={{fontWeight:700,fontSize:16}}>💙 Mercado Pago</div>
+                  <div style={{fontSize:13,marginTop:4,opacity:0.8}}>Recomendado para Argentina</div>
+                </button>
+                <button onClick={() => set('metodoPago','banco')} style={{background:form.metodoPago==='banco'?'#003DA5':'white',color:form.metodoPago==='banco'?'white':'#003DA5',border:'2px solid #003DA5',borderRadius:12,padding:16,textAlign:'left',cursor:'pointer'}}>
+                  <div style={{fontWeight:700,fontSize:16}}>🏦 Cuenta bancaria</div>
+                  <div style={{fontSize:13,marginTop:4,opacity:0.8}}>CBU o alias</div>
+                </button>
+              </div>
+              {form.metodoPago === 'mercadopago' && (
+                <div className="form-group">
+                  <label>Email o telefono de Mercado Pago</label>
+                  <input placeholder="tu@email.com o +54 9 11..." value={form.cuentaPago} onChange={e => set('cuentaPago',e.target.value)} />
+                </div>
               )}
-
-              {role === 'buyer' && (
-                <>
-                  <p style={{fontSize:14,color:'#666',marginBottom:16}}>Podes pagar con tarjeta internacional. Si viajás a Argentina, te ayudamos a crear una cuenta en Mercado Pago.</p>
-                  <div style={{background:'#f0f4ff',borderRadius:12,padding:16,marginBottom:12}}>
-                    <div style={{fontWeight:600,marginBottom:6}}>💳 Tarjeta internacional</div>
-                    <div style={{fontSize:13,color:'#555'}}>Visa, Mastercard, Amex — pago seguro con Stripe</div>
-                  </div>
-                  <div style={{background:'#e8f5ff',borderRadius:12,padding:16,marginBottom:16,border:'1px solid #009ee3'}}>
-                    <div style={{fontWeight:600,marginBottom:6}}>💙 Mercado Pago (opcional)</div>
-                    <div style={{fontSize:13,color:'#555',marginBottom:10}}>Si viajás a Argentina, te enviamos instrucciones para crear tu cuenta gratis</div>
-                    <input placeholder="tu@email.com (opcional)" value={form.cuentaPago} onChange={e => set('cuentaPago',e.target.value)} style={{padding:'8px 12px',borderRadius:8,border:'1px solid #ddd',width:'100%',fontSize:13}} />
-                  </div>
-                </>
+              {form.metodoPago === 'banco' && (
+                <div className="form-group">
+                  <label>CBU o alias</label>
+                  <input placeholder="tu.alias o CBU" value={form.cuentaPago} onChange={e => set('cuentaPago',e.target.value)} />
+                </div>
               )}
-
               <div style={{display:'flex',gap:10,marginTop:8}}>
                 <button className="btn-secondary" onClick={() => setStep(2)} style={{flex:1}}>Atras</button>
-                <button className="btn-orange" onClick={submit} disabled={loading || (role==='seller' && !form.metodoPago)} style={{flex:2}}>
+                <button className="btn-orange" onClick={submit} disabled={loading || !form.metodoPago} style={{flex:2}}>
                   {loading ? 'Creando cuenta...' : 'Crear cuenta'}
                 </button>
               </div>
