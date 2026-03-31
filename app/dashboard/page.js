@@ -67,10 +67,27 @@ export default function Dashboard() {
           </div>
           <div style={{fontWeight:600,fontSize:18}}>{user?.nombre || 'Sin nombre'}</div>
           <div style={{color:'#888',fontSize:14,marginTop:4}}>{user?.email}</div>
-          <div style={{marginTop:8}}>
+          <div style={{marginTop:8,display:'flex',gap:6,justifyContent:'center',flexWrap:'wrap'}}>
             <span className="badge badge-blue">{user?.role === 'seller' ? '🏠 Anfitrion' : '🌍 Viajero'}</span>
-            {user?.verificado && <span className="badge badge-green" style={{marginLeft:6}}>✓ Verificado</span>}
+            {user?.verificado && <span className="badge badge-green">✓ Verificado</span>}
           </div>
+
+          {user?.role === 'seller' && (
+            <div style={{display:'flex',gap:12,marginTop:16,justifyContent:'center'}}>
+              <div style={{background:'#f0f4ff',borderRadius:12,padding:'12px 20px',textAlign:'center',flex:1}}>
+                <div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>
+                  USD {(user?.ganancias||0).toFixed(2)}
+                </div>
+                <div style={{fontSize:12,color:'#888',marginTop:4}}>Ganancias totales</div>
+              </div>
+              <div style={{background:'#f0fff4',borderRadius:12,padding:'12px 20px',textAlign:'center',flex:1}}>
+                <div style={{fontSize:24,fontWeight:700,color:'#065f46'}}>
+                  {user?.totalContactos||0}
+                </div>
+                <div style={{fontSize:12,color:'#888',marginTop:4}}>Contactos</div>
+              </div>
+            </div>
+          )}
         </div>
 
         {user?.role === 'seller' && (
