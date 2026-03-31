@@ -12,12 +12,20 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState('');
 
+  const loadUser = async () => {
+    try {
+      const r = await api.get('/api/auth/me');
+      setUser(r.data);
+    } catch {
+      router.push('/login');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!localStorage.getItem('token')) { router.push('/login'); return; }
-    api.get('/api/auth/me')
-      .then(r => setUser(r.data))
-      .catch(() => router.push('/login'))
-      .finally(() => setLoading(false));
+    loadUser();
   }, []);
 
   const verificar = async () => {
@@ -48,13 +56,15 @@ export default function Dashboard() {
 
         <div className="card" style={{textAlign:'center'}}>
           <div
-            style={{width:80,height:80,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32,fontWeight:700,margin:'0 auto 12px',overflow:'hidden'}}
+            onClick={() => router.push('/perfil')}
+            style={{width:80,height:80,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32,fontWeight:700,margin:'0 auto 12px',overflow:'hidden',cursor:'pointer',border:'3px solid #003DA5'}}
           >
             {user?.foto
               ? <img src={user.foto} alt="foto" style={{width:'100%',height:'100%',objectFit:'cover'}} />
               : (user?.nombre || user?.email || 'A')[0].toUpperCase()
             }
           </div>
+          <div style={{fontSize:11,color:'#888',marginBottom:8}}>Toca para cambiar foto</div>
           <div style={{fontWeight:600,fontSize:18}}>{user?.nombre || 'Sin nombre'}</div>
           <div style={{color:'#888',fontSize:14,marginTop:4}}>{user?.email}</div>
           <div style={{marginTop:8,display:'flex',gap:6,justifyContent:'center',flexWrap:'wrap'}}>
@@ -81,12 +91,11 @@ export default function Dashboard() {
             <Link href="/perfil">
               <button style={{marginBottom:12}}>✏️ Editar mi perfil</button>
             </Link>
-            {!user?.verificado && (
+            {!user?.verificado ? (
               <button className="btn-secondary" style={{marginBottom:12}} onClick={verificar}>
                 🪪 Verificar identidad (DNI o Pasaporte)
               </button>
-            )}
-            {user?.verificado && (
+            ) : (
               <div className="success" style={{marginBottom:12}}>🪪 Identidad verificada ✅</div>
             )}
           </>
