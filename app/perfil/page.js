@@ -69,7 +69,8 @@ export default function Perfil() {
   const save = async () => {
     setSaving(true); setMsg(''); setError('');
     try {
-      await api.put('/api/users/profile', form);
+      const res = await api.put('/api/users/profile', form);
+      setUser(prev => ({ ...prev, ...res.data }));
       setMsg('Perfil actualizado!');
     } catch (err) {
       setError(err.response?.data?.error || 'Error al guardar.');
@@ -160,8 +161,8 @@ export default function Perfil() {
                 </div>
               </div>
               <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'#888',marginTop:4}}>
-                <span>USD 2 (mínimo)</span>
-                <span>USD 200 (máximo)</span>
+                <span>USD 2 (minimo)</span>
+                <span>USD 200 (maximo)</span>
               </div>
               <div style={{background:'#f0f4ff',borderRadius:8,padding:10,marginTop:10,fontSize:13,color:'#555'}}>
                 Vos recibis <strong>USD {Math.round(form.precio*0.85)}</strong> — Argentalk cobra 15% (USD {Math.round(form.precio*0.15)})
