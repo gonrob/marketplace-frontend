@@ -9,37 +9,22 @@ const ADMIN = 'gonrobtor@gmail.com';
 export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [stripe, setStripe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
     if (!localStorage.getItem('token')) { router.push('/login'); return; }
-    const load = async () => {
-      try {
-        const me = await api.get('/api/auth/me');
-        setUser(me.data);
-        const st = await api.get('/api/stripe/seller/status');
-        setStripe(st.data);
-      } catch { router.push('/login'); }
-      finally { setLoading(false); }
-    };
-    load();
+    api.get('/api/auth/me')
+      .then(r => setUser(r.data))
+      .catch(() => router.push('/login'))
+      .finally(() => setLoading(false));
   }, []);
 
-  const connectStripe = async () => {
-    try { const r = await api.post('/api/stripe/seller/create'); window.location.href = r.data.url; }
-    catch (err) { setMsg(err.response?.data?.error || 'Error.'); }
-  };
-
-  const resumeOnboarding = async () => {
-    try { const r = await api.get('/api/stripe/seller/onboarding'); window.location.href = r.data.url; }
-    catch (err) { setMsg(err.response?.data?.error || 'Error.'); }
-  };
-
   const verificar = async () => {
-    try { const r = await api.post('/api/stripe/verify/identity'); window.location.href = r.data.url; }
-    catch { setMsg('Error al iniciar verificacion.'); }
+    try {
+      const r = await api.post('/api/stripe/verify/identity');
+      window.location.href = r.data.url;
+    } catch { setMsg('Error al iniciar verificacion.'); }
   };
 
   const logout = () => { localStorage.clear(); router.push('/'); };
@@ -75,15 +60,11 @@ export default function Dashboard() {
           {user?.role === 'seller' && (
             <div style={{display:'flex',gap:12,marginTop:16,justifyContent:'center'}}>
               <div style={{background:'#f0f4ff',borderRadius:12,padding:'12px 20px',textAlign:'center',flex:1}}>
-                <div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>
-                  USD {(user?.ganancias||0).toFixed(2)}
-                </div>
+                <div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>USD {(user?.ganancias||0).toFixed(2)}</div>
                 <div style={{fontSize:12,color:'#888',marginTop:4}}>Ganancias totales</div>
               </div>
               <div style={{background:'#f0fff4',borderRadius:12,padding:'12px 20px',textAlign:'center',flex:1}}>
-                <div style={{fontSize:24,fontWeight:700,color:'#065f46'}}>
-                  {user?.totalContactos||0}
-                </div>
+                <div style={{fontSize:24,fontWeight:700,color:'#065f46'}}>{user?.totalContactos||0}</div>
                 <div style={{fontSize:12,color:'#888',marginTop:4}}>Contactos</div>
               </div>
             </div>
@@ -92,25 +73,6 @@ export default function Dashboard() {
 
         {user?.role === 'seller' && (
           <>
-            <div className="card">
-              <h2>Tu cuenta Stripe</h2>
-              {!stripe?.hasAccount && (
-                <>
-                  <p style={{fontSize:14,color:'#555',marginBottom:16}}>Conecta Stripe para recibir pagos. Vos recibis el 85% de cada contacto.</p>
-                  <button className="btn-orange" onClick={connectStripe}>Conectar con Stripe</button>
-                </>
-              )}
-              {stripe?.hasAccount && !stripe?.onboardingComplete && (
-                <>
-                  <p style={{fontSize:14,color:'#555',marginBottom:16}}>Tu cuenta esta pendiente de verificacion.</p>
-                  <button className="btn-orange" onClick={resumeOnboarding}>Completar verificacion</button>
-                </>
-              )}
-              {stripe?.onboardingComplete && (
-                <div className="success">✅ Tu cuenta esta activa. Ya podes recibir pagos.</div>
-              )}
-            </div>
-
             <Link href="/perfil">
               <button style={{marginBottom:12}}>✏️ Editar mi perfil</button>
             </Link>
@@ -140,9 +102,7 @@ export default function Dashboard() {
 
         {isAdmin && (
           <Link href="/admin">
-            <button style={{background:'#1a1a1a',color:'white',marginTop:8}}>
-              ⚙️ Panel Admin
-            </button>
+            <button style={{background:'#1a1a1a',color:'white',marginTop:8}}>⚙️ Panel Admin</button>
           </Link>
         )}
       </div>
