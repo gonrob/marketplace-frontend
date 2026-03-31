@@ -122,7 +122,9 @@ export default function Perfil() {
                 </div>
               )}
             </div>
-            <input ref={fileRef} type="file" accept="image/*" capture="user" onChange={handlePhoto} style={{display:'none'}} />
+            <input ref={fileRef} type="file" accept="image/*" 
+
+onChange={handlePhoto} style={{display:'none'}} />
             <div style={{fontSize:13,color:'#003DA5',marginTop:4,cursor:'pointer'}} onClick={() => fileRef.current?.click()}>
               📷 Toca para cambiar la foto
             </div>
