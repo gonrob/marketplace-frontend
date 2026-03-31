@@ -122,9 +122,7 @@ export default function Perfil() {
                 </div>
               )}
             </div>
-            <input ref={fileRef} type="file" accept="image/*" 
-
-onChange={handlePhoto} style={{display:'none'}} />
+            <input ref={fileRef} type="file" accept="image/*" onChange={handlePhoto} style={{display:'none'}} />
             <div style={{fontSize:13,color:'#003DA5',marginTop:4,cursor:'pointer'}} onClick={() => fileRef.current?.click()}>
               📷 Toca para cambiar la foto
             </div>
@@ -143,12 +141,30 @@ onChange={handlePhoto} style={{display:'none'}} />
             <label>Sobre vos</label>
             <textarea rows={4} placeholder="Contate un poco..." value={form.bio} onChange={e => setForm({...form,bio:e.target.value})} style={{resize:'vertical'}} />
           </div>
+
           {user?.role === 'seller' && (
             <div className="form-group">
-              <label>Precio por primer contacto (USD)</label>
-              <input type="number" min="1" max="500" value={form.precio} onChange={e => setForm({...form,precio:parseInt(e.target.value)||10})} />
-              <div style={{fontSize:12,color:'#888',marginTop:6}}>
-                Vos recibis USD {Math.round(form.precio*0.85)} — Argentalk cobra 15%
+              <label>Precio por primer contacto</label>
+              <div style={{display:'flex',alignItems:'center',gap:16,marginTop:8}}>
+                <input
+                  type="range"
+                  min="2"
+                  max="200"
+                  step="1"
+                  value={form.precio}
+                  onChange={e => setForm({...form,precio:parseInt(e.target.value)})}
+                  style={{flex:1}}
+                />
+                <div style={{minWidth:80,textAlign:'center'}}>
+                  <div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>USD {form.precio}</div>
+                </div>
+              </div>
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:12,color:'#888',marginTop:4}}>
+                <span>USD 2 (mínimo)</span>
+                <span>USD 200 (máximo)</span>
+              </div>
+              <div style={{background:'#f0f4ff',borderRadius:8,padding:10,marginTop:10,fontSize:13,color:'#555'}}>
+                Vos recibis <strong>USD {Math.round(form.precio*0.85)}</strong> — Argentalk cobra 15% (USD {Math.round(form.precio*0.15)})
               </div>
             </div>
           )}
@@ -186,7 +202,6 @@ onChange={handlePhoto} style={{display:'none'}} />
             Dar de baja mi cuenta
           </button>
         </div>
-
       </div>
     </>
   );
