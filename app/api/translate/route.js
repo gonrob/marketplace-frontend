@@ -1,30 +1,30 @@
-export async function POST(request) {
+import Anthropic from '@anthropic-ai/sdk';
+
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+export async function POST(req) {
   try {
-    const { texto, idiomaOrigen, idiomaDestino } = await request.json();
-    if (!texto || !idiomaDestino) return Response.json({ error: 'Faltan datos' }, { status: 400 });
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1000,
-        messages: [{
-          role: 'user',
-          content: `Translate the following text to ${idiomaDestino}. Reply ONLY with the translation, no explanations or quotes:\n\n${texto}`
-        }]
-      })
+    const { texto, origen, destino } = await req.json();
+    if (!texto || !destino) {
+      return Response.json({ error: 'Faltan datos' }, { status: 400 });
+    }
+    if (origen === destino) {
+      return Response.json({ traduccion: texto });
+    }
+    const IDIOMAS = { es:'español', en:'english', pt:'portuguese', fr:'french', it:'italian', de:'german', zh:'chinese', ru:'russian' };
+    const idiomaDestino = IDIOMAS[destino] || destino;
+    const msg = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 1024,
+      messages: [{
+        role: 'user',
+        content: `Translate the following text to ${idiomaDestino}. Return ONLY the translated text, nothing else:\n\n${texto}`
+      }]
     });
-
-    const data = await response.json();
-    const traduccion = data.content?.[0]?.text || texto;
+    const traduccion = msg.content[0].text.trim();
     return Response.json({ traduccion });
   } catch (err) {
-    console.error(err);
-    return Response.json({ error: 'Error de traduccion' }, { status: 500 });
+    console.error('Translate error:', err.message);
+    return Response.json({ error: 'Error al traducir' }, { status: 500 });
   }
 }
