@@ -30,7 +30,7 @@ export default function Register() {
       });
       localStorage.setItem('token', res.data.token);
       if (role === 'buyer') {
-        router.push('/explorar');
+        router.push('/');
       } else {
         router.push('/dashboard');
       }
