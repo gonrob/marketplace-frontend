@@ -1,6 +1,6 @@
 'use client';
-import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
+import Nav from '../components/Nav';
 
 const URL = 'https://argentalk.vercel.app';
 
@@ -30,28 +30,16 @@ export default function Compartir() {
 
   return (
     <>
-      <nav className="nav">
-        <Link href="/" style={{textDecoration:'none'}}>
-          <span className="nav-logo">Argen<span>talk</span> 🧉</span>
-        </Link>
-        <div className="nav-links"><Link href="/">Inicio</Link></div>
-      </nav>
-
+      <Nav />
       <div className="container">
         <div className="card" style={{textAlign:'center'}}>
           <h1 style={{marginBottom:8}}>Compartir Argentalk</h1>
-          <p style={{color:'#666',fontSize:14,marginBottom:24}}>
-            Compartí la app con tus amigos y conocidos
-          </p>
+          <p style={{color:'#666',fontSize:14,marginBottom:24}}>Compartí la app con tus amigos y conocidos</p>
 
           <div style={{background:'#f0f4ff',borderRadius:16,padding:24,marginBottom:20}}>
             <div style={{fontSize:48,marginBottom:12}}>🧉</div>
-            <div style={{fontWeight:700,fontSize:20,color:'#003DA5',marginBottom:4}}>
-              Argen<span style={{color:'#F4A020'}}>talk</span>
-            </div>
-            <div style={{fontSize:13,color:'#666'}}>
-              Hablá con argentinos reales. Viví la cultura.
-            </div>
+            <div style={{fontWeight:700,fontSize:20,color:'#003DA5',marginBottom:4}}>Argen<span style={{color:'#F4A020'}}>talk</span></div>
+            <div style={{fontSize:13,color:'#666'}}>Hablá con argentinos reales. Viví la cultura.</div>
           </div>
 
           <div style={{background:'#f0f4ff',borderRadius:10,padding:'12px 16px',display:'flex',alignItems:'center',gap:10,marginBottom:20}}>
@@ -75,18 +63,11 @@ export default function Compartir() {
 
           <div style={{borderTop:'1px solid #f0f0f0',paddingTop:20}}>
             <h2 style={{marginBottom:8}}>QR para hostels y negocios</h2>
-            <p style={{fontSize:13,color:'#666',marginBottom:16}}>
-              Imprimí este QR y pegalo en tu hostel, bar o negocio para que los viajeros puedan escanear y encontrar anfitriones
-            </p>
+            <p style={{fontSize:13,color:'#666',marginBottom:16}}>Imprimí este QR y pegalo en tu hostel, bar o negocio</p>
             <div style={{display:'flex',justifyContent:'center',marginBottom:16}}>
               <canvas ref={canvasRef} style={{borderRadius:12}} />
             </div>
-            <button onClick={() => window.print()} className="btn-orange" style={{marginBottom:8}}>
-              🖨️ Imprimir QR
-            </button>
-            <Link href="/qr">
-              <button className="btn-secondary">Ver página de QR completa</button>
-            </Link>
+            <button onClick={() => window.print()} className="btn-orange" style={{marginBottom:8}}>🖨️ Imprimir QR</button>
           </div>
         </div>
       </div>

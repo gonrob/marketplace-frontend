@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Nav from '../components/Nav';
 import api from '../../lib/api';
 
 export default function Explorar() {
@@ -31,41 +32,24 @@ export default function Explorar() {
 
   return (
     <>
-      <nav className="nav">
-        <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Argen<span>talk</span> 🧉</span></Link>
-        <div className="nav-links"><Link href="/register">Inscribirse</Link></div>
-      </nav>
-
+      <Nav links={[{href:'/register',label:'Inscribirse'}]} />
       <div className="container">
         <h1 style={{marginBottom:16}}>Anfitriones argentinos</h1>
-
         <div style={{marginBottom:20}}>
-          <input
-            placeholder="Buscar por nombre, ciudad, habilidad..."
-            value={busqueda}
-            onChange={e => setBusqueda(e.target.value)}
-            style={{width:'100%'}}
-          />
+          <input placeholder="Buscar por nombre, ciudad, habilidad..." value={busqueda} onChange={e => setBusqueda(e.target.value)} style={{width:'100%'}} />
         </div>
-
         {filtrados.length === 0 && (
-          <div className="card" style={{textAlign:'center',color:'#888'}}>
-            No hay anfitriones disponibles por ahora.
-          </div>
+          <div className="card" style={{textAlign:'center',color:'#888'}}>No hay anfitriones disponibles por ahora.</div>
         )}
-
         {filtrados.map(s => (
           <div key={s._id} className="card" style={{marginBottom:16}}>
             <div style={{display:'flex',gap:16,alignItems:'flex-start'}}>
               <div style={{width:64,height:64,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,fontWeight:700,flexShrink:0,overflow:'hidden',border:'2px solid #003DA5'}}>
-                {s.foto
-                  ? <img src={s.foto} alt={s.nombre} style={{width:'100%',height:'100%',objectFit:'cover'}} />
-                  : (s.nombre || s.email || 'A')[0].toUpperCase()
-                }
+                {s.foto ? <img src={s.foto} alt={s.nombre} style={{width:'100%',height:'100%',objectFit:'cover'}} /> : (s.nombre||s.email||'A')[0].toUpperCase()}
               </div>
               <div style={{flex:1}}>
                 <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
-                  <div style={{fontWeight:700,fontSize:17}}>{s.nombre || 'Sin nombre'}</div>
+                  <div style={{fontWeight:700,fontSize:17}}>{s.nombre||'Sin nombre'}</div>
                   {s.verificado && <span className="badge badge-green">✓ Verificado</span>}
                   {s.disponible && <span className="badge badge-blue">Disponible</span>}
                 </div>
@@ -73,17 +57,13 @@ export default function Explorar() {
                 {s.bio && <div style={{fontSize:14,color:'#555',marginTop:6,lineHeight:1.5}}>{s.bio}</div>}
                 {s.habilidades?.length > 0 && (
                   <div style={{display:'flex',flexWrap:'wrap',gap:6,marginTop:8}}>
-                    {s.habilidades.map(h => (
-                      <span key={h} style={{background:'#EBF2FF',color:'#003DA5',padding:'3px 10px',borderRadius:20,fontSize:12}}>{h}</span>
-                    ))}
+                    {s.habilidades.map(h => <span key={h} style={{background:'#EBF2FF',color:'#003DA5',padding:'3px 10px',borderRadius:20,fontSize:12}}>{h}</span>)}
                   </div>
                 )}
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:12}}>
-                  <div style={{fontWeight:700,fontSize:18,color:'#003DA5'}}>USD {s.precio || 10}</div>
-                  <Link href={`/pay?seller=${s._id}&precio=${s.precio || 10}&nombre=${encodeURIComponent(s.nombre || 'Anfitrion')}`}>
-                    <button className="btn-orange" style={{width:'auto',padding:'10px 20px',fontSize:14}}>
-                      Contactar
-                    </button>
+                  <div style={{fontWeight:700,fontSize:18,color:'#003DA5'}}>USD {s.precio||10}</div>
+                  <Link href={`/pay?seller=${s._id}&precio=${s.precio||10}&nombre=${encodeURIComponent(s.nombre||'Anfitrion')}`}>
+                    <button className="btn-orange" style={{width:'auto',padding:'10px 20px',fontSize:14}}>Contactar</button>
                   </Link>
                 </div>
               </div>
