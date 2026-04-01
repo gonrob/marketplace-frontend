@@ -4,15 +4,47 @@ import Link from 'next/link';
 import Nav from '../components/Nav';
 import api from '../../lib/api';
 
+async function traducirTexto(texto, destino) {
+  if (!texto || destino === 'es') return texto;
+  try {
+    const res = await fetch('/api/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ texto, origen: 'es', destino })
+    });
+    const data = await res.json();
+    return data.traduccion || texto;
+  } catch { return texto; }
+}
+
 export default function Explorar() {
   const [sellers, setSellers] = useState([]);
   const [filtrados, setFiltrados] = useState([]);
   const [busqueda, setBusqueda] = useState('');
   const [loading, setLoading] = useState(true);
+  const [lang, setLang] = useState('es');
+  const [traduciendo, setTraduciendo] = useState(false);
 
   useEffect(() => {
+    const savedLang = localStorage.getItem('lang') || 'es';
+    setLang(savedLang);
     api.get('/api/users/sellers')
-      .then(r => { setSellers(r.data); setFiltrados(r.data); })
+      .then(async r => {
+        let data = r.data;
+        if (savedLang !== 'es') {
+          setTraduciendo(true);
+          data = await Promise.all(data.map(async s => ({
+            ...s,
+            bio: s.bio ? await traducirTexto(s.bio, savedLang) : s.bio,
+            habilidades: s.habilidades?.length > 0
+              ? await Promise.all(s.habilidades.map(h => traducirTexto(h, savedLang)))
+              : s.habilidades
+          })));
+          setTraduciendo(false);
+        }
+        setSellers(data);
+        setFiltrados(data);
+      })
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, []);
@@ -34,13 +66,17 @@ export default function Explorar() {
     <>
       <Nav links={[{href:'/register',label:'Inscribirse'}]} />
       <div className="container">
-        <h1 style={{marginBottom:16}}>Anfitriones argentinos</h1>
-        <div style={{marginBottom:20}}>
+        <h1 style={{marginBottom:4}}>Anfitriones argentinos</h1>
+        {traduciendo && <div style={{fontSize:13,color:'#888',marginBottom:12}}>🌍 Traduciendo al tu idioma...</div>}
+
+        <div style={{marginBottom:20,marginTop:12}}>
           <input placeholder="Buscar por nombre, ciudad, habilidad..." value={busqueda} onChange={e => setBusqueda(e.target.value)} style={{width:'100%'}} />
         </div>
+
         {filtrados.length === 0 && (
           <div className="card" style={{textAlign:'center',color:'#888'}}>No hay anfitriones disponibles por ahora.</div>
         )}
+
         {filtrados.map(s => (
           <div key={s._id} className="card" style={{marginBottom:16}}>
             <div style={{display:'flex',gap:16,alignItems:'flex-start'}}>
@@ -57,7 +93,7 @@ export default function Explorar() {
                 {s.bio && <div style={{fontSize:14,color:'#555',marginTop:6,lineHeight:1.5}}>{s.bio}</div>}
                 {s.habilidades?.length > 0 && (
                   <div style={{display:'flex',flexWrap:'wrap',gap:6,marginTop:8}}>
-                    {s.habilidades.map(h => <span key={h} style={{background:'#EBF2FF',color:'#003DA5',padding:'3px 10px',borderRadius:20,fontSize:12}}>{h}</span>)}
+                    {s.habilidades.map((h,i) => <span key={i} style={{background:'#EBF2FF',color:'#003DA5',padding:'3px 10px',borderRadius:20,fontSize:12}}>{h}</span>)}
                   </div>
                 )}
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:12}}>
