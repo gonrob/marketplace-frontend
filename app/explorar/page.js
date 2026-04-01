@@ -25,8 +25,29 @@ export default function Explorar() {
   const [lang, setLang] = useState('es');
   const [traduciendo, setTraduciendo] = useState(false);
 
-  useEffect(() => {
+ useEffect(() => {
     const savedLang = localStorage.getItem('lang') || 'es';
+    setLang(savedLang);
+    
+    api.get('/api/users/sellers')
+      .then(async r => {
+        let data = r.data;
+        if (savedLang !== 'es') {
+          setTraduciendo(true);
+          try {
+            data = await Promise.all(data.map(async s => ({
+              ...s,
+              bio: s.bio ? await traducirTexto(s.bio, savedLang) : s.bio,
+            })));
+          } catch(e) { console.error('Error traduciendo:', e); }
+          setTraduciendo(false);
+        }
+        setSellers(data);
+        setFiltrados(data);
+      })
+      .catch(err => console.error(err))
+      .finally(() => setLoading(false));
+  }, []);
     setLang(savedLang);
     api.get('/api/users/sellers')
       .then(async r => {
