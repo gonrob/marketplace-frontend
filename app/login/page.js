@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Nav from '../components/Nav';
 import api from '../../lib/api';
 
 export default function Login() {
@@ -25,9 +26,7 @@ export default function Login() {
 
   return (
     <>
-      <nav className="nav">
-        <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Argen<span>talk</span> 🧉</span></Link>
-      </nav>
+      <Nav />
       <div className="container">
         <div className="card">
           <h1>Iniciar sesion</h1>
@@ -40,19 +39,8 @@ export default function Login() {
             <div className="form-group">
               <label>Contrasena</label>
               <div style={{position:'relative'}}>
-                <input
-                  type={showPass ? 'text' : 'password'}
-                  placeholder="Tu contrasena"
-                  value={form.password}
-                  onChange={e => setForm({...form,password:e.target.value})}
-                  style={{paddingRight:50}}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPass(!showPass)}
-                  style={{position:'absolute',right:12,top:'50%',transform:'translateY(-50%)',width:'auto',padding:'4px 8px',background:'none',border:'none',color:'#888',fontSize:16,cursor:'pointer'}}
-                >
+                <input type={showPass?'text':'password'} placeholder="Tu contrasena" value={form.password} onChange={e => setForm({...form,password:e.target.value})} style={{paddingRight:50}} required />
+                <button type="button" onClick={() => setShowPass(!showPass)} style={{position:'absolute',right:12,top:'50%',transform:'translateY(-50%)',width:'auto',padding:'4px 8px',background:'none',border:'none',color:'#888',fontSize:16,cursor:'pointer'}}>
                   {showPass ? '🙈' : '👁️'}
                 </button>
               </div>

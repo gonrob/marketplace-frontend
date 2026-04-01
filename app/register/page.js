@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Nav from '../components/Nav';
 import api from '../../lib/api';
 
 export default function Register() {
@@ -29,11 +30,7 @@ export default function Register() {
         cuentaPago: form.cuentaPago
       });
       localStorage.setItem('token', res.data.token);
-      if (role === 'buyer') {
-        router.push('/');
-      } else {
-        router.push('/dashboard');
-      }
+      router.push('/');
     } catch (err) {
       setError(err.response?.data?.error || 'Error al registrarse.');
       setStep(2);
@@ -42,12 +39,9 @@ export default function Register() {
 
   return (
     <>
-      <nav className="nav">
-        <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Argen<span>talk</span> 🧉</span></Link>
-      </nav>
+      <Nav />
       <div className="container">
         <div className="card">
-
           {step === 1 && (
             <>
               <h1>Unete a Argentalk</h1>
@@ -70,7 +64,7 @@ export default function Register() {
 
           {step === 2 && (
             <>
-              <h1>{role === 'seller' ? 'Tus datos' : 'Tus datos'}</h1>
+              <h1>Tus datos</h1>
               {error && <div className="error">{error}</div>}
               <div className="form-group">
                 <label>Nombre</label>
@@ -87,18 +81,8 @@ export default function Register() {
               <div className="form-group">
                 <label>Contrasena</label>
                 <div style={{position:'relative'}}>
-                  <input
-                    type={showPass ? 'text' : 'password'}
-                    placeholder="Minimo 6 caracteres"
-                    value={form.password}
-                    onChange={e => set('password',e.target.value)}
-                    style={{paddingRight:50}}
-                    required
-                  />
-                  <button
-                    onClick={() => setShowPass(!showPass)}
-                    style={{position:'absolute',right:12,top:'50%',transform:'translateY(-50%)',width:'auto',padding:'4px 8px',background:'none',border:'none',color:'#888',fontSize:13,cursor:'pointer'}}
-                  >
+                  <input type={showPass?'text':'password'} placeholder="Minimo 6 caracteres" value={form.password} onChange={e => set('password',e.target.value)} style={{paddingRight:50}} required />
+                  <button onClick={() => setShowPass(!showPass)} type="button" style={{position:'absolute',right:12,top:'50%',transform:'translateY(-50%)',width:'auto',padding:'4px 8px',background:'none',border:'none',color:'#888',fontSize:13,cursor:'pointer'}}>
                     {showPass ? '🙈' : '👁️'}
                   </button>
                 </div>
@@ -143,7 +127,6 @@ export default function Register() {
             <>
               <h1>Como queres cobrar?</h1>
               {error && <div className="error">{error}</div>}
-              <p style={{fontSize:14,color:'#666',marginBottom:16}}>Elegí como vas a recibir tus pagos.</p>
               <p style={{fontSize:13,color:'#003DA5',fontWeight:600,marginBottom:12}}>Vos recibis el 85% de cada contacto. Argentalk cobra 15%.</p>
               <div style={{display:'flex',flexDirection:'column',gap:10,marginBottom:16}}>
                 <button onClick={() => set('metodoPago','mercadopago')} style={{background:form.metodoPago==='mercadopago'?'#009ee3':'white',color:form.metodoPago==='mercadopago'?'white':'#009ee3',border:'2px solid #009ee3',borderRadius:12,padding:16,textAlign:'left',cursor:'pointer'}}>
@@ -169,13 +152,12 @@ export default function Register() {
               )}
               <div style={{display:'flex',gap:10,marginTop:8}}>
                 <button className="btn-secondary" onClick={() => setStep(2)} style={{flex:1}}>Atras</button>
-                <button className="btn-orange" onClick={submit} disabled={loading || !form.metodoPago} style={{flex:2}}>
+                <button className="btn-orange" onClick={submit} disabled={loading||!form.metodoPago} style={{flex:2}}>
                   {loading ? 'Creando cuenta...' : 'Crear cuenta'}
                 </button>
               </div>
             </>
           )}
-
         </div>
       </div>
     </>
