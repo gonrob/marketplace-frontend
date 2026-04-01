@@ -22,13 +22,10 @@ export default function Explorar() {
   const [filtrados, setFiltrados] = useState([]);
   const [busqueda, setBusqueda] = useState('');
   const [loading, setLoading] = useState(true);
-  const [lang, setLang] = useState('es');
   const [traduciendo, setTraduciendo] = useState(false);
 
- useEffect(() => {
+  useEffect(() => {
     const savedLang = localStorage.getItem('lang') || 'es';
-    setLang(savedLang);
-    
     api.get('/api/users/sellers')
       .then(async r => {
         let data = r.data;
@@ -39,28 +36,9 @@ export default function Explorar() {
               ...s,
               bio: s.bio ? await traducirTexto(s.bio, savedLang) : s.bio,
             })));
-          } catch(e) { console.error('Error traduciendo:', e); }
-          setTraduciendo(false);
-        }
-        setSellers(data);
-        setFiltrados(data);
-      })
-      .catch(err => console.error(err))
-      .finally(() => setLoading(false));
-  }, []);
-    setLang(savedLang);
-    api.get('/api/users/sellers')
-      .then(async r => {
-        let data = r.data;
-        if (savedLang !== 'es') {
-          setTraduciendo(true);
-          data = await Promise.all(data.map(async s => ({
-            ...s,
-            bio: s.bio ? await traducirTexto(s.bio, savedLang) : s.bio,
-            habilidades: s.habilidades?.length > 0
-              ? await Promise.all(s.habilidades.map(h => traducirTexto(h, savedLang)))
-              : s.habilidades
-          })));
+          } catch(e) {
+            console.error('Error traduciendo:', e);
+          }
           setTraduciendo(false);
         }
         setSellers(data);
@@ -88,16 +66,13 @@ export default function Explorar() {
       <Nav links={[{href:'/register',label:'Inscribirse'}]} />
       <div className="container">
         <h1 style={{marginBottom:4}}>Anfitriones argentinos</h1>
-        {traduciendo && <div style={{fontSize:13,color:'#888',marginBottom:12}}>🌍 Traduciendo al tu idioma...</div>}
-
+        {traduciendo && <div style={{fontSize:13,color:'#888',marginBottom:12}}>Traduciendo...</div>}
         <div style={{marginBottom:20,marginTop:12}}>
           <input placeholder="Buscar por nombre, ciudad, habilidad..." value={busqueda} onChange={e => setBusqueda(e.target.value)} style={{width:'100%'}} />
         </div>
-
         {filtrados.length === 0 && (
           <div className="card" style={{textAlign:'center',color:'#888'}}>No hay anfitriones disponibles por ahora.</div>
         )}
-
         {filtrados.map(s => (
           <div key={s._id} className="card" style={{marginBottom:16}}>
             <div style={{display:'flex',gap:16,alignItems:'flex-start'}}>
