@@ -1,13 +1,15 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import api from '../../lib/api';
+import { Suspense } from 'react';
 
 const ADMIN = 'gonrobtor@gmail.com';
 
-export default function Dashboard() {
+function DashboardContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState('');
@@ -27,6 +29,13 @@ export default function Dashboard() {
     if (!localStorage.getItem('token')) { router.push('/login'); return; }
     loadUser();
   }, []);
+
+  useEffect(() => {
+    if (searchParams.get('verified') === 'true') {
+      loadUser();
+      setMsg('¡Identidad verificada correctamente!');
+    }
+  }, [searchParams]);
 
   const verificar = async () => {
     try {
@@ -52,7 +61,7 @@ export default function Dashboard() {
       </nav>
 
       <div className="container">
-        {msg && <div className="error">{msg}</div>}
+        {msg && <div className="success">{msg}</div>}
 
         <div className="card" style={{textAlign:'center'}}>
           <div
@@ -123,5 +132,13 @@ export default function Dashboard() {
         )}
       </div>
     </>
+  );
+}
+
+export default function Dashboard() {
+  return (
+    <Suspense fallback={<div className="spinner">Cargando...</div>}>
+      <DashboardContent />
+    </Suspense>
   );
 }
