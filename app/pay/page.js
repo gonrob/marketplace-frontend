@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -10,14 +10,14 @@ import api from '../../lib/api';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const T = {
-  es:{titulo:'Pagar primer contacto',metodo:'Pagar con tarjeta',seguro:'Pago seguro con Stripe. Tus datos bancarios nunca se almacenan en Argentalk.',continuar:'Continuar con el pago',pagar:'Pagar ahora',procesando:'Procesando...',preparando:'Preparando pago...',anfitrion:'Anfitrion',contacto:'Primer contacto',recibe:'El anfitrion recibe',gratis:'Registro gratuito. Solo pagas cuando contactas un anfitrion.',registrate:'Registrate gratis',error:'Error al crear el pago.'},
-  en:{titulo:'Pay for first contact',metodo:'Pay by card',seguro:'Secure payment with Stripe. Your bank details are never stored in Argentalk.',continuar:'Continue to payment',pagar:'Pay now',procesando:'Processing...',preparando:'Preparing payment...',anfitrion:'Host',contacto:'First contact',recibe:'The host receives',gratis:'Free registration. You only pay when you contact a host.',registrate:'Register for free',error:'Error creating payment.'},
-  pt:{titulo:'Pagar pelo primeiro contato',metodo:'Pagar com cartao',seguro:'Pagamento seguro com Stripe. Seus dados bancarios nunca sao armazenados no Argentalk.',continuar:'Continuar para o pagamento',pagar:'Pagar agora',procesando:'Processando...',preparando:'Preparando pagamento...',anfitrion:'Anfitriao',contacto:'Primeiro contato',recibe:'O anfitriao recebe',gratis:'Cadastro gratuito. Voce so paga quando contata um anfitriao.',registrate:'Cadastrar gratis',error:'Erro ao criar pagamento.'},
-  fr:{titulo:'Payer le premier contact',metodo:'Payer par carte',seguro:'Paiement securise avec Stripe. Vos coordonnees bancaires ne sont jamais stockees dans Argentalk.',continuar:'Continuer vers le paiement',pagar:'Payer maintenant',procesando:'Traitement...',preparando:'Preparation du paiement...',anfitrion:'Hote',contacto:'Premier contact',recibe:"L'hote recoit",gratis:"Inscription gratuite. Vous ne payez que lorsque vous contactez un hote.",registrate:"S'inscrire gratuitement",error:'Erreur lors de la creation du paiement.'},
-  it:{titulo:'Paga il primo contatto',metodo:'Paga con carta',seguro:"Pagamento sicuro con Stripe. I tuoi dati bancari non vengono mai memorizzati in Argentalk.",continuar:'Continua al pagamento',pagar:'Paga ora',procesando:'Elaborazione...',preparando:'Preparazione pagamento...',anfitrion:'Host',contacto:'Primo contatto',recibe:"L'host riceve",gratis:'Registrazione gratuita. Paghi solo quando contatti un host.',registrate:'Registrati gratis',error:'Errore nella creazione del pagamento.'},
-  de:{titulo:'Ersten Kontakt bezahlen',metodo:'Mit Karte bezahlen',seguro:'Sichere Zahlung mit Stripe. Ihre Bankdaten werden nie in Argentalk gespeichert.',continuar:'Weiter zur Zahlung',pagar:'Jetzt bezahlen',procesando:'Verarbeitung...',preparando:'Zahlung wird vorbereitet...',anfitrion:'Gastgeber',contacto:'Erster Kontakt',recibe:'Der Gastgeber erhalt',gratis:'Kostenlose Registrierung. Sie zahlen nur, wenn Sie einen Gastgeber kontaktieren.',registrate:'Kostenlos registrieren',error:'Fehler beim Erstellen der Zahlung.'},
-  zh:{titulo:'支付首次联系费用',metodo:'用卡支付',seguro:'通过Stripe安全支付。您的银行信息永远不会存储在Argentalk中。',continuar:'继续支付',pagar:'立即支付',procesando:'处理中...',preparando:'准备支付...',anfitrion:'主人',contacto:'首次联系',recibe:'主人收到',gratis:'免费注册。只有当您联系主人时才需付款。',registrate:'免费注册',error:'创建付款时出错。'},
-  ru:{titulo:'Оплатить первый контакт',metodo:'Оплатить картой',seguro:'Безопасная оплата через Stripe. Ваши банковские данные никогда не хранятся в Argentalk.',continuar:'Перейти к оплате',pagar:'Оплатить сейчас',procesando:'Обработка...',preparando:'Подготовка платежа...',anfitrion:'Хозяин',contacto:'Первый контакт',recibe:'Хозяин получает',gratis:'Бесплатная регистрация. Вы платите только когда связываетесь с хозяином.',registrate:'Зарегистрироваться бесплатно',error:'Ошибка при создании платежа.'},
+  es:{titulo:'Pagar primer contacto',metodo:'Pagar con tarjeta',seguro:'Pago seguro con Stripe. Tus datos bancarios nunca se almacenan en Argentalk.',continuar:'Continuar con el pago',pagar:'Pagar ahora',procesando:'Procesando...',preparando:'Preparando pago...',anfitrion:'Anfitrion',contacto:'Primer contacto',recibe:'El anfitrion recibe',gratis:'Registro gratuito. Solo pagas cuando contactas un anfitrion.',registrate:'Registrate gratis',error:'Error al crear el pago.',emailLabel:'Tu email para recibir los datos del anfitrion'},
+  en:{titulo:'Pay for first contact',metodo:'Pay by card',seguro:'Secure payment with Stripe. Your bank details are never stored in Argentalk.',continuar:'Continue to payment',pagar:'Pay now',procesando:'Processing...',preparando:'Preparing payment...',anfitrion:'Host',contacto:'First contact',recibe:'The host receives',gratis:'Free registration. You only pay when you contact a host.',registrate:'Register for free',error:'Error creating payment.',emailLabel:'Your email to receive the host details'},
+  pt:{titulo:'Pagar pelo primeiro contato',metodo:'Pagar com cartao',seguro:'Pagamento seguro com Stripe.',continuar:'Continuar para o pagamento',pagar:'Pagar agora',procesando:'Processando...',preparando:'Preparando pagamento...',anfitrion:'Anfitriao',contacto:'Primeiro contato',recibe:'O anfitriao recebe',gratis:'Cadastro gratuito.',registrate:'Cadastrar gratis',error:'Erro ao criar pagamento.',emailLabel:'Seu email para receber os dados do anfitriao'},
+  fr:{titulo:'Payer le premier contact',metodo:'Payer par carte',seguro:'Paiement securise avec Stripe.',continuar:'Continuer vers le paiement',pagar:'Payer maintenant',procesando:'Traitement...',preparando:'Preparation...',anfitrion:'Hote',contacto:'Premier contact',recibe:"L'hote recoit",gratis:"Inscription gratuite.",registrate:"S'inscrire",error:'Erreur.',emailLabel:"Votre email pour recevoir les coordonnees de l'hote"},
+  it:{titulo:'Paga il primo contatto',metodo:'Paga con carta',seguro:'Pagamento sicuro con Stripe.',continuar:'Continua al pagamento',pagar:'Paga ora',procesando:'Elaborazione...',preparando:'Preparazione...',anfitrion:'Host',contacto:'Primo contatto',recibe:"L'host riceve",gratis:'Registrazione gratuita.',registrate:'Registrati',error:'Errore.',emailLabel:"La tua email per ricevere i dati dell'host"},
+  de:{titulo:'Ersten Kontakt bezahlen',metodo:'Mit Karte bezahlen',seguro:'Sichere Zahlung mit Stripe.',continuar:'Weiter zur Zahlung',pagar:'Jetzt bezahlen',procesando:'Verarbeitung...',preparando:'Vorbereitung...',anfitrion:'Gastgeber',contacto:'Erster Kontakt',recibe:'Der Gastgeber erhalt',gratis:'Kostenlose Registrierung.',registrate:'Registrieren',error:'Fehler.',emailLabel:'Ihre E-Mail um die Gastgeberdaten zu erhalten'},
+  zh:{titulo:'支付首次联系费用',metodo:'用卡支付',seguro:'通过Stripe安全支付。',continuar:'继续支付',pagar:'立即支付',procesando:'处理中...',preparando:'准备中...',anfitrion:'主人',contacto:'首次联系',recibe:'主人收到',gratis:'免费注册。',registrate:'免费注册',error:'出错了。',emailLabel:'您的电子邮件以接收主人详细信息'},
+  ru:{titulo:'Оплатить первый контакт',metodo:'Оплатить картой',seguro:'Безопасная оплата через Stripe.',continuar:'Перейти к оплате',pagar:'Оплатить',procesando:'Обработка...',preparando:'Подготовка...',anfitrion:'Хозяин',contacto:'Первый контакт',recibe:'Хозяин получает',gratis:'Бесплатная регистрация.',registrate:'Зарегистрироваться',error:'Ошибка.',emailLabel:'Ваш email для получения данных хозяина'},
 };
 
 function CheckoutForm({ t }) {
@@ -58,11 +58,18 @@ function PayContent() {
   const [loading, setLoading] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [lang, setLang] = useState('es');
+  const [buyerEmail, setBuyerEmail] = useState('');
 
   useEffect(() => {
-    setLoggedIn(!!localStorage.getItem('token'));
+    const token = localStorage.getItem('token');
+    setLoggedIn(!!token);
     const savedLang = localStorage.getItem('lang') || 'es';
     setLang(savedLang);
+    if (token) {
+      api.get('/api/auth/me').then(r => {
+        if (r.data.email) setBuyerEmail(r.data.email);
+      }).catch(() => {});
+    }
   }, []);
 
   const t = T[lang] || T.en;
@@ -72,7 +79,8 @@ function PayContent() {
     try {
       const res = await api.post('/api/stripe/pay', {
         amount: Math.round(parseFloat(precio) * 100),
-        sellerUserId: sellerId
+        sellerUserId: sellerId,
+        buyerEmail
       });
       setClientSecret(res.data.clientSecret);
     } catch (err) {
@@ -105,7 +113,21 @@ function PayContent() {
         </div>
 
         {!clientSecret && !loading && (
-          <button className="btn-orange" onClick={initPago}>{t.continuar}</button>
+          <>
+            <div className="form-group" style={{marginBottom:16}}>
+              <label style={{fontSize:13,color:'#666',display:'block',marginBottom:6}}>{t.emailLabel}</label>
+              <input
+                type="email"
+                value={buyerEmail}
+                onChange={e => setBuyerEmail(e.target.value)}
+                placeholder="tu@email.com"
+                style={{marginBottom:0}}
+              />
+            </div>
+            <button className="btn-orange" onClick={initPago} disabled={!buyerEmail}>
+              {t.continuar}
+            </button>
+          </>
         )}
         {loading && <div className="spinner">{t.preparando}</div>}
         {clientSecret && (
