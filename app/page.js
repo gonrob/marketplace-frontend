@@ -3,15 +3,16 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const IMAGENES = [
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Bariloche._Lago_Nahuel_Huapi-2.JPG/800px-Bariloche._Lago_Nahuel_Huapi-2.JPG', lugar:'Bariloche' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Perito_Moreno_Glacier_Patagonia_Argentina_Luca_Galuzzi_2005.JPG/800px-Perito_Moreno_Glacier_Patagonia_Argentina_Luca_Galuzzi_2005.JPG', lugar:'Perito Moreno' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Buenos_Aires_-_Obelisco_(2).jpg/800px-Buenos_Aires_-_Obelisco_(2).jpg', lugar:'Buenos Aires' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Cerro_de_los_Siete_Colores.jpg/800px-Cerro_de_los_Siete_Colores.jpg', lugar:'Salta - 7 Colores' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Cafayate_-_Quebrada_de_las_Conchas_-_Anfiteatro.jpg/800px-Cafayate_-_Quebrada_de_las_Conchas_-_Anfiteatro.jpg', lugar:'Cafayate' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Cerro_Catedral_ski_area.jpg/800px-Cerro_Catedral_ski_area.jpg', lugar:'Cerro Catedral' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Ballenas_en_Pen%C3%ADnsula_Vald%C3%A9s.jpg/800px-Ballenas_en_Pen%C3%ADnsula_Vald%C3%A9s.jpg', lugar:'Ballenas - Madryn' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Tigre_-_Delta_del_Paran%C3%A1.jpg/800px-Tigre_-_Delta_del_Paran%C3%A1.jpg', lugar:'Tigre - Delta' },
+  { url:'https://cdn.pixabay.com/photo/2019/03/08/19/54/bariloche-4042760_1280.jpg', lugar:'Bariloche' },
+  { url:'https://cdn.pixabay.com/photo/2016/01/09/18/27/glacier-1130223_1280.jpg', lugar:'Perito Moreno' },
+  { url:'https://cdn.pixabay.com/photo/2016/11/23/15/23/buenos-aires-1852385_1280.jpg', lugar:'Buenos Aires' },
+  { url:'https://cdn.pixabay.com/photo/2018/09/24/10/19/salta-3699623_1280.jpg', lugar:'Salta - 7 Colores' },
+  { url:'https://cdn.pixabay.com/photo/2021/01/29/08/10/argentina-5960835_1280.jpg', lugar:'Cafayate' },
+  { url:'https://cdn.pixabay.com/photo/2019/01/27/09/34/ski-3957084_1280.jpg', lugar:'Cerro Catedral' },
+  { url:'https://cdn.pixabay.com/photo/2017/08/07/14/02/whale-2603949_1280.jpg', lugar:'Ballenas - Madryn' },
+  { url:'https://cdn.pixabay.com/photo/2014/07/05/08/33/delta-384573_1280.jpg', lugar:'Tigre - Delta' },
 ];
+
 const T = {
   es:{flag:'🇦🇷',n:'ES',tag:'Hablá con argentinos reales. Viví la cultura.',sub:'Mate · Truco · Fútbol · Dulce de leche',buscar:'Buscar anfitriones',inscribirse:'Inscribirse (Anfitriones & Viajeros)',como:'¿Cómo funciona?',p1t:'Elegí un anfitrión',p1d:'Filtrá por interés, habilidad o disponibilidad',p2t:'Pagá el primer contacto',p2d:'Pago seguro con tarjeta internacional',p3t:'¡Conectate!',p3d:'Después del primer contacto, son libres de continuar como quieran',entrar:'Entrar',perfil:'Mi perfil',comp:'Compartir app',cont:'Contacto',consejos:'Consejos de viaje',consejossub:'Dinero, transporte, seguridad y más',mate:'Mate',truco:'Truco',futbol:'Fútbol',dulce:'Dulce de leche',lunfardo:'Aprendé el lunfardo'},
   en:{flag:'🇬🇧',n:'EN',tag:'Talk with real Argentinians. Live the culture.',sub:'Mate · Truco · Football · Dulce de leche',buscar:'Find hosts',inscribirse:'Sign up (Hosts & Travelers)',como:'How does it work?',p1t:'Choose a host',p1d:'Filter by interest, skill or availability',p2t:'Pay for first contact',p2d:'Secure payment with international card',p3t:'Connect!',p3d:'After first contact, you are free to continue however you want',entrar:'Log in',perfil:'My profile',comp:'Share app',cont:'Contact',consejos:'Travel tips',consejossub:'Money, transport, safety and more',mate:'Mate',truco:'Truco',futbol:'Football',dulce:'Dulce de leche',lunfardo:'Learn Argentine slang'},
@@ -28,12 +29,18 @@ export default function Home() {
   const [lang, setLang] = useState('es');
   const [showLangs, setShowLangs] = useState(false);
   const [imgIdx, setImgIdx] = useState(0);
+  const [imgLoaded, setImgLoaded] = useState({});
   const t = T[lang];
 
   useEffect(() => {
     setLoggedIn(!!localStorage.getItem('token'));
     const saved = localStorage.getItem('lang');
     if (saved && T[saved]) setLang(saved);
+    IMAGENES.forEach((img, i) => {
+      const image = new Image();
+      image.onload = () => setImgLoaded(prev => ({...prev, [i]: true}));
+      image.src = img.url;
+    });
   }, []);
 
   useEffect(() => {
@@ -75,15 +82,17 @@ export default function Home() {
         </div>
       </nav>
 
-      <div style={{position:'relative',height:320,overflow:'hidden'}}>
+      <div style={{position:'relative',height:320,overflow:'hidden',background:'#003DA5'}}>
         {IMAGENES.map((img, i) => (
-          <div key={i} style={{
-            position:'absolute',top:0,left:0,width:'100%',height:'100%',
-            backgroundImage:`url(${img.url})`,
-            backgroundSize:'cover',backgroundPosition:'center',
-            opacity: i === imgIdx ? 1 : 0,
-            transition:'opacity 1.5s ease-in-out'
-          }} />
+          imgLoaded[i] && (
+            <div key={i} style={{
+              position:'absolute',top:0,left:0,width:'100%',height:'100%',
+              backgroundImage:`url(${img.url})`,
+              backgroundSize:'cover',backgroundPosition:'center',
+              opacity: i === imgIdx ? 1 : 0,
+              transition:'opacity 1.5s ease-in-out'
+            }} />
+          )
         ))}
         <div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',background:'rgba(0,40,120,0.6)'}} />
         <div style={{position:'relative',zIndex:1,textAlign:'center',padding:'36px 20px 0'}}>
