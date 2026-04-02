@@ -4,13 +4,13 @@ import { useEffect, useState } from 'react';
 
 const IMAGENES = [
   { url:'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=800&q=80', lugar:'Bariloche' },
-  { url:'https://images.unsplash.com/photo-1612294037637-ec328d0e075e?w=800&q=80', lugar:'Perito Moreno' },
-  { url:'https://images.unsplash.com/photo-1588392382834-a891154bca4d?w=800&q=80', lugar:'Buenos Aires' },
-  { url:'https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=800&q=80', lugar:'Salta - 7 Colores' },
-  { url:'https://images.unsplash.com/photo-1596394723269-b2cbca4e6313?w=800&q=80', lugar:'Cafayate' },
+  { url:'https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?w=800&q=80', lugar:'Perito Moreno' },
+  { url:'https://images.unsplash.com/photo-1580137189272-c9379f8864fd?w=800&q=80', lugar:'Buenos Aires' },
+  { url:'https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=800&q=80', lugar:'Salta - 7 Colores' },
+  { url:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', lugar:'Cafayate' },
   { url:'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', lugar:'Cerro Catedral' },
-  { url:'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80', lugar:'Ballenas Madryn' },
-  { url:'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=800&q=80', lugar:'Tigre' },
+  { url:'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80', lugar:'Ballenas - Madryn' },
+  { url:'https://images.unsplash.com/photo-1502786129293-79981df4e689?w=800&q=80', lugar:'Tigre - Delta' },
 ];
 
 const T = {
@@ -40,7 +40,7 @@ export default function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setImgIdx(i => (i + 1) % IMAGENES.length);
-    }, 3500);
+    }, 5000);
     return () => clearInterval(interval);
   }, []);
 
@@ -83,20 +83,20 @@ export default function Home() {
             backgroundImage:`url(${img.url})`,
             backgroundSize:'cover',backgroundPosition:'center',
             opacity: i === imgIdx ? 1 : 0,
-            transition:'opacity 1s ease-in-out'
+            transition:'opacity 1.5s ease-in-out'
           }} />
         ))}
-        <div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',background:'rgba(0,51,137,0.65)'}} />
-        <div style={{position:'relative',zIndex:1,textAlign:'center',padding:'40px 20px 0'}}>
-          <div style={{fontSize:48,marginBottom:8}}>🧉</div>
-          <h1 style={{color:'white',fontSize:32,marginBottom:8}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
+        <div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',background:'rgba(0,40,120,0.6)'}} />
+        <div style={{position:'relative',zIndex:1,textAlign:'center',padding:'36px 20px 0'}}>
+          <div style={{fontSize:44,marginBottom:8}}>🧉</div>
+          <h1 style={{color:'white',fontSize:30,marginBottom:8}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
           <p style={{color:'rgba(255,255,255,0.9)',fontSize:15,marginBottom:6}}>{t.tag}</p>
           <p style={{color:'rgba(255,255,255,0.7)',fontSize:13,marginBottom:20}}>{t.sub}</p>
           <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap',marginBottom:16}}>
             <Link href="/explorar"><button className="btn-orange" style={{width:'auto',padding:'12px 24px'}}>{t.buscar}</button></Link>
             <Link href="/register"><button style={{width:'auto',padding:'12px 24px',background:'transparent',border:'2px solid white',color:'white'}}>{t.inscribirse}</button></Link>
           </div>
-          <div style={{background:'rgba(255,255,255,0.2)',display:'inline-block',borderRadius:20,padding:'4px 12px',fontSize:12,color:'white'}}>
+          <div style={{background:'rgba(0,0,0,0.3)',display:'inline-block',borderRadius:20,padding:'4px 14px',fontSize:12,color:'white'}}>
             📍 {IMAGENES[imgIdx].lugar}
           </div>
         </div>
@@ -108,7 +108,6 @@ export default function Home() {
       </div>
 
       <div style={{maxWidth:480,margin:'0 auto',padding:'20px 20px 40px'}}>
-
         <div className="cultura-grid" style={{marginTop:0,gridTemplateColumns:'repeat(5,1fr)'}}>
           <Link href="/cultura/mate" className="cultura-item"><span className="cultura-icon">🧉</span><div className="cultura-label">{t.mate}</div></Link>
           <Link href="/cultura/truco" className="cultura-item"><span className="cultura-icon">🃏</span><div className="cultura-label">{t.truco}</div></Link>
