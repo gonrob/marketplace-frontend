@@ -30,7 +30,7 @@ function Estrellas({ onValorar, valorado }) {
             onClick={() => votar(n)}
             onMouseEnter={() => setHover(n)}
             onMouseLeave={() => setHover(0)}
-            style={{fontSize:32,background:'none',border:'none',cursor:'pointer',opacity: (hover||seleccion) >= n ? 1 : 0.3,transition:'opacity 0.2s'}}
+            style={{fontSize:32,background:'none',border:'none',cursor:'pointer',opacity:(hover||seleccion)>=n?1:0.3,transition:'opacity 0.2s'}}
           >
             ⭐
           </button>
@@ -63,14 +63,14 @@ function SuccessContent() {
   };
 
   const T = {
-    es:{titulo:'Pago exitoso',sub:'Tu pago fue procesado correctamente.',email:'Recibiras un email con los datos del anfitrion.',valora:'Valora tu experiencia',explorar:'Ver mas anfitriones'},
-    en:{titulo:'Payment successful',sub:'Your payment was processed correctly.',email:'You will receive an email with the host details.',valora:'Rate your experience',explorar:'Find more hosts'},
-    pt:{titulo:'Pagamento bem-sucedido',sub:'Seu pagamento foi processado corretamente.',email:'Voce recebera um email com os dados do anfitriao.',valora:'Avalie sua experiencia',explorar:'Ver mais anfitrioes'},
-    fr:{titulo:'Paiement reussi',sub:'Votre paiement a ete traite correctement.',email:"Vous recevrez un email avec les coordonnees de l'hote.",valora:'Evaluez votre experience',explorar:"Trouver plus d'hotes"},
-    it:{titulo:'Pagamento riuscito',sub:'Il tuo pagamento e stato elaborato correttamente.',email:"Riceverai un'email con i dati dell'host.",valora:'Valuta la tua esperienza',explorar:'Trova altri host'},
-    de:{titulo:'Zahlung erfolgreich',sub:'Ihre Zahlung wurde erfolgreich verarbeitet.',email:'Sie erhalten eine E-Mail mit den Gastgeberdaten.',valora:'Bewerten Sie Ihre Erfahrung',explorar:'Mehr Gastgeber finden'},
-    zh:{titulo:'支付成功',sub:'您的付款已成功处理。',email:'您将收到一封包含主人详细信息的电子邮件。',valora:'评价您的体验',explorar:'查找更多主人'},
-    ru:{titulo:'Оплата успешна',sub:'Ваш платеж был успешно обработан.',email:'Вы получите электронное письмо с данными хозяина.',valora:'Оцените свой опыт',explorar:'Найти больше хозяев'},
+    es:{titulo:'Pago exitoso',sub:'Tu pago fue procesado correctamente.',email:'Recibiras un email con los datos del anfitrion.',valora:'Valora tu experiencia',explorar:'Ver mas anfitriones',chat:'Chatear con el anfitrion'},
+    en:{titulo:'Payment successful',sub:'Your payment was processed correctly.',email:'You will receive an email with the host details.',valora:'Rate your experience',explorar:'Find more hosts',chat:'Chat with the host'},
+    pt:{titulo:'Pagamento bem-sucedido',sub:'Seu pagamento foi processado corretamente.',email:'Voce recebera um email com os dados do anfitriao.',valora:'Avalie sua experiencia',explorar:'Ver mais anfitrioes',chat:'Conversar com o anfitriao'},
+    fr:{titulo:'Paiement reussi',sub:'Votre paiement a ete traite correctement.',email:"Vous recevrez un email avec les coordonnees de l'hote.",valora:'Evaluez votre experience',explorar:"Trouver plus d'hotes",chat:"Chatter avec l'hote"},
+    it:{titulo:'Pagamento riuscito',sub:'Il tuo pagamento e stato elaborato correttamente.',email:"Riceverai un'email con i dati dell'host.",valora:'Valuta la tua esperienza',explorar:'Trova altri host',chat:"Chatta con l'host"},
+    de:{titulo:'Zahlung erfolgreich',sub:'Ihre Zahlung wurde erfolgreich verarbeitet.',email:'Sie erhalten eine E-Mail mit den Gastgeberdaten.',valora:'Bewerten Sie Ihre Erfahrung',explorar:'Mehr Gastgeber finden',chat:'Mit dem Gastgeber chatten'},
+    zh:{titulo:'支付成功',sub:'您的付款已成功处理。',email:'您将收到一封包含主人详细信息的电子邮件。',valora:'评价您的体验',explorar:'查找更多主人',chat:'与主人聊天'},
+    ru:{titulo:'Оплата успешна',sub:'Ваш платеж был успешно обработан.',email:'Вы получите электронное письмо с данными хозяина.',valora:'Оцените свой опыт',explorar:'Найти больше хозяев',chat:'Чат с хозяином'},
   };
 
   const t = T[lang] || T.en;
@@ -92,9 +92,16 @@ function SuccessContent() {
           </div>
         )}
 
-        <Link href="/explorar">
-          <button className="btn-orange">{t.explorar}</button>
-        </Link>
+        <div style={{display:'flex',flexDirection:'column',gap:10}}>
+          {sellerId && (
+            <Link href={`/mensajes?con=${sellerId}`}>
+              <button className="btn-orange">💬 {t.chat}</button>
+            </Link>
+          )}
+          <Link href="/explorar">
+            <button className="btn-secondary">{t.explorar}</button>
+          </Link>
+        </div>
       </div>
     </div>
   );
