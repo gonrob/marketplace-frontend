@@ -29,18 +29,12 @@ export default function Home() {
   const [lang, setLang] = useState('es');
   const [showLangs, setShowLangs] = useState(false);
   const [imgIdx, setImgIdx] = useState(0);
-  const [imgLoaded, setImgLoaded] = useState({});
   const t = T[lang];
 
   useEffect(() => {
     setLoggedIn(!!localStorage.getItem('token'));
     const saved = localStorage.getItem('lang');
     if (saved && T[saved]) setLang(saved);
-    IMAGENES.forEach((img, i) => {
-      const image = new Image();
-      image.onload = () => setImgLoaded(prev => ({...prev, [i]: true}));
-      image.src = img.url;
-    });
   }, []);
 
   useEffect(() => {
@@ -84,18 +78,20 @@ export default function Home() {
 
       <div style={{position:'relative',height:320,overflow:'hidden',background:'#003DA5'}}>
         {IMAGENES.map((img, i) => (
-          imgLoaded[i] && (
-            <div key={i} style={{
-              position:'absolute',top:0,left:0,width:'100%',height:'100%',
-              backgroundImage:`url(${img.url})`,
-              backgroundSize:'cover',backgroundPosition:'center',
-              opacity: i === imgIdx ? 1 : 0,
-              transition:'opacity 1.5s ease-in-out'
-            }} />
-          )
+          <div key={i} style={{
+            position:'absolute',top:0,left:0,width:'100%',height:'100%',
+            opacity: i === imgIdx ? 1 : 0,
+            transition:'opacity 1.5s ease-in-out',
+          }}>
+            <img
+              src={img.url}
+              alt={img.lugar}
+              style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}
+            />
+          </div>
         ))}
-        <div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',background:'rgba(0,40,120,0.6)'}} />
-        <div style={{position:'relative',zIndex:1,textAlign:'center',padding:'36px 20px 0'}}>
+        <div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',background:'rgba(0,40,120,0.6)',zIndex:1}} />
+        <div style={{position:'relative',zIndex:2,textAlign:'center',padding:'36px 20px 0'}}>
           <div style={{fontSize:44,marginBottom:8}}>🧉</div>
           <h1 style={{color:'white',fontSize:30,marginBottom:8}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
           <p style={{color:'rgba(255,255,255,0.9)',fontSize:15,marginBottom:6}}>{t.tag}</p>
@@ -108,7 +104,7 @@ export default function Home() {
             📍 {IMAGENES[imgIdx].lugar}
           </div>
         </div>
-        <div style={{position:'absolute',bottom:12,left:0,right:0,display:'flex',justifyContent:'center',gap:6,zIndex:1}}>
+        <div style={{position:'absolute',bottom:12,left:0,right:0,display:'flex',justifyContent:'center',gap:6,zIndex:2}}>
           {IMAGENES.map((_, i) => (
             <button key={i} onClick={() => setImgIdx(i)} style={{width:i===imgIdx?20:8,height:8,borderRadius:4,background:i===imgIdx?'#F4A020':'rgba(255,255,255,0.5)',border:'none',cursor:'pointer',padding:0,transition:'all 0.3s'}} />
           ))}
