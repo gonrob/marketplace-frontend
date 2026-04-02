@@ -2,6 +2,17 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
+const IMAGENES = [
+  { url:'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=800&q=80', lugar:'Bariloche' },
+  { url:'https://images.unsplash.com/photo-1612294037637-ec328d0e075e?w=800&q=80', lugar:'Perito Moreno' },
+  { url:'https://images.unsplash.com/photo-1588392382834-a891154bca4d?w=800&q=80', lugar:'Buenos Aires' },
+  { url:'https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=800&q=80', lugar:'Salta - 7 Colores' },
+  { url:'https://images.unsplash.com/photo-1596394723269-b2cbca4e6313?w=800&q=80', lugar:'Cafayate' },
+  { url:'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', lugar:'Cerro Catedral' },
+  { url:'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80', lugar:'Ballenas Madryn' },
+  { url:'https://images.unsplash.com/photo-1586348943529-beaae6c28db9?w=800&q=80', lugar:'Tigre' },
+];
+
 const T = {
   es:{flag:'🇦🇷',n:'ES',tag:'Hablá con argentinos reales. Viví la cultura.',sub:'Mate · Truco · Fútbol · Dulce de leche',buscar:'Buscar anfitriones',inscribirse:'Inscribirse (Anfitriones & Viajeros)',como:'¿Cómo funciona?',p1t:'Elegí un anfitrión',p1d:'Filtrá por interés, habilidad o disponibilidad',p2t:'Pagá el primer contacto',p2d:'Pago seguro con tarjeta internacional',p3t:'¡Conectate!',p3d:'Después del primer contacto, son libres de continuar como quieran',entrar:'Entrar',perfil:'Mi perfil',comp:'Compartir app',cont:'Contacto',consejos:'Consejos de viaje',consejossub:'Dinero, transporte, seguridad y más',mate:'Mate',truco:'Truco',futbol:'Fútbol',dulce:'Dulce de leche',lunfardo:'Aprendé el lunfardo'},
   en:{flag:'🇬🇧',n:'EN',tag:'Talk with real Argentinians. Live the culture.',sub:'Mate · Truco · Football · Dulce de leche',buscar:'Find hosts',inscribirse:'Sign up (Hosts & Travelers)',como:'How does it work?',p1t:'Choose a host',p1d:'Filter by interest, skill or availability',p2t:'Pay for first contact',p2d:'Secure payment with international card',p3t:'Connect!',p3d:'After first contact, you are free to continue however you want',entrar:'Log in',perfil:'My profile',comp:'Share app',cont:'Contact',consejos:'Travel tips',consejossub:'Money, transport, safety and more',mate:'Mate',truco:'Truco',futbol:'Football',dulce:'Dulce de leche',lunfardo:'Learn Argentine slang'},
@@ -17,12 +28,20 @@ export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [lang, setLang] = useState('es');
   const [showLangs, setShowLangs] = useState(false);
+  const [imgIdx, setImgIdx] = useState(0);
   const t = T[lang];
 
   useEffect(() => {
     setLoggedIn(!!localStorage.getItem('token'));
     const saved = localStorage.getItem('lang');
     if (saved && T[saved]) setLang(saved);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImgIdx(i => (i + 1) % IMAGENES.length);
+    }, 3500);
+    return () => clearInterval(interval);
   }, []);
 
   const changeLang = (code) => {
@@ -57,18 +76,38 @@ export default function Home() {
         </div>
       </nav>
 
-      <div style={{background:'#003DA5',padding:'40px 20px 60px',textAlign:'center'}}>
-        <div style={{fontSize:48,marginBottom:12}}>🧉</div>
-        <h1 style={{color:'white',fontSize:32,marginBottom:10}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
-        <p style={{color:'rgba(255,255,255,0.85)',fontSize:16,marginBottom:8}}>{t.tag}</p>
-        <p style={{color:'rgba(255,255,255,0.65)',fontSize:14,marginBottom:28}}>{t.sub}</p>
-        <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
-          <Link href="/explorar"><button className="btn-orange" style={{width:'auto',padding:'13px 28px'}}>{t.buscar}</button></Link>
-          <Link href="/register"><button style={{width:'auto',padding:'13px 28px',background:'transparent',border:'2px solid white',color:'white'}}>{t.inscribirse}</button></Link>
+      <div style={{position:'relative',height:320,overflow:'hidden'}}>
+        {IMAGENES.map((img, i) => (
+          <div key={i} style={{
+            position:'absolute',top:0,left:0,width:'100%',height:'100%',
+            backgroundImage:`url(${img.url})`,
+            backgroundSize:'cover',backgroundPosition:'center',
+            opacity: i === imgIdx ? 1 : 0,
+            transition:'opacity 1s ease-in-out'
+          }} />
+        ))}
+        <div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',background:'rgba(0,51,137,0.65)'}} />
+        <div style={{position:'relative',zIndex:1,textAlign:'center',padding:'40px 20px 0'}}>
+          <div style={{fontSize:48,marginBottom:8}}>🧉</div>
+          <h1 style={{color:'white',fontSize:32,marginBottom:8}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
+          <p style={{color:'rgba(255,255,255,0.9)',fontSize:15,marginBottom:6}}>{t.tag}</p>
+          <p style={{color:'rgba(255,255,255,0.7)',fontSize:13,marginBottom:20}}>{t.sub}</p>
+          <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap',marginBottom:16}}>
+            <Link href="/explorar"><button className="btn-orange" style={{width:'auto',padding:'12px 24px'}}>{t.buscar}</button></Link>
+            <Link href="/register"><button style={{width:'auto',padding:'12px 24px',background:'transparent',border:'2px solid white',color:'white'}}>{t.inscribirse}</button></Link>
+          </div>
+          <div style={{background:'rgba(255,255,255,0.2)',display:'inline-block',borderRadius:20,padding:'4px 12px',fontSize:12,color:'white'}}>
+            📍 {IMAGENES[imgIdx].lugar}
+          </div>
+        </div>
+        <div style={{position:'absolute',bottom:12,left:0,right:0,display:'flex',justifyContent:'center',gap:6,zIndex:1}}>
+          {IMAGENES.map((_, i) => (
+            <button key={i} onClick={() => setImgIdx(i)} style={{width:i===imgIdx?20:8,height:8,borderRadius:4,background:i===imgIdx?'#F4A020':'rgba(255,255,255,0.5)',border:'none',cursor:'pointer',padding:0,transition:'all 0.3s'}} />
+          ))}
         </div>
       </div>
 
-      <div style={{maxWidth:480,margin:'-30px auto 0',padding:'0 20px 40px'}}>
+      <div style={{maxWidth:480,margin:'0 auto',padding:'20px 20px 40px'}}>
 
         <div className="cultura-grid" style={{marginTop:0,gridTemplateColumns:'repeat(5,1fr)'}}>
           <Link href="/cultura/mate" className="cultura-item"><span className="cultura-icon">🧉</span><div className="cultura-label">{t.mate}</div></Link>
