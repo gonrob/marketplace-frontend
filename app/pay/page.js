@@ -20,7 +20,7 @@ const T = {
   ru:{titulo:'Оплатить первый контакт',metodo:'Оплатить картой',seguro:'Безопасная оплата через Stripe.',continuar:'Перейти к оплате',pagar:'Оплатить',procesando:'Обработка...',preparando:'Подготовка...',anfitrion:'Хозяин',contacto:'Первый контакт',recibe:'Хозяин получает',gratis:'Бесплатная регистрация.',registrate:'Зарегистрироваться',error:'Ошибка.',emailLabel:'Ваш email для получения данных хозяина'},
 };
 
-function CheckoutForm({ t }) {
+function CheckoutForm({ t, sellerId }) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
@@ -32,7 +32,7 @@ function CheckoutForm({ t }) {
     setLoading(true); setError('');
     const { error: err } = await stripe.confirmPayment({
       elements,
-      confirmParams: { return_url: `${window.location.origin}/pay/success` }
+      confirmParams: { return_url: `${window.location.origin}/pay/success?seller=${sellerId}` }
     });
     if (err) { setError(err.message); setLoading(false); }
   };
@@ -132,7 +132,7 @@ function PayContent() {
         {loading && <div className="spinner">{t.preparando}</div>}
         {clientSecret && (
           <Elements stripe={stripePromise} options={{clientSecret}}>
-            <CheckoutForm t={t} />
+            <CheckoutForm t={t} sellerId={sellerId} />
           </Elements>
         )}
 
