@@ -26,10 +26,10 @@ const T = {
           'En Buenos Aires existe el subte (metro), colectivos (buses), trenes y taxis/remises.',
           'Para usar el transporte público necesitás la tarjeta SUBE — se compra en kioscos y estaciones.',
           'Los extranjeros pueden comprar la SUBE en cualquier kiosco por ~$500 pesos argentinos.',
-          'Los buses interurbanos son excelentes — companies como Flixbus, Andesmar y Chevallier cubren todo el país.',
+          'Los buses interurbanos son excelentes — companias como Flixbus, Andesmar y Chevallier cubren todo el país.',
           'Comprá pasajes de larga distancia en plataformas.gob.ar o en la terminal de ómnibus.',
           'El tren Mitre, Sarmiento y Roca conectan Buenos Aires con el Gran Buenos Aires — muy económico con SUBE.',
-          'Para moverse dentro de la ciudad, InDriver y Cabify son más económicos que el taxi tradicional.',
+          'Para moverse dentro de la ciudad, InDriver , Cabify y Uber son más económicos que el taxi tradicional.',
         ]
       },
       {
