@@ -124,7 +124,11 @@ export default function Perfil() {
                 <div style={{minWidth:80,textAlign:'center'}}><div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>USD {form.precio}</div></div>
               </div>
               <div style={{background:'#f0f4ff',borderRadius:8,padding:10,marginTop:10,fontSize:13,color:'#555'}}>
-                {t.recibes} <strong>USD {Math.round(form.precio*0.85)}</strong> — {t.cobra}
+               {t.recibes} <strong>USD {Math.round(form.precio*0.85)}</strong> — {t.cobra}
+              </div>
+              <div style={{background:'#fff8e1',borderRadius:8,padding:10,marginTop:8,fontSize:13,color:'#92400e',lineHeight:1.5}}>
+                💡 Se recomienda un precio bajo. Este pago es solo para el primer contacto. Una vez contactados, podés acordar otro precio por el servicio fuera de la app.
+              </div>
               </div>
             </div>
           )}
