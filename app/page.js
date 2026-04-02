@@ -2,17 +2,6 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-const IMAGENES = [
-  { url:'https://101lugaresincreibles.com/wp-content/uploads/2018/01/cerro-campanario-bariloche.jpg', lugar:'Bariloche' },
-  { url:'https://www.zonanortehoy.com/files/image/133/133991/66967fc4b9fff.jpg', lugar:'Perito Moreno' },
-  { url:'https://humanidades.com/wp-content/uploads/2019/02/Buenos-aires-2-e1585704119889.jpg', lugar:'Buenos Aires' },
-  { url:'https://media.elpatagonico.com/p/a09ea0edb215717afd61eca0e71cd424/adjuntos/193/imagenes/009/984/0009984336/7ajpg.jpg', lugar:'Patagonia' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Cafayate_Salta_Argentina.jpg/1280px-Cafayate_Salta_Argentina.jpg', lugar:'Cafayate' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Cerro_de_los_Siete_Colores.jpg/1280px-Cerro_de_los_Siete_Colores.jpg', lugar:'Salta - 7 Colores' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ballena_franca_austral_%28Eubalaena_australis%29%2C_Pen%C3%ADnsula_Vald%C3%A9s%2C_Argentina%2C_2012-10-29%2C_DD_02.jpg/1280px-Ballena_franca_austral_%28Eubalaena_australis%29%2C_Pen%C3%ADnsula_Vald%C3%A9s%2C_Argentina%2C_2012-10-29%2C_DD_02.jpg', lugar:'Ballenas - Madryn' },
-  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Cerro_Catedral_Bariloche_ski_area_2005.jpg/1280px-Cerro_Catedral_Bariloche_ski_area_2005.jpg', lugar:'Cerro Catedral' },
-];
-
 const T = {
   es:{flag:'🇦🇷',n:'ES',tag:'Hablá con argentinos reales. Viví la cultura.',sub:'Mate · Truco · Fútbol · Dulce de leche',buscar:'Buscar anfitriones',inscribirse:'Inscribirse (Anfitriones & Viajeros)',como:'¿Cómo funciona?',p1t:'Elegí un anfitrión',p1d:'Filtrá por interés, habilidad o disponibilidad',p2t:'Pagá el primer contacto',p2d:'Pago seguro con tarjeta internacional',p3t:'¡Conectate!',p3d:'Después del primer contacto, son libres de continuar como quieran',entrar:'Entrar',perfil:'Mi perfil',comp:'Compartir app',cont:'Contacto',consejos:'Consejos de viaje',consejossub:'Dinero, transporte, seguridad y más',mate:'Mate',truco:'Truco',futbol:'Fútbol',dulce:'Dulce de leche',lunfardo:'Aprendé el lunfardo'},
   en:{flag:'🇬🇧',n:'EN',tag:'Talk with real Argentinians. Live the culture.',sub:'Mate · Truco · Football · Dulce de leche',buscar:'Find hosts',inscribirse:'Sign up (Hosts & Travelers)',como:'How does it work?',p1t:'Choose a host',p1d:'Filter by interest, skill or availability',p2t:'Pay for first contact',p2d:'Secure payment with international card',p3t:'Connect!',p3d:'After first contact, you are free to continue however you want',entrar:'Log in',perfil:'My profile',comp:'Share app',cont:'Contact',consejos:'Travel tips',consejossub:'Money, transport, safety and more',mate:'Mate',truco:'Truco',futbol:'Football',dulce:'Dulce de leche',lunfardo:'Learn Argentine slang'},
@@ -28,20 +17,12 @@ export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [lang, setLang] = useState('es');
   const [showLangs, setShowLangs] = useState(false);
-  const [imgIdx, setImgIdx] = useState(0);
   const t = T[lang];
 
   useEffect(() => {
     setLoggedIn(!!localStorage.getItem('token'));
     const saved = localStorage.getItem('lang');
     if (saved && T[saved]) setLang(saved);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setImgIdx(i => (i + 1) % IMAGENES.length);
-    }, 5000);
-    return () => clearInterval(interval);
   }, []);
 
   const changeLang = (code) => {
@@ -76,38 +57,18 @@ export default function Home() {
         </div>
       </nav>
 
-      <div style={{position:'relative',height:320,overflow:'hidden',background:'#003DA5'}}>
-        {IMAGENES.map((img, i) => (
-          <div key={i} style={{
-            position:'absolute',top:0,left:0,width:'100%',height:'100%',
-            opacity: i === imgIdx ? 1 : 0,
-            transition:'opacity 1.5s ease-in-out',
-          }}>
-            <img src={img.url} alt={img.lugar} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} referrerPolicy="no-referrer" />
-          </div>
-        ))}
-        <div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',background:'rgba(0,40,120,0.6)',zIndex:1}} />
-        <div style={{position:'relative',zIndex:2,textAlign:'center',padding:'36px 20px 0'}}>
-          <div style={{fontSize:44,marginBottom:8}}>🧉</div>
-          <h1 style={{color:'white',fontSize:30,marginBottom:8}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
-          <p style={{color:'rgba(255,255,255,0.9)',fontSize:15,marginBottom:6}}>{t.tag}</p>
-          <p style={{color:'rgba(255,255,255,0.7)',fontSize:13,marginBottom:20}}>{t.sub}</p>
-          <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap',marginBottom:16}}>
-            <Link href="/explorar"><button className="btn-orange" style={{width:'auto',padding:'12px 24px'}}>{t.buscar}</button></Link>
-            <Link href="/register"><button style={{width:'auto',padding:'12px 24px',background:'transparent',border:'2px solid white',color:'white'}}>{t.inscribirse}</button></Link>
-          </div>
-          <div style={{background:'rgba(0,0,0,0.3)',display:'inline-block',borderRadius:20,padding:'4px 14px',fontSize:12,color:'white'}}>
-            📍 {IMAGENES[imgIdx].lugar}
-          </div>
-        </div>
-        <div style={{position:'absolute',bottom:12,left:0,right:0,display:'flex',justifyContent:'center',gap:6,zIndex:2}}>
-          {IMAGENES.map((_, i) => (
-            <button key={i} onClick={() => setImgIdx(i)} style={{width:i===imgIdx?20:8,height:8,borderRadius:4,background:i===imgIdx?'#F4A020':'rgba(255,255,255,0.5)',border:'none',cursor:'pointer',padding:0,transition:'all 0.3s'}} />
-          ))}
+      <div style={{background:'#003DA5',padding:'40px 20px 60px',textAlign:'center'}}>
+        <div style={{fontSize:48,marginBottom:12}}>🧉</div>
+        <h1 style={{color:'white',fontSize:32,marginBottom:10}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
+        <p style={{color:'rgba(255,255,255,0.85)',fontSize:16,marginBottom:8}}>{t.tag}</p>
+        <p style={{color:'rgba(255,255,255,0.65)',fontSize:14,marginBottom:28}}>{t.sub}</p>
+        <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
+          <Link href="/explorar"><button className="btn-orange" style={{width:'auto',padding:'13px 28px'}}>{t.buscar}</button></Link>
+          <Link href="/register"><button style={{width:'auto',padding:'13px 28px',background:'transparent',border:'2px solid white',color:'white'}}>{t.inscribirse}</button></Link>
         </div>
       </div>
 
-      <div style={{maxWidth:480,margin:'0 auto',padding:'20px 20px 40px'}}>
+      <div style={{maxWidth:480,margin:'-30px auto 0',padding:'0 20px 40px'}}>
         <div className="cultura-grid" style={{marginTop:0,gridTemplateColumns:'repeat(5,1fr)'}}>
           <Link href="/cultura/mate" className="cultura-item"><span className="cultura-icon">🧉</span><div className="cultura-label">{t.mate}</div></Link>
           <Link href="/cultura/truco" className="cultura-item"><span className="cultura-icon">🃏</span><div className="cultura-label">{t.truco}</div></Link>
