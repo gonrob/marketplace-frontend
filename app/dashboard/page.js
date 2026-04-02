@@ -1,9 +1,9 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Nav from '../components/Nav';
 import api from '../../lib/api';
-import { Suspense } from 'react';
 
 const ADMIN = 'gonrobtor@gmail.com';
 
@@ -13,6 +13,7 @@ function DashboardContent() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState('');
+  const [contactos, setContactos] = useState([]);
 
   const loadUser = async () => {
     try {
@@ -33,7 +34,7 @@ function DashboardContent() {
   useEffect(() => {
     if (searchParams.get('verified') === 'true') {
       loadUser();
-      setMsg('¡Identidad verificada correctamente!');
+      setMsg('Identidad verificada correctamente!');
     }
   }, [searchParams]);
 
@@ -55,7 +56,8 @@ function DashboardContent() {
       <nav className="nav">
         <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Argen<span>talk</span> 🧉</span></Link>
         <div className="nav-links">
-          <Link href="/explorar">Explorar</Link>
+          <Link href="/" style={{fontSize:13,color:'white',textDecoration:'none',opacity:0.8}}>🏠 Home</Link>
+          <Link href="/explorar" style={{fontSize:13,color:'white',textDecoration:'none'}}>Explorar</Link>
           <button onClick={logout} className="btn-sm" style={{background:'rgba(255,255,255,0.2)',border:'none',color:'white'}}>Salir</button>
         </div>
       </nav>
@@ -91,6 +93,12 @@ function DashboardContent() {
                 <div style={{fontSize:24,fontWeight:700,color:'#065f46'}}>{user?.totalContactos||0}</div>
                 <div style={{fontSize:12,color:'#888',marginTop:4}}>Contactos</div>
               </div>
+            </div>
+          )}
+
+          {user?.role === 'seller' && user?.puntuacion > 0 && (
+            <div style={{marginTop:12,fontSize:14,color:'#F4A020'}}>
+              {'⭐'.repeat(Math.round(user.puntuacion))} {user.puntuacion}/5
             </div>
           )}
         </div>
