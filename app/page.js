@@ -3,14 +3,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const IMAGENES = [
-  { url:'https://cdn.pixabay.com/photo/2019/03/08/19/54/bariloche-4042760_1280.jpg', lugar:'Bariloche' },
-  { url:'https://cdn.pixabay.com/photo/2016/01/09/18/27/glacier-1130223_1280.jpg', lugar:'Perito Moreno' },
-  { url:'https://cdn.pixabay.com/photo/2016/11/23/15/23/buenos-aires-1852385_1280.jpg', lugar:'Buenos Aires' },
-  { url:'https://cdn.pixabay.com/photo/2018/09/24/10/19/salta-3699623_1280.jpg', lugar:'Salta - 7 Colores' },
-  { url:'https://cdn.pixabay.com/photo/2021/01/29/08/10/argentina-5960835_1280.jpg', lugar:'Cafayate' },
-  { url:'https://cdn.pixabay.com/photo/2019/01/27/09/34/ski-3957084_1280.jpg', lugar:'Cerro Catedral' },
-  { url:'https://cdn.pixabay.com/photo/2017/08/07/14/02/whale-2603949_1280.jpg', lugar:'Ballenas - Madryn' },
-  { url:'https://cdn.pixabay.com/photo/2014/07/05/08/33/delta-384573_1280.jpg', lugar:'Tigre - Delta' },
+  { url:'https://101lugaresincreibles.com/wp-content/uploads/2018/01/cerro-campanario-bariloche.jpg', lugar:'Bariloche' },
+  { url:'https://www.zonanortehoy.com/files/image/133/133991/66967fc4b9fff.jpg', lugar:'Perito Moreno' },
+  { url:'https://humanidades.com/wp-content/uploads/2019/02/Buenos-aires-2-e1585704119889.jpg', lugar:'Buenos Aires' },
+  { url:'https://media.elpatagonico.com/p/a09ea0edb215717afd61eca0e71cd424/adjuntos/193/imagenes/009/984/0009984336/7ajpg.jpg', lugar:'Patagonia' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Cafayate_Salta_Argentina.jpg/1280px-Cafayate_Salta_Argentina.jpg', lugar:'Cafayate' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Cerro_de_los_Siete_Colores.jpg/1280px-Cerro_de_los_Siete_Colores.jpg', lugar:'Salta - 7 Colores' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ballena_franca_austral_%28Eubalaena_australis%29%2C_Pen%C3%ADnsula_Vald%C3%A9s%2C_Argentina%2C_2012-10-29%2C_DD_02.jpg/1280px-Ballena_franca_austral_%28Eubalaena_australis%29%2C_Pen%C3%ADnsula_Vald%C3%A9s%2C_Argentina%2C_2012-10-29%2C_DD_02.jpg', lugar:'Ballenas - Madryn' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Cerro_Catedral_Bariloche_ski_area_2005.jpg/1280px-Cerro_Catedral_Bariloche_ski_area_2005.jpg', lugar:'Cerro Catedral' },
 ];
 
 const T = {
@@ -83,11 +83,7 @@ export default function Home() {
             opacity: i === imgIdx ? 1 : 0,
             transition:'opacity 1.5s ease-in-out',
           }}>
-            <img
-              src={img.url}
-              alt={img.lugar}
-              style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}
-            />
+            <img src={img.url} alt={img.lugar} style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}} referrerPolicy="no-referrer" />
           </div>
         ))}
         <div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',background:'rgba(0,40,120,0.6)',zIndex:1}} />
