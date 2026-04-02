@@ -3,16 +3,15 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 const IMAGENES = [
-  { url:'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?w=800&q=80', lugar:'Bariloche' },
-  { url:'https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?w=800&q=80', lugar:'Perito Moreno' },
-  { url:'https://images.unsplash.com/photo-1580137189272-c9379f8864fd?w=800&q=80', lugar:'Buenos Aires' },
-  { url:'https://images.unsplash.com/photo-1504214208698-ea1916a2195a?w=800&q=80', lugar:'Salta - 7 Colores' },
-  { url:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80', lugar:'Cafayate' },
-  { url:'https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80', lugar:'Cerro Catedral' },
-  { url:'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80', lugar:'Ballenas - Madryn' },
-  { url:'https://images.unsplash.com/photo-1502786129293-79981df4e689?w=800&q=80', lugar:'Tigre - Delta' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Bariloche._Lago_Nahuel_Huapi-2.JPG/800px-Bariloche._Lago_Nahuel_Huapi-2.JPG', lugar:'Bariloche' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Perito_Moreno_Glacier_Patagonia_Argentina_Luca_Galuzzi_2005.JPG/800px-Perito_Moreno_Glacier_Patagonia_Argentina_Luca_Galuzzi_2005.JPG', lugar:'Perito Moreno' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Buenos_Aires_-_Obelisco_(2).jpg/800px-Buenos_Aires_-_Obelisco_(2).jpg', lugar:'Buenos Aires' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Cerro_de_los_Siete_Colores.jpg/800px-Cerro_de_los_Siete_Colores.jpg', lugar:'Salta - 7 Colores' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Cafayate_-_Quebrada_de_las_Conchas_-_Anfiteatro.jpg/800px-Cafayate_-_Quebrada_de_las_Conchas_-_Anfiteatro.jpg', lugar:'Cafayate' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Cerro_Catedral_ski_area.jpg/800px-Cerro_Catedral_ski_area.jpg', lugar:'Cerro Catedral' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Ballenas_en_Pen%C3%ADnsula_Vald%C3%A9s.jpg/800px-Ballenas_en_Pen%C3%ADnsula_Vald%C3%A9s.jpg', lugar:'Ballenas - Madryn' },
+  { url:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Tigre_-_Delta_del_Paran%C3%A1.jpg/800px-Tigre_-_Delta_del_Paran%C3%A1.jpg', lugar:'Tigre - Delta' },
 ];
-
 const T = {
   es:{flag:'🇦🇷',n:'ES',tag:'Hablá con argentinos reales. Viví la cultura.',sub:'Mate · Truco · Fútbol · Dulce de leche',buscar:'Buscar anfitriones',inscribirse:'Inscribirse (Anfitriones & Viajeros)',como:'¿Cómo funciona?',p1t:'Elegí un anfitrión',p1d:'Filtrá por interés, habilidad o disponibilidad',p2t:'Pagá el primer contacto',p2d:'Pago seguro con tarjeta internacional',p3t:'¡Conectate!',p3d:'Después del primer contacto, son libres de continuar como quieran',entrar:'Entrar',perfil:'Mi perfil',comp:'Compartir app',cont:'Contacto',consejos:'Consejos de viaje',consejossub:'Dinero, transporte, seguridad y más',mate:'Mate',truco:'Truco',futbol:'Fútbol',dulce:'Dulce de leche',lunfardo:'Aprendé el lunfardo'},
   en:{flag:'🇬🇧',n:'EN',tag:'Talk with real Argentinians. Live the culture.',sub:'Mate · Truco · Football · Dulce de leche',buscar:'Find hosts',inscribirse:'Sign up (Hosts & Travelers)',como:'How does it work?',p1t:'Choose a host',p1d:'Filter by interest, skill or availability',p2t:'Pay for first contact',p2d:'Secure payment with international card',p3t:'Connect!',p3d:'After first contact, you are free to continue however you want',entrar:'Log in',perfil:'My profile',comp:'Share app',cont:'Contact',consejos:'Travel tips',consejossub:'Money, transport, safety and more',mate:'Mate',truco:'Truco',futbol:'Football',dulce:'Dulce de leche',lunfardo:'Learn Argentine slang'},
