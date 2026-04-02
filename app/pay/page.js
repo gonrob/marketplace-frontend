@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -10,19 +10,20 @@ import api from '../../lib/api';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const T = {
-  es:{titulo:'Pagar primer contacto',metodo:'Pagar con tarjeta',seguro:'Pago seguro con Stripe. Tus datos bancarios nunca se almacenan en Argentalk.',continuar:'Continuar con el pago',pagar:'Pagar ahora',procesando:'Procesando...',preparando:'Preparando pago...',anfitrion:'Anfitrion',contacto:'Primer contacto',recibe:'El anfitrion recibe',gratis:'Registro gratuito. Solo pagas cuando contactas un anfitrion.',registrate:'Registrate gratis',error:'Error al crear el pago.',emailLabel:'Tu email para recibir los datos del anfitrion'},
-  en:{titulo:'Pay for first contact',metodo:'Pay by card',seguro:'Secure payment with Stripe. Your bank details are never stored in Argentalk.',continuar:'Continue to payment',pagar:'Pay now',procesando:'Processing...',preparando:'Preparing payment...',anfitrion:'Host',contacto:'First contact',recibe:'The host receives',gratis:'Free registration. You only pay when you contact a host.',registrate:'Register for free',error:'Error creating payment.',emailLabel:'Your email to receive the host details'},
-  pt:{titulo:'Pagar pelo primeiro contato',metodo:'Pagar com cartao',seguro:'Pagamento seguro com Stripe.',continuar:'Continuar para o pagamento',pagar:'Pagar agora',procesando:'Processando...',preparando:'Preparando pagamento...',anfitrion:'Anfitriao',contacto:'Primeiro contato',recibe:'O anfitriao recebe',gratis:'Cadastro gratuito.',registrate:'Cadastrar gratis',error:'Erro ao criar pagamento.',emailLabel:'Seu email para receber os dados do anfitriao'},
-  fr:{titulo:'Payer le premier contact',metodo:'Payer par carte',seguro:'Paiement securise avec Stripe.',continuar:'Continuer vers le paiement',pagar:'Payer maintenant',procesando:'Traitement...',preparando:'Preparation...',anfitrion:'Hote',contacto:'Premier contact',recibe:"L'hote recoit",gratis:"Inscription gratuite.",registrate:"S'inscrire",error:'Erreur.',emailLabel:"Votre email pour recevoir les coordonnees de l'hote"},
-  it:{titulo:'Paga il primo contatto',metodo:'Paga con carta',seguro:'Pagamento sicuro con Stripe.',continuar:'Continua al pagamento',pagar:'Paga ora',procesando:'Elaborazione...',preparando:'Preparazione...',anfitrion:'Host',contacto:'Primo contatto',recibe:"L'host riceve",gratis:'Registrazione gratuita.',registrate:'Registrati',error:'Errore.',emailLabel:"La tua email per ricevere i dati dell'host"},
-  de:{titulo:'Ersten Kontakt bezahlen',metodo:'Mit Karte bezahlen',seguro:'Sichere Zahlung mit Stripe.',continuar:'Weiter zur Zahlung',pagar:'Jetzt bezahlen',procesando:'Verarbeitung...',preparando:'Vorbereitung...',anfitrion:'Gastgeber',contacto:'Erster Kontakt',recibe:'Der Gastgeber erhalt',gratis:'Kostenlose Registrierung.',registrate:'Registrieren',error:'Fehler.',emailLabel:'Ihre E-Mail um die Gastgeberdaten zu erhalten'},
-  zh:{titulo:'支付首次联系费用',metodo:'用卡支付',seguro:'通过Stripe安全支付。',continuar:'继续支付',pagar:'立即支付',procesando:'处理中...',preparando:'准备中...',anfitrion:'主人',contacto:'首次联系',recibe:'主人收到',gratis:'免费注册。',registrate:'免费注册',error:'出错了。',emailLabel:'您的电子邮件以接收主人详细信息'},
-  ru:{titulo:'Оплатить первый контакт',metodo:'Оплатить картой',seguro:'Безопасная оплата через Stripe.',continuar:'Перейти к оплате',pagar:'Оплатить',procesando:'Обработка...',preparando:'Подготовка...',anfitrion:'Хозяин',contacto:'Первый контакт',recibe:'Хозяин получает',gratis:'Бесплатная регистрация.',registrate:'Зарегистрироваться',error:'Ошибка.',emailLabel:'Ваш email для получения данных хозяина'},
+  es:{titulo:'Contactar anfitrion',gratis:'Primer contacto GRATIS',gratisDesc:'Este es tu primer contacto gratuito. Despues de este, cada contacto cuesta USD 0.50.',creditos:'Tienes {n} contactos disponibles',creditosDesc:'Se usara un credito de tu paquete.',pagar:'Pagar USD 0.50',procesando:'Procesando...',preparando:'Preparando...',anfitrion:'Anfitrion',contactar:'Contactar gratis',usarCredito:'Usar un credito',paquetes:'Comprar paquete de contactos',p5:'5 contactos - USD 2.00',p10:'10 contactos - USD 3.50',p25:'25 contactos - USD 7.00',seguro:'Pago seguro con Stripe.',error:'Error al procesar.',exito:'Contacto exitoso!'},
+  en:{titulo:'Contact host',gratis:'First contact FREE',gratisDesc:'This is your free first contact. After this, each contact costs USD 0.50.',creditos:'You have {n} contacts available',creditosDesc:'One credit from your package will be used.',pagar:'Pay USD 0.50',procesando:'Processing...',preparando:'Preparing...',anfitrion:'Host',contactar:'Contact for free',usarCredito:'Use one credit',paquetes:'Buy contact package',p5:'5 contacts - USD 2.00',p10:'10 contacts - USD 3.50',p25:'25 contacts - USD 7.00',seguro:'Secure payment with Stripe.',error:'Error processing.',exito:'Contact successful!'},
+  pt:{titulo:'Contatar anfitriao',gratis:'Primeiro contato GRATIS',gratisDesc:'Este e seu primeiro contato gratuito.',creditos:'Voce tem {n} contatos disponiveis',creditosDesc:'Um credito do seu pacote sera usado.',pagar:'Pagar USD 0.50',procesando:'Processando...',preparando:'Preparando...',anfitrion:'Anfitriao',contactar:'Contatar gratis',usarCredito:'Usar um credito',paquetes:'Comprar pacote',p5:'5 contatos - USD 2.00',p10:'10 contatos - USD 3.50',p25:'25 contatos - USD 7.00',seguro:'Pagamento seguro.',error:'Erro.',exito:'Contato feito!'},
+  fr:{titulo:"Contacter l'hote",gratis:'Premier contact GRATUIT',gratisDesc:'Ceci est votre premier contact gratuit.',creditos:'Vous avez {n} contacts disponibles',creditosDesc:'Un credit de votre forfait sera utilise.',pagar:'Payer USD 0.50',procesando:'Traitement...',preparando:'Preparation...',anfitrion:'Hote',contactar:'Contacter gratuitement',usarCredito:'Utiliser un credit',paquetes:'Acheter un forfait',p5:'5 contacts - USD 2.00',p10:'10 contacts - USD 3.50',p25:'25 contacts - USD 7.00',seguro:'Paiement securise.',error:'Erreur.',exito:'Contact reussi!'},
+  it:{titulo:"Contatta l'host",gratis:'Primo contatto GRATIS',gratisDesc:'Questo e il tuo primo contatto gratuito.',creditos:'Hai {n} contatti disponibili',creditosDesc:'Verra usato un credito del tuo pacchetto.',pagar:'Paga USD 0.50',procesando:'Elaborazione...',preparando:'Preparazione...',anfitrion:'Host',contactar:'Contatta gratis',usarCredito:'Usa un credito',paquetes:'Acquista pacchetto',p5:'5 contatti - USD 2.00',p10:'10 contatti - USD 3.50',p25:'25 contatti - USD 7.00',seguro:'Pagamento sicuro.',error:'Errore.',exito:'Contatto riuscito!'},
+  de:{titulo:'Gastgeber kontaktieren',gratis:'Erster Kontakt KOSTENLOS',gratisDesc:'Dies ist Ihr kostenloser erster Kontakt.',creditos:'Sie haben {n} Kontakte verfugbar',creditosDesc:'Ein Guthaben wird verwendet.',pagar:'USD 0.50 bezahlen',procesando:'Verarbeitung...',preparando:'Vorbereitung...',anfitrion:'Gastgeber',contactar:'Kostenlos kontaktieren',usarCredito:'Guthaben verwenden',paquetes:'Paket kaufen',p5:'5 Kontakte - USD 2.00',p10:'10 Kontakte - USD 3.50',p25:'25 Kontakte - USD 7.00',seguro:'Sichere Zahlung.',error:'Fehler.',exito:'Kontakt erfolgreich!'},
+  zh:{titulo:'联系主人',gratis:'首次联系免费',gratisDesc:'这是您的免费首次联系。',creditos:'您有{n}个联系次数',creditosDesc:'将使用一个套餐积分。',pagar:'支付USD 0.50',procesando:'处理中...',preparando:'准备中...',anfitrion:'主人',contactar:'免费联系',usarCredito:'使用积分',paquetes:'购买套餐',p5:'5次联系 - USD 2.00',p10:'10次联系 - USD 3.50',p25:'25次联系 - USD 7.00',seguro:'安全支付。',error:'错误。',exito:'联系成功！'},
+  ru:{titulo:'Связаться с хозяином',gratis:'Первый контакт БЕСПЛАТНО',gratisDesc:'Это ваш бесплатный первый контакт.',creditos:'У вас {n} контактов',creditosDesc:'Будет использован один кредит.',pagar:'Оплатить USD 0.50',procesando:'Обработка...',preparando:'Подготовка...',anfitrion:'Хозяин',contactar:'Связаться бесплатно',usarCredito:'Использовать кредит',paquetes:'Купить пакет',p5:'5 контактов - USD 2.00',p10:'10 контактов - USD 3.50',p25:'25 контактов - USD 7.00',seguro:'Безопасная оплата.',error:'Ошибка.',exito:'Контакт успешен!'},
 };
 
-function CheckoutForm({ t, sellerId }) {
+function CheckoutForm({ t, sellerId, tipo }) {
   const stripe = useStripe();
   const elements = useElements();
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -30,9 +31,12 @@ function CheckoutForm({ t, sellerId }) {
     e.preventDefault();
     if (!stripe || !elements) return;
     setLoading(true); setError('');
+    const returnUrl = tipo === 'paquete'
+      ? `${window.location.origin}/pay/success?paquete=true`
+      : `${window.location.origin}/pay/success?seller=${sellerId}`;
     const { error: err } = await stripe.confirmPayment({
       elements,
-      confirmParams: { return_url: `${window.location.origin}/pay/success?seller=${sellerId}` }
+      confirmParams: { return_url: returnUrl }
     });
     if (err) { setError(err.message); setLoading(false); }
   };
@@ -50,110 +54,148 @@ function CheckoutForm({ t, sellerId }) {
 
 function PayContent() {
   const params = useSearchParams();
+  const router = useRouter();
   const sellerId = params.get('seller');
-  const precio = params.get('precio') || '10';
   const nombre = decodeURIComponent(params.get('nombre') || 'Anfitrion');
+  const [user, setUser] = useState(null);
   const [clientSecret, setClientSecret] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [lang, setLang] = useState('es');
-  const [buyerEmail, setBuyerEmail] = useState('');
+  const [paso, setPaso] = useState('inicio');
+  const [tipoPago, setTipoPago] = useState('contacto');
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    setLoggedIn(!!token);
     const savedLang = localStorage.getItem('lang') || 'es';
     setLang(savedLang);
-    if (token) {
-      api.get('/api/auth/me').then(r => {
-        if (r.data.email) setBuyerEmail(r.data.email);
-      }).catch(() => {});
-    }
+    const token = localStorage.getItem('token');
+    if (!token) { router.push('/login'); return; }
+    api.get('/api/auth/me').then(r => setUser(r.data)).catch(() => router.push('/login'));
   }, []);
 
   const t = T[lang] || T.en;
 
-  const initPago = async () => {
-    setLoading(true); setError('');
+  const contactarGratis = async () => {
+    setLoading(true);
     try {
-      const res = await api.post('/api/stripe/pay', {
-        amount: Math.round(parseFloat(precio) * 100),
-        sellerUserId: sellerId,
-        buyerEmail
-      });
-      setClientSecret(res.data.clientSecret);
+      const res = await api.post('/api/stripe/pay', { sellerUserId: sellerId });
+      if (res.data.gratis || res.data.credito) {
+        router.push(`/pay/success?seller=${sellerId}`);
+      } else {
+        setClientSecret(res.data.clientSecret);
+        setTipoPago('contacto');
+        setPaso('pago');
+      }
     } catch (err) {
       setError(err.response?.data?.error || t.error);
     } finally { setLoading(false); }
   };
 
+  const initPaquete = async (paquete) => {
+    setLoading(true);
+    try {
+      const res = await api.post('/api/stripe/paquete', { paquete });
+      setClientSecret(res.data.clientSecret);
+      setTipoPago('paquete');
+      setPaso('pago');
+    } catch (err) {
+      setError(err.response?.data?.error || t.error);
+    } finally { setLoading(false); }
+  };
+
+  if (!user) return <div className="spinner">Cargando...</div>;
   if (!sellerId) return (
     <div className="container">
       <div className="card" style={{textAlign:'center'}}>
-        <p style={{color:'#888'}}>Selecciona un anfitrion desde <Link href="/explorar" style={{color:'#003DA5'}}>Explorar</Link></p>
+        <p>Selecciona un anfitrion desde <Link href="/explorar" style={{color:'#003DA5'}}>Explorar</Link></p>
       </div>
     </div>
   );
 
+  const yaContacto = user.anfitrionesContactados?.includes(sellerId);
+  const tieneGratis = user.contactosGratis && !yaContacto;
+  const tieneCreditos = user.creditosContacto > 0;
+
   return (
     <div className="container">
-      <div className="card">
-        <div style={{background:'#f0f4ff',borderRadius:10,padding:16,marginBottom:20}}>
-          <div style={{fontWeight:600,fontSize:16,marginBottom:4}}>{t.anfitrion}: {nombre}</div>
-          <div style={{fontSize:14,color:'#555'}}>{t.contacto}: USD {precio}</div>
-          <div style={{fontSize:12,color:'#888',marginTop:4}}>{t.recibe} USD {Math.round(parseFloat(precio)*0.85)} (85%)</div>
-        </div>
-
-        {error && <div className="error">{error}</div>}
-
-        <h2 style={{marginBottom:16}}>💳 {t.metodo}</h2>
-        <div style={{background:'#f0f4ff',borderRadius:10,padding:12,marginBottom:16,fontSize:13,color:'#555'}}>
-          🔒 {t.seguro}
-        </div>
-
-        {!clientSecret && !loading && (
-          <>
-            <div className="form-group" style={{marginBottom:16}}>
-              <label style={{fontSize:13,color:'#666',display:'block',marginBottom:6}}>{t.emailLabel}</label>
-              <input
-                type="email"
-                value={buyerEmail}
-                onChange={e => setBuyerEmail(e.target.value)}
-                placeholder="tu@email.com"
-                style={{marginBottom:0}}
-              />
-            </div>
-            <button className="btn-orange" onClick={initPago} disabled={!buyerEmail}>
-              {t.continuar}
-            </button>
-          </>
-        )}
-        {loading && <div className="spinner">{t.preparando}</div>}
-        {clientSecret && (
-          <Elements stripe={stripePromise} options={{clientSecret}}>
-            <CheckoutForm t={t} sellerId={sellerId} />
-          </Elements>
-        )}
-
-        {!loggedIn && (
-          <div style={{marginTop:20,background:'#f0fff4',borderRadius:10,padding:12,fontSize:13,color:'#065f46'}}>
-            ✅ {t.gratis} <Link href="/register" style={{color:'#003DA5',fontWeight:600}}>{t.registrate}</Link>
+      {paso === 'inicio' && (
+        <div className="card">
+          <div style={{background:'#f0f4ff',borderRadius:10,padding:16,marginBottom:20}}>
+            <div style={{fontWeight:600,fontSize:16}}>{t.anfitrion}: {nombre}</div>
           </div>
-        )}
-      </div>
+
+          {error && <div className="error">{error}</div>}
+
+          {tieneGratis && (
+            <div style={{background:'#f0fff4',borderRadius:10,padding:16,marginBottom:16,border:'2px solid #22c55e'}}>
+              <div style={{fontWeight:700,color:'#065f46',fontSize:16,marginBottom:6}}>🎉 {t.gratis}</div>
+              <p style={{color:'#555',fontSize:14,margin:'0 0 12px'}}>{t.gratisDesc}</p>
+              <button className="btn-orange" onClick={contactarGratis} disabled={loading}>
+                {loading ? t.procesando : t.contactar}
+              </button>
+            </div>
+          )}
+
+          {!tieneGratis && tieneCreditos && (
+            <div style={{background:'#f0f4ff',borderRadius:10,padding:16,marginBottom:16,border:'2px solid #003DA5'}}>
+              <div style={{fontWeight:700,color:'#003DA5',fontSize:16,marginBottom:6}}>
+                🎫 {t.creditos.replace('{n}', user.creditosContacto)}
+              </div>
+              <p style={{color:'#555',fontSize:14,margin:'0 0 12px'}}>{t.creditosDesc}</p>
+              <button className="btn-orange" onClick={contactarGratis} disabled={loading}>
+                {loading ? t.procesando : t.usarCredito}
+              </button>
+            </div>
+          )}
+
+          {!tieneGratis && !tieneCreditos && (
+            <div style={{background:'#fff8e1',borderRadius:10,padding:16,marginBottom:16}}>
+              <div style={{fontWeight:700,color:'#92400e',fontSize:16,marginBottom:6}}>💳 USD 0.50</div>
+              <div style={{background:'#f0f4ff',borderRadius:8,padding:10,marginBottom:12,fontSize:13,color:'#555'}}>
+                🔒 {t.seguro}
+              </div>
+              <button className="btn-orange" onClick={contactarGratis} disabled={loading}>
+                {loading ? t.procesando : t.pagar}
+              </button>
+            </div>
+          )}
+
+          <div style={{marginTop:20,borderTop:'1px solid #f0f0f0',paddingTop:16}}>
+            <h3 style={{marginBottom:12}}>📦 {t.paquetes}</h3>
+            {[
+              {key:'p5', label:t.p5, ahorro:''},
+              {key:'p10', label:t.p10, ahorro:'30% off'},
+              {key:'p25', label:t.p25, ahorro:'44% off'},
+            ].map(p => (
+              <button key={p.key} onClick={() => initPaquete(p.key)} disabled={loading}
+                style={{width:'100%',padding:'12px 16px',marginBottom:8,background:'white',border:'1.5px solid #003DA5',borderRadius:10,cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:14}}>
+                <span style={{color:'#003DA5',fontWeight:600}}>{p.label}</span>
+                {p.ahorro && <span style={{background:'#F4A020',color:'white',padding:'2px 8px',borderRadius:20,fontSize:12,fontWeight:700}}>{p.ahorro}</span>}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {paso === 'pago' && clientSecret && (
+        <div className="card">
+          <h2 style={{marginBottom:16}}>💳 {t.pagar}</h2>
+          <div style={{background:'#f0f4ff',borderRadius:10,padding:12,marginBottom:16,fontSize:13,color:'#555'}}>
+            🔒 {t.seguro}
+          </div>
+          <Elements stripe={stripePromise} options={{clientSecret}}>
+            <CheckoutForm t={t} sellerId={sellerId} tipo={tipoPago} />
+          </Elements>
+          <button onClick={() => setPaso('inicio')} style={{background:'none',border:'none',color:'#888',cursor:'pointer',marginTop:12,fontSize:13}}>
+            ← Volver
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
 export default function Pay() {
-  const [lang, setLang] = useState('es');
-  useEffect(() => {
-    const savedLang = localStorage.getItem('lang') || 'es';
-    setLang(savedLang);
-  }, []);
-  const t = T[lang] || T.en;
-
   return (
     <>
       <Nav links={[{href:'/explorar',label:'← Back'}]} />
