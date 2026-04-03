@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import useLang from '../lib/useLang';
 
 const T = {
   es:{flag:'🇦🇷',n:'ES',tag:'Hablá con argentinos reales. Viví la cultura.',sub:'Mate · Truco · Fútbol · Dulce de leche',buscar:'Buscar anfitriones',inscribirse:'Inscribirse (Anfitriones & Viajeros)',como:'¿Cómo funciona?',p1t:'Elegí un anfitrión',p1d:'Filtrá por interés, habilidad o disponibilidad',p2t:'Pagá el primer contacto',p2d:'Pago seguro con tarjeta internacional',p3t:'¡Conectate!',p3d:'Después del primer contacto, son libres de continuar como quieran',entrar:'Entrar',perfil:'Mi perfil',comp:'Compartir app',cont:'Contacto',consejos:'Consejos de viaje',consejossub:'Dinero, transporte, seguridad y más',mate:'Mate',truco:'Truco',futbol:'Fútbol',dulce:'Dulce de leche',lunfardo:'Aprendé el lunfardo'},
@@ -14,20 +15,17 @@ const T = {
 };
 
 export default function Home() {
+  const { lang, setLang } = useLang();
   const [loggedIn, setLoggedIn] = useState(false);
-  const [lang, setLang] = useState('es');
   const [showLangs, setShowLangs] = useState(false);
-  const t = T[lang];
+  const t = T[lang] || T.es;
 
   useEffect(() => {
     setLoggedIn(!!localStorage.getItem('token'));
-    const saved = localStorage.getItem('lang');
-    if (saved && T[saved]) setLang(saved);
   }, []);
 
   const changeLang = (code) => {
     setLang(code);
-    localStorage.setItem('lang', code);
     setShowLangs(false);
   };
 

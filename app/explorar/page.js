@@ -3,27 +3,26 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Nav from '../components/Nav';
 import api from '../../lib/api';
+import useLang from '../../lib/useLang';
 
 const T = {
-  es:{titulo:'Anfitriones disponibles',buscar:'Buscar...',filtrar:'Filtrar',todos:'Todos',disponible:'Disponible',verificado:'Verificado',contactar:'Contactar',porHora:'/ hora',sinAnfitriones:'No hay anfitriones disponibles.',cargando:'Cargando...'},
-  en:{titulo:'Available hosts',buscar:'Search...',filtrar:'Filter',todos:'All',disponible:'Available',verificado:'Verified',contactar:'Contact',porHora:'/ hour',sinAnfitriones:'No hosts available.',cargando:'Loading...'},
-  pt:{titulo:'Anfitrioes disponiveis',buscar:'Buscar...',filtrar:'Filtrar',todos:'Todos',disponible:'Disponivel',verificado:'Verificado',contactar:'Contatar',porHora:'/ hora',sinAnfitriones:'Nenhum anfitriao disponivel.',cargando:'Carregando...'},
-  fr:{titulo:'Hotes disponibles',buscar:'Rechercher...',filtrar:'Filtrer',todos:'Tous',disponible:'Disponible',verificado:'Verifie',contactar:'Contacter',porHora:'/ heure',sinAnfitriones:'Aucun hote disponible.',cargando:'Chargement...'},
-  it:{titulo:'Host disponibili',buscar:'Cerca...',filtrar:'Filtra',todos:'Tutti',disponible:'Disponibile',verificado:'Verificato',contactar:'Contatta',porHora:'/ ora',sinAnfitriones:'Nessun host disponibile.',cargando:'Caricamento...'},
-  de:{titulo:'Verfugbare Gastgeber',buscar:'Suchen...',filtrar:'Filtern',todos:'Alle',disponible:'Verfugbar',verificado:'Verifiziert',contactar:'Kontaktieren',porHora:'/ Stunde',sinAnfitriones:'Keine Gastgeber verfugbar.',cargando:'Laden...'},
-  zh:{titulo:'可用主人',buscar:'搜索...',filtrar:'筛选',todos:'全部',disponible:'可用',verificado:'已验证',contactar:'联系',porHora:'/ 小时',sinAnfitriones:'没有可用的主人。',cargando:'加载中...'},
-  ru:{titulo:'Доступные хозяева',buscar:'Поиск...',filtrar:'Фильтр',todos:'Все',disponible:'Доступен',verificado:'Проверен',contactar:'Связаться',porHora:'/ час',sinAnfitriones:'Нет доступных хозяев.',cargando:'Загрузка...'},
+  es:{titulo:'Anfitriones disponibles',buscar:'Buscar...',todos:'Todos',disponible:'Disponible',verificado:'Verificado',contactar:'Contactar',porHora:'/ hora',sinAnfitriones:'No hay anfitriones disponibles.',cargando:'Cargando...'},
+  en:{titulo:'Available hosts',buscar:'Search...',todos:'All',disponible:'Available',verificado:'Verified',contactar:'Contact',porHora:'/ hour',sinAnfitriones:'No hosts available.',cargando:'Loading...'},
+  pt:{titulo:'Anfitrioes disponiveis',buscar:'Buscar...',todos:'Todos',disponible:'Disponivel',verificado:'Verificado',contactar:'Contatar',porHora:'/ hora',sinAnfitriones:'Nenhum anfitriao disponivel.',cargando:'Carregando...'},
+  fr:{titulo:'Hotes disponibles',buscar:'Rechercher...',todos:'Tous',disponible:'Disponible',verificado:'Verifie',contactar:'Contacter',porHora:'/ heure',sinAnfitriones:'Aucun hote disponible.',cargando:'Chargement...'},
+  it:{titulo:'Host disponibili',buscar:'Cerca...',todos:'Tutti',disponible:'Disponibile',verificado:'Verificato',contactar:'Contatta',porHora:'/ ora',sinAnfitriones:'Nessun host disponibile.',cargando:'Caricamento...'},
+  de:{titulo:'Verfugbare Gastgeber',buscar:'Suchen...',todos:'Alle',disponible:'Verfugbar',verificado:'Verifiziert',contactar:'Kontaktieren',porHora:'/ Stunde',sinAnfitriones:'Keine Gastgeber verfugbar.',cargando:'Laden...'},
+  zh:{titulo:'可用主人',buscar:'搜索...',todos:'全部',disponible:'可用',verificado:'已验证',contactar:'联系',porHora:'/ 小时',sinAnfitriones:'没有可用的主人。',cargando:'加载中...'},
+  ru:{titulo:'Доступные хозяева',buscar:'Поиск...',todos:'Все',disponible:'Доступен',verificado:'Проверен',contactar:'Связаться',porHora:'/ час',sinAnfitriones:'Нет доступных хозяев.',cargando:'Загрузка...'},
 };
 
 export default function Explorar() {
+  const { lang } = useLang();
   const [sellers, setSellers] = useState([]);
   const [filtro, setFiltro] = useState('');
   const [loading, setLoading] = useState(true);
-  const [lang, setLang] = useState('es');
 
   useEffect(() => {
-    const savedLang = localStorage.getItem('lang') || 'es';
-    setLang(savedLang);
     api.get('/api/users/sellers')
       .then(r => setSellers(r.data))
       .catch(console.error)
@@ -78,23 +77,17 @@ export default function Explorar() {
                     </div>
                 }
                 {s.verificado && (
-                  <div style={{position:'absolute',top:8,right:8,background:'#22c55e',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>
-                    ✓
-                  </div>
+                  <div style={{position:'absolute',top:8,right:8,background:'#22c55e',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>✓</div>
                 )}
                 {s.disponible && (
-                  <div style={{position:'absolute',top:8,left:8,background:'#003DA5',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>
-                    ● {t.disponible}
-                  </div>
+                  <div style={{position:'absolute',top:8,left:8,background:'#003DA5',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>● {t.disponible}</div>
                 )}
               </div>
 
               <div style={{padding:'12px',flex:1,display:'flex',flexDirection:'column'}}>
-                <div style={{fontWeight:700,fontSize:15,marginBottom:4,color:'#1a1a1a'}}>{s.nombre||'Sin nombre'}</div>
+                <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>{s.nombre||'Sin nombre'}</div>
 
-                {s.ciudad && (
-                  <div style={{fontSize:12,color:'#888',marginBottom:6}}>📍 {s.ciudad}</div>
-                )}
+                {s.ciudad && <div style={{fontSize:12,color:'#888',marginBottom:6}}>📍 {s.ciudad}</div>}
 
                 {s.habilidades && s.habilidades.length > 0 && (
                   <div style={{display:'flex',flexWrap:'wrap',gap:4,marginBottom:8}}>
