@@ -1,128 +1,114 @@
 'use client';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Nav from '../components/Nav';
-import api from '../../lib/api';
-import useLang from '../../lib/useLang';
+import { useEffect, useState } from 'react';
+import useLang from '../lib/useLang';
 
 const T = {
-  es:{titulo:'Anfitriones disponibles',buscar:'Buscar...',todos:'Todos',disponible:'Disponible',verificado:'Verificado',contactar:'Contactar',porHora:'/ hora',sinAnfitriones:'No hay anfitriones disponibles.',cargando:'Cargando...'},
-  en:{titulo:'Available hosts',buscar:'Search...',todos:'All',disponible:'Available',verificado:'Verified',contactar:'Contact',porHora:'/ hour',sinAnfitriones:'No hosts available.',cargando:'Loading...'},
-  pt:{titulo:'Anfitrioes disponiveis',buscar:'Buscar...',todos:'Todos',disponible:'Disponivel',verificado:'Verificado',contactar:'Contatar',porHora:'/ hora',sinAnfitriones:'Nenhum anfitriao disponivel.',cargando:'Carregando...'},
-  fr:{titulo:'Hotes disponibles',buscar:'Rechercher...',todos:'Tous',disponible:'Disponible',verificado:'Verifie',contactar:'Contacter',porHora:'/ heure',sinAnfitriones:'Aucun hote disponible.',cargando:'Chargement...'},
-  it:{titulo:'Host disponibili',buscar:'Cerca...',todos:'Tutti',disponible:'Disponibile',verificado:'Verificato',contactar:'Contatta',porHora:'/ ora',sinAnfitriones:'Nessun host disponibile.',cargando:'Caricamento...'},
-  de:{titulo:'Verfugbare Gastgeber',buscar:'Suchen...',todos:'Alle',disponible:'Verfugbar',verificado:'Verifiziert',contactar:'Kontaktieren',porHora:'/ Stunde',sinAnfitriones:'Keine Gastgeber verfugbar.',cargando:'Laden...'},
-  zh:{titulo:'可用主人',buscar:'搜索...',todos:'全部',disponible:'可用',verificado:'已验证',contactar:'联系',porHora:'/ 小时',sinAnfitriones:'没有可用的主人。',cargando:'加载中...'},
-  ru:{titulo:'Доступные хозяева',buscar:'Поиск...',todos:'Все',disponible:'Доступен',verificado:'Проверен',contactar:'Связаться',porHora:'/ час',sinAnfitriones:'Нет доступных хозяев.',cargando:'Загрузка...'},
+  es:{flag:'🇦🇷',n:'ES',tag:'Hablá con argentinos reales. Viví la cultura.',sub:'Mate · Truco · Fútbol · Dulce de leche',buscar:'Buscar anfitriones',inscribirse:'Inscribirse (Anfitriones & Viajeros)',como:'¿Cómo funciona?',p1t:'Elegí un anfitrión',p1d:'Filtrá por interés, habilidad o disponibilidad',p2t:'El primer contacto es GRATIS',p2d:'Conectá con tu primer anfitrión sin costo. Siguientes contactos desde USD 0.50.',p3t:'¡Conectate!',p3d:'Después del primer contacto, son libres de continuar como quieran',entrar:'Entrar',perfil:'Mi perfil',comp:'Compartir app',cont:'Contacto',consejos:'Consejos de viaje',consejossub:'Dinero, transporte, seguridad y más',mate:'Mate',truco:'Truco',futbol:'Fútbol',dulce:'Dulce de leche',lunfardo:'Aprendé el lunfardo'},
+  en:{flag:'🇬🇧',n:'EN',tag:'Talk with real Argentinians. Live the culture.',sub:'Mate · Truco · Football · Dulce de leche',buscar:'Find hosts',inscribirse:'Sign up (Hosts & Travelers)',como:'How does it work?',p1t:'Choose a host',p1d:'Filter by interest, skill or availability',p2t:'First contact is FREE',p2d:'Connect with your first host at no cost. Next contacts from USD 0.50.',p3t:'Connect!',p3d:'After first contact, you are free to continue however you want',entrar:'Log in',perfil:'My profile',comp:'Share app',cont:'Contact',consejos:'Travel tips',consejossub:'Money, transport, safety and more',mate:'Mate',truco:'Truco',futbol:'Football',dulce:'Dulce de leche',lunfardo:'Learn Argentine slang'},
+  pt:{flag:'🇧🇷',n:'PT',tag:'Fale com argentinos reais. Viva a cultura.',sub:'Mate · Truco · Futebol · Doce de leite',buscar:'Encontrar anfitriões',inscribirse:'Cadastrar (Anfitriões & Viajantes)',como:'Como funciona?',p1t:'Escolha um anfitrião',p1d:'Filtre por interesse ou disponibilidade',p2t:'Primeiro contato é GRÁTIS',p2d:'Conecte com seu primeiro anfitrião sem custo. Próximos contatos a partir de USD 0.50.',p3t:'Conecte-se!',p3d:'Após o primeiro contato, são livres para continuar',entrar:'Entrar',perfil:'Meu perfil',comp:'Compartilhar',cont:'Contato',consejos:'Dicas de viagem',consejossub:'Dinheiro, transporte, segurança e mais',mate:'Mate',truco:'Truco',futbol:'Futebol',dulce:'Doce de leite',lunfardo:'Aprenda o lunfardo'},
+  fr:{flag:'🇫🇷',n:'FR',tag:'Parlez avec de vrais Argentins. Vivez la culture.',sub:'Maté · Truco · Football · Dulce de leche',buscar:'Trouver des hôtes',inscribirse:"S'inscrire (Hôtes & Voyageurs)",como:'Comment ça marche?',p1t:'Choisissez un hôte',p1d:'Filtrez par intérêt ou disponibilité',p2t:'Le premier contact est GRATUIT',p2d:'Connectez avec votre premier hôte sans frais. Contacts suivants à partir de USD 0.50.',p3t:'Connectez-vous!',p3d:'Après le premier contact, vous êtes libres',entrar:'Se connecter',perfil:'Mon profil',comp:'Partager',cont:'Contact',consejos:'Conseils de voyage',consejossub:'Argent, transport, sécurité et plus',mate:'Maté',truco:'Truco',futbol:'Football',dulce:'Dulce de leche',lunfardo:'Apprenez le lunfardo'},
+  it:{flag:'🇮🇹',n:'IT',tag:'Parla con veri argentini. Vivi la cultura.',sub:'Mate · Truco · Calcio · Dulce de leche',buscar:'Trova host',inscribirse:'Iscriviti (Host & Viaggiatori)',como:'Come funziona?',p1t:'Scegli un host',p1d:'Filtra per interesse o disponibilità',p2t:'Il primo contatto è GRATUITO',p2d:'Connettiti con il tuo primo host senza costi. Contatti successivi da USD 0.50.',p3t:'Connettiti!',p3d:'Dopo il primo contatto siete liberi',entrar:'Accedi',perfil:'Il mio profilo',comp:'Condividi',cont:'Contatto',consejos:'Consigli di viaggio',consejossub:'Denaro, trasporti, sicurezza e altro',mate:'Mate',truco:'Truco',futbol:'Calcio',dulce:'Dulce de leche',lunfardo:'Impara il lunfardo'},
+  de:{flag:'🇩🇪',n:'DE',tag:'Sprich mit echten Argentiniern. Erlebe die Kultur.',sub:'Mate · Truco · Fußball · Dulce de leche',buscar:'Gastgeber finden',inscribirse:'Registrieren (Gastgeber & Reisende)',como:'Wie funktioniert es?',p1t:'Wähle einen Gastgeber',p1d:'Filtere nach Interesse oder Verfügbarkeit',p2t:'Erster Kontakt ist KOSTENLOS',p2d:'Verbinde dich mit deinem ersten Gastgeber kostenlos. Nächste Kontakte ab USD 0.50.',p3t:'Verbinde dich!',p3d:'Nach dem ersten Kontakt könnt ihr weitermachen',entrar:'Anmelden',perfil:'Mein Profil',comp:'Teilen',cont:'Kontakt',consejos:'Reisetipps',consejossub:'Geld, Transport, Sicherheit und mehr',mate:'Mate',truco:'Truco',futbol:'Fußball',dulce:'Dulce de leche',lunfardo:'Lerne Lunfardo'},
+  zh:{flag:'🇨🇳',n:'ZH',tag:'与真正的阿根廷人交流。体验文化。',sub:'马黛茶·特鲁科·足球·牛奶焦糖',buscar:'寻找主人',inscribirse:'注册',como:'怎么运作？',p1t:'选择主人',p1d:'按兴趣或可用性筛选',p2t:'首次联系免费',p2d:'与您的第一位主人免费联系。后续联系从USD 0.50起。',p3t:'联系！',p3d:'第一次联系后可以自由继续',entrar:'登录',perfil:'我的资料',comp:'分享',cont:'联系',consejos:'旅行贴士',consejossub:'金钱、交通、安全等',mate:'马黛茶',truco:'特鲁科',futbol:'足球',dulce:'牛奶焦糖',lunfardo:'学习阿根廷俚语'},
+  ru:{flag:'🇷🇺',n:'RU',tag:'Общайтесь с настоящими аргентинцами.',sub:'Мате·Труко·Футбол·Дульсе де лече',buscar:'Найти хозяина',inscribirse:'Зарегистрироваться',como:'Как это работает?',p1t:'Выберите хозяина',p1d:'Фильтр по интересам',p2t:'Первый контакт БЕСПЛАТНО',p2d:'Свяжитесь с первым хозяином бесплатно. Следующие контакты от USD 0.50.',p3t:'Свяжитесь!',p3d:'После первого контакта вы свободны',entrar:'Войти',perfil:'Мой профиль',comp:'Поделиться',cont:'Контакт',consejos:'Советы путешественникам',consejossub:'Деньги, транспорт, безопасность и другое',mate:'Мате',truco:'Труко',futbol:'Футбол',dulce:'Дульсе де лече',lunfardo:'Учите лунфардо'},
 };
 
-export default function Explorar() {
-  const { lang } = useLang();
-  const [sellers, setSellers] = useState([]);
-  const [filtro, setFiltro] = useState('');
-  const [loading, setLoading] = useState(true);
+export default function Home() {
+  const { lang, setLang } = useLang();
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [showLangs, setShowLangs] = useState(false);
+  const t = T[lang] || T.es;
 
   useEffect(() => {
-    api.get('/api/users/sellers')
-      .then(r => setSellers(r.data))
-      .catch(console.error)
-      .finally(() => setLoading(false));
+    setLoggedIn(!!localStorage.getItem('token'));
   }, []);
 
-  const t = T[lang] || T.en;
-
-  const filtrados = sellers.filter(s =>
-    !filtro ||
-    s.nombre?.toLowerCase().includes(filtro.toLowerCase()) ||
-    s.bio?.toLowerCase().includes(filtro.toLowerCase()) ||
-    s.habilidades?.some(h => h.toLowerCase().includes(filtro.toLowerCase())) ||
-    s.ciudad?.toLowerCase().includes(filtro.toLowerCase())
-  );
-
-  if (loading) return (
-    <>
-      <Nav />
-      <div className="spinner">{t.cargando}</div>
-    </>
-  );
+  const changeLang = (code) => {
+    setLang(code);
+    setShowLangs(false);
+  };
 
   return (
     <>
-      <Nav />
-      <div className="container">
-        <h1 style={{marginBottom:16}}>{t.titulo}</h1>
+      <nav className="nav">
+        <span className="nav-logo">Argen<span>talk</span> 🧉</span>
+        <div className="nav-links">
+          <div style={{position:'relative'}}>
+            <button onClick={() => setShowLangs(!showLangs)} style={{width:'auto',padding:'6px 10px',fontSize:14,background:'rgba(255,255,255,0.2)',border:'none',borderRadius:8,color:'white',cursor:'pointer'}}>
+              {t.flag} {t.n}
+            </button>
+            {showLangs && (
+              <div style={{position:'absolute',right:0,top:38,background:'white',borderRadius:10,boxShadow:'0 4px 16px rgba(0,0,0,0.15)',padding:8,zIndex:200,minWidth:130}}>
+                {Object.entries(T).map(([code,tx]) => (
+                  <button key={code} onClick={() => changeLang(code)} style={{width:'100%',padding:'7px 12px',background:lang===code?'#EBF2FF':'white',border:'none',borderRadius:8,cursor:'pointer',textAlign:'left',fontSize:14,color:'#1a1a1a',display:'flex',gap:8}}>
+                    <span>{tx.flag}</span><span>{tx.n}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          {loggedIn
+            ? <Link href="/dashboard">{t.perfil}</Link>
+            : <Link href="/login">{t.entrar}</Link>
+          }
+        </div>
+      </nav>
 
-        <div style={{position:'relative',marginBottom:20}}>
-          <input
-            value={filtro}
-            onChange={e => setFiltro(e.target.value)}
-            placeholder={t.buscar}
-            style={{paddingLeft:36}}
-          />
-          <span style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',fontSize:16}}>🔍</span>
+      <div style={{background:'#003DA5',padding:'40px 20px 60px',textAlign:'center'}}>
+        <div style={{fontSize:48,marginBottom:12}}>🧉</div>
+        <h1 style={{color:'white',fontSize:32,marginBottom:10}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
+        <p style={{color:'rgba(255,255,255,0.85)',fontSize:16,marginBottom:8}}>{t.tag}</p>
+        <p style={{color:'rgba(255,255,255,0.65)',fontSize:14,marginBottom:28}}>{t.sub}</p>
+        <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
+          <Link href="/explorar"><button className="btn-orange" style={{width:'auto',padding:'13px 28px'}}>{t.buscar}</button></Link>
+          <Link href="/register"><button style={{width:'auto',padding:'13px 28px',background:'transparent',border:'2px solid white',color:'white'}}>{t.inscribirse}</button></Link>
+        </div>
+      </div>
+
+      <div style={{maxWidth:480,margin:'-30px auto 0',padding:'0 20px 40px'}}>
+        <div className="cultura-grid" style={{marginTop:0,gridTemplateColumns:'repeat(5,1fr)'}}>
+          <Link href="/cultura/mate" className="cultura-item"><span className="cultura-icon">🧉</span><div className="cultura-label">{t.mate}</div></Link>
+          <Link href="/cultura/truco" className="cultura-item"><span className="cultura-icon">🃏</span><div className="cultura-label">{t.truco}</div></Link>
+          <Link href="/cultura/futbol" className="cultura-item"><span className="cultura-icon">⚽</span><div className="cultura-label">{t.futbol}</div></Link>
+          <Link href="/cultura/dulce" className="cultura-item"><span className="cultura-icon">🍮</span><div className="cultura-label">{t.dulce}</div></Link>
+          <Link href="/chat" className="cultura-item"><span className="cultura-icon">🗣️</span><div className="cultura-label">{t.lunfardo}</div></Link>
         </div>
 
-        {filtrados.length === 0 && (
-          <div className="card" style={{textAlign:'center',color:'#888'}}>{t.sinAnfitriones}</div>
-        )}
-
-        <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:12}}>
-          {filtrados.map(s => (
-            <div key={s._id} className="card" style={{padding:0,overflow:'hidden',borderRadius:16,display:'flex',flexDirection:'column'}}>
-              <div style={{position:'relative',height:140,background:'#EBF2FF',overflow:'hidden'}}>
-                {s.foto
-                  ? <img src={s.foto} alt={s.nombre} style={{width:'100%',height:'100%',objectFit:'cover'}} />
-                  : <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:48,fontWeight:700,color:'#003DA5'}}>
-                      {(s.nombre||'A')[0].toUpperCase()}
-                    </div>
-                }
-                {s.verificado && (
-                  <div style={{position:'absolute',top:8,right:8,background:'#22c55e',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>✓</div>
-                )}
-                {s.disponible && (
-                  <div style={{position:'absolute',top:8,left:8,background:'#003DA5',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>● {t.disponible}</div>
-                )}
-              </div>
-
-              <div style={{padding:'12px',flex:1,display:'flex',flexDirection:'column'}}>
-                <div style={{fontWeight:700,fontSize:15,marginBottom:4}}>{s.nombre||'Sin nombre'}</div>
-
-                {s.ciudad && <div style={{fontSize:12,color:'#888',marginBottom:6}}>📍 {s.ciudad}</div>}
-
-                {s.habilidades && s.habilidades.length > 0 && (
-                  <div style={{display:'flex',flexWrap:'wrap',gap:4,marginBottom:8}}>
-                    {s.habilidades.slice(0,3).map((h,i) => (
-                      <span key={i} style={{background:'#EBF2FF',color:'#003DA5',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:500}}>{h}</span>
-                    ))}
-                  </div>
-                )}
-
-                {s.bio && (
-                  <div style={{fontSize:12,color:'#666',marginBottom:8,lineHeight:1.4,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>
-                    {s.bio}
-                  </div>
-                )}
-
-                {s.puntuacion > 0 && (
-                  <div style={{fontSize:12,color:'#F4A020',marginBottom:8}}>
-                    {'⭐'.repeat(Math.round(s.puntuacion))} {s.puntuacion}
-                  </div>
-                )}
-
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'auto',paddingTop:8,borderTop:'1px solid #f0f0f0'}}>
-                  <div>
-                    <div style={{fontSize:18,fontWeight:700,color:'#003DA5'}}>USD {s.precio}</div>
-                    <div style={{fontSize:11,color:'#888'}}>{t.porHora}</div>
-                  </div>
-                  <Link href={`/pay?seller=${s._id}&nombre=${encodeURIComponent(s.nombre||'')}&precio=${s.precio}`}>
-                    <button className="btn-orange" style={{width:'auto',padding:'8px 14px',fontSize:13,borderRadius:10}}>
-                      {t.contactar}
-                    </button>
-                  </Link>
+        <div className="card">
+          <h2 style={{textAlign:'center'}}>{t.como}</h2>
+          <div style={{display:'flex',flexDirection:'column',gap:16,marginTop:16}}>
+            {[
+              {n:1,ti:t.p1t,d:t.p1d,color:'#003DA5'},
+              {n:2,ti:t.p2t,d:t.p2d,color:'#22c55e'},
+              {n:3,ti:t.p3t,d:t.p3d,color:'#F4A020'},
+            ].map(s => (
+              <div key={s.n} style={{display:'flex',gap:14,alignItems:'flex-start'}}>
+                <div style={{width:36,height:36,borderRadius:'50%',background:s.color,color:'white',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,flexShrink:0}}>{s.n}</div>
+                <div>
+                  <div style={{fontWeight:600,marginBottom:4}}>{s.ti}</div>
+                  <div style={{fontSize:14,color:'#666'}}>{s.d}</div>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+
+        <Link href="/consejos" style={{textDecoration:'none'}}>
+          <div style={{background:'#F4A020',borderRadius:14,padding:'16px 20px',marginBottom:16,display:'flex',alignItems:'center',gap:12,cursor:'pointer'}}>
+            <span style={{fontSize:28}}>✈️</span>
+            <div style={{flex:1}}>
+              <div style={{fontWeight:700,fontSize:16,color:'white'}}>{t.consejos}</div>
+              <div style={{fontSize:13,color:'rgba(255,255,255,0.9)',marginTop:2}}>{t.consejossub}</div>
             </div>
-          ))}
+            <span style={{color:'white',fontSize:20,fontWeight:700}}>→</span>
+          </div>
+        </Link>
+
+        <div style={{textAlign:'center',padding:'8px 0 40px',display:'flex',gap:20,justifyContent:'center',flexWrap:'wrap'}}>
+          <Link href="/compartir" style={{color:'#003DA5',fontSize:14,textDecoration:'none'}}>{t.comp}</Link>
+          <Link href="/contacto" style={{color:'#003DA5',fontSize:14,textDecoration:'none'}}>{t.cont}</Link>
+          <Link href="/explorar" style={{color:'#003DA5',fontSize:14,textDecoration:'none'}}>{t.buscar}</Link>
         </div>
       </div>
     </>
