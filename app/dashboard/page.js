@@ -4,29 +4,30 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Nav from '../components/Nav';
 import api from '../../lib/api';
+import useLang from '../../lib/useLang';
 
 const ADMIN = 'gonrobtor@gmail.com';
 
 const T = {
-  es:{retirar:'Retirar ganancias',retirando:'Procesando retiro...',minimoRetiro:'Minimo USD 1 para retirar.',retiroOk:'Solicitud de retiro enviada. Te contactaremos pronto.',creditos:'Contactos disponibles',comprar:'Comprar contactos'},
-  en:{retirar:'Withdraw earnings',retirando:'Processing...',minimoRetiro:'Minimum USD 1 to withdraw.',retiroOk:'Withdrawal request sent. We will contact you soon.',creditos:'Available contacts',comprar:'Buy contacts'},
-  pt:{retirar:'Retirar ganhos',retirando:'Processando...',minimoRetiro:'Minimo USD 1 para retirar.',retiroOk:'Solicitacao enviada.',creditos:'Contatos disponiveis',comprar:'Comprar contatos'},
-  fr:{retirar:'Retirer les gains',retirando:'Traitement...',minimoRetiro:'Minimum USD 1 pour retirer.',retiroOk:'Demande envoyee.',creditos:'Contacts disponibles',comprar:'Acheter des contacts'},
-  it:{retirar:'Ritira guadagni',retirando:'Elaborazione...',minimoRetiro:'Minimo USD 1 per ritirare.',retiroOk:'Richiesta inviata.',creditos:'Contatti disponibili',comprar:'Acquista contatti'},
-  de:{retirar:'Gewinne auszahlen',retirando:'Verarbeitung...',minimoRetiro:'Mindestens USD 1 zum Auszahlen.',retiroOk:'Anfrage gesendet.',creditos:'Verfugbare Kontakte',comprar:'Kontakte kaufen'},
-  zh:{retirar:'提取收益',retirando:'处理中...',minimoRetiro:'最低提取USD 1。',retiroOk:'提款申请已发送。',creditos:'可用联系次数',comprar:'购买联系次数'},
-  ru:{retirar:'Вывести заработок',retirando:'Обработка...',minimoRetiro:'Минимум USD 1 для вывода.',retiroOk:'Запрос отправлен.',creditos:'Доступные контакты',comprar:'Купить контакты'},
+  es:{retirar:'Retirar ganancias',retirando:'Procesando...',minimoRetiro:'Minimo USD 1 para retirar.',retiroOk:'Solicitud de retiro enviada. Te contactaremos pronto.',creditos:'Contactos disponibles',comprar:'Comprar contactos',ganancias:'Ganancias',contactos:'Contactos',disponible:'Disponible',verificado:'Verificado',anfitrion:'Anfitrion',viajero:'Viajero',editarPerfil:'Editar mi perfil',verificarId:'Verificar identidad',buscarAnfitriones:'Buscar anfitriones',aprender:'Aprender sobre Argentina',admin:'Panel Admin',salir:'Salir'},
+  en:{retirar:'Withdraw earnings',retirando:'Processing...',minimoRetiro:'Minimum USD 1 to withdraw.',retiroOk:'Withdrawal request sent. We will contact you soon.',creditos:'Available contacts',comprar:'Buy contacts',ganancias:'Earnings',contactos:'Contacts',disponible:'Available',verificado:'Verified',anfitrion:'Host',viajero:'Traveler',editarPerfil:'Edit my profile',verificarId:'Verify identity',buscarAnfitriones:'Find hosts',aprender:'Learn about Argentina',admin:'Admin Panel',salir:'Log out'},
+  pt:{retirar:'Retirar ganhos',retirando:'Processando...',minimoRetiro:'Minimo USD 1.',retiroOk:'Solicitação enviada.',creditos:'Contatos disponiveis',comprar:'Comprar contatos',ganancias:'Ganhos',contactos:'Contatos',disponible:'Disponivel',verificado:'Verificado',anfitrion:'Anfitriao',viajero:'Viajante',editarPerfil:'Editar perfil',verificarId:'Verificar identidade',buscarAnfitriones:'Buscar anfitrioes',aprender:'Aprender sobre Argentina',admin:'Painel Admin',salir:'Sair'},
+  fr:{retirar:'Retirer les gains',retirando:'Traitement...',minimoRetiro:'Minimum USD 1.',retiroOk:'Demande envoyée.',creditos:'Contacts disponibles',comprar:'Acheter des contacts',ganancias:'Gains',contactos:'Contacts',disponible:'Disponible',verificado:'Vérifié',anfitrion:'Hôte',viajero:'Voyageur',editarPerfil:'Modifier mon profil',verificarId:'Vérifier identité',buscarAnfitriones:'Trouver des hôtes',aprender:"Apprendre sur l'Argentine",admin:'Panneau Admin',salir:'Déconnexion'},
+  it:{retirar:'Ritira guadagni',retirando:'Elaborazione...',minimoRetiro:'Minimo USD 1.',retiroOk:'Richiesta inviata.',creditos:'Contatti disponibili',comprar:'Acquista contatti',ganancias:'Guadagni',contactos:'Contatti',disponible:'Disponibile',verificado:'Verificato',anfitrion:'Host',viajero:'Viaggiatore',editarPerfil:'Modifica profilo',verificarId:'Verifica identità',buscarAnfitriones:'Trova host',aprender:"Impara sull'Argentina",admin:'Pannello Admin',salir:'Esci'},
+  de:{retirar:'Gewinne auszahlen',retirando:'Verarbeitung...',minimoRetiro:'Mindestens USD 1.',retiroOk:'Anfrage gesendet.',creditos:'Verfügbare Kontakte',comprar:'Kontakte kaufen',ganancias:'Einnahmen',contactos:'Kontakte',disponible:'Verfügbar',verificado:'Verifiziert',anfitrion:'Gastgeber',viajero:'Reisender',editarPerfil:'Profil bearbeiten',verificarId:'Identität verifizieren',buscarAnfitriones:'Gastgeber finden',aprender:'Über Argentinien lernen',admin:'Admin-Panel',salir:'Abmelden'},
+  zh:{retirar:'提取收益',retirando:'处理中...',minimoRetiro:'最低提取USD 1。',retiroOk:'提款申请已发送。',creditos:'可用联系次数',comprar:'购买联系次数',ganancias:'收益',contactos:'联系次数',disponible:'可用',verificado:'已验证',anfitrion:'主人',viajero:'旅行者',editarPerfil:'编辑资料',verificarId:'验证身份',buscarAnfitriones:'寻找主人',aprender:'了解阿根廷',admin:'管理面板',salir:'退出'},
+  ru:{retirar:'Вывести заработок',retirando:'Обработка...',minimoRetiro:'Минимум USD 1.',retiroOk:'Запрос отправлен.',creditos:'Доступные контакты',comprar:'Купить контакты',ganancias:'Заработок',contactos:'Контакты',disponible:'Доступен',verificado:'Проверен',anfitrion:'Хозяин',viajero:'Путешественник',editarPerfil:'Редактировать профиль',verificarId:'Подтвердить личность',buscarAnfitriones:'Найти хозяина',aprender:'Узнать об Аргентине',admin:'Панель Admin',salir:'Выйти'},
 };
 
 function DashboardContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { lang } = useLang();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState('');
   const [error, setError] = useState('');
   const [retirando, setRetirando] = useState(false);
-  const [lang, setLang] = useState('es');
 
   const loadUser = async () => {
     try {
@@ -40,38 +41,30 @@ function DashboardContent() {
   };
 
   useEffect(() => {
-    const savedLang = localStorage.getItem('lang') || 'es';
-    setLang(savedLang);
     if (!localStorage.getItem('token')) { router.push('/login'); return; }
     loadUser();
   }, []);
 
   useEffect(() => {
-    if (searchParams.get('verified') === 'true') {
-      loadUser();
-      setMsg('Identidad verificada correctamente!');
-    }
-    if (searchParams.get('paquete') === 'true') {
-      loadUser();
-      setMsg('Paquete de contactos activado!');
-    }
+    if (searchParams.get('verified') === 'true') { loadUser(); setMsg('Identidad verificada!'); }
+    if (searchParams.get('paquete') === 'true') { loadUser(); setMsg('Paquete activado!'); }
   }, [searchParams]);
 
   const verificar = async () => {
     try {
       const r = await api.post('/api/stripe/verify/identity');
       window.location.href = r.data.url;
-    } catch { setMsg('Error al iniciar verificacion.'); }
+    } catch { setError('Error al iniciar verificacion.'); }
   };
 
   const retirar = async () => {
-    if (retirando) return;
     const t = T[lang] || T.es;
+    if (retirando) return;
     if ((user?.ganancias || 0) < 1) { setError(t.minimoRetiro); return; }
     setRetirando(true); setError(''); setMsg('');
     try {
       const r = await api.post('/api/stripe/retirar');
-      setMsg(r.data.message || (T[lang]||T.es).retiroOk);
+      setMsg(r.data.message || t.retiroOk);
       loadUser();
     } catch (err) {
       setError(err.response?.data?.error || 'Error al retirar.');
@@ -91,8 +84,8 @@ function DashboardContent() {
         <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Argen<span>talk</span> 🧉</span></Link>
         <div className="nav-links">
           <Link href="/" style={{fontSize:13,color:'white',textDecoration:'none',opacity:0.8}}>🏠 Home</Link>
-          <Link href="/explorar" style={{fontSize:13,color:'white',textDecoration:'none'}}>Explorar</Link>
-          <button onClick={logout} className="btn-sm" style={{background:'rgba(255,255,255,0.2)',border:'none',color:'white'}}>Salir</button>
+          <Link href="/explorar" style={{fontSize:13,color:'white',textDecoration:'none'}}>{t.buscarAnfitriones}</Link>
+          <button onClick={logout} style={{background:'rgba(255,255,255,0.2)',border:'none',color:'white',padding:'6px 12px',borderRadius:8,cursor:'pointer',fontSize:13}}>{t.salir}</button>
         </div>
       </nav>
 
@@ -107,12 +100,11 @@ function DashboardContent() {
               : (user?.nombre||user?.email||'A')[0].toUpperCase()
             }
           </div>
-          <div style={{fontSize:11,color:'#888',marginBottom:8}}>Toca para cambiar foto</div>
           <div style={{fontWeight:600,fontSize:18}}>{user?.nombre||'Sin nombre'}</div>
           <div style={{color:'#888',fontSize:14,marginTop:4}}>{user?.email}</div>
           <div style={{marginTop:8,display:'flex',gap:6,justifyContent:'center',flexWrap:'wrap'}}>
-            <span className="badge badge-blue">{user?.role==='seller'?'🏠 Anfitrion':'🌍 Viajero'}</span>
-            {user?.verificado && <span className="badge badge-green">✓ Verificado</span>}
+            <span className="badge badge-blue">{user?.role==='seller'?`🏠 ${t.anfitrion}`:`🌍 ${t.viajero}`}</span>
+            {user?.verificado && <span className="badge badge-green">✓ {t.verificado}</span>}
           </div>
         </div>
 
@@ -121,11 +113,11 @@ function DashboardContent() {
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:16}}>
               <div style={{background:'#f0f4ff',borderRadius:12,padding:'16px',textAlign:'center'}}>
                 <div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>USD {(user?.ganancias||0).toFixed(2)}</div>
-                <div style={{fontSize:12,color:'#888',marginTop:4}}>Ganancias</div>
+                <div style={{fontSize:12,color:'#888',marginTop:4}}>{t.ganancias}</div>
               </div>
               <div style={{background:'#f0fff4',borderRadius:12,padding:'16px',textAlign:'center'}}>
                 <div style={{fontSize:24,fontWeight:700,color:'#065f46'}}>{user?.totalContactos||0}</div>
-                <div style={{fontSize:12,color:'#888',marginTop:4}}>Contactos</div>
+                <div style={{fontSize:12,color:'#888',marginTop:4}}>{t.contactos}</div>
               </div>
             </div>
 
@@ -138,18 +130,11 @@ function DashboardContent() {
             <button className="btn-orange" onClick={retirar} disabled={retirando} style={{marginBottom:12}}>
               💰 {retirando ? t.retirando : t.retirar} (USD {(user?.ganancias||0).toFixed(2)})
             </button>
-
-            <Link href="/perfil">
-              <button style={{marginBottom:12}}>✏️ Editar mi perfil</button>
-            </Link>
-
-            {!user?.verificado ? (
-              <button className="btn-secondary" style={{marginBottom:12}} onClick={verificar}>
-                🪪 Verificar identidad
-              </button>
-            ) : (
-              <div className="success" style={{marginBottom:12}}>🪪 Identidad verificada ✅</div>
-            )}
+            <Link href="/perfil"><button style={{marginBottom:12}}>✏️ {t.editarPerfil}</button></Link>
+            {!user?.verificado
+              ? <button className="btn-secondary" style={{marginBottom:12}} onClick={verificar}>🪪 {t.verificarId}</button>
+              : <div className="success" style={{marginBottom:12}}>🪪 {t.verificado} ✅</div>
+            }
           </>
         )}
 
@@ -161,27 +146,18 @@ function DashboardContent() {
                 <div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>{user?.creditosContacto||0}</div>
               </div>
               <Link href="/pay?paquetes=true">
-                <button className="btn-orange" style={{width:'auto',padding:'10px 16px',fontSize:13}}>
-                  📦 {t.comprar}
-                </button>
+                <button className="btn-orange" style={{width:'auto',padding:'10px 16px',fontSize:13}}>📦 {t.comprar}</button>
               </Link>
             </div>
-
-            <Link href="/explorar">
-              <button className="btn-orange" style={{marginBottom:12}}>🔍 Buscar anfitriones</button>
-            </Link>
-            <Link href="/perfil">
-              <button style={{marginBottom:12}}>✏️ Editar mi perfil</button>
-            </Link>
-            <Link href="/cultura/mate">
-              <button className="btn-secondary">🧉 Aprender sobre Argentina</button>
-            </Link>
+            <Link href="/explorar"><button className="btn-orange" style={{marginBottom:12}}>🔍 {t.buscarAnfitriones}</button></Link>
+            <Link href="/perfil"><button style={{marginBottom:12}}>✏️ {t.editarPerfil}</button></Link>
+            <Link href="/cultura/mate"><button className="btn-secondary">🧉 {t.aprender}</button></Link>
           </div>
         )}
 
         {isAdmin && (
           <Link href="/admin">
-            <button style={{background:'#1a1a1a',color:'white',marginTop:8}}>⚙️ Panel Admin</button>
+            <button style={{background:'#1a1a1a',color:'white',marginTop:8}}>⚙️ {t.admin}</button>
           </Link>
         )}
       </div>
