@@ -1,169 +1,52 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import Nav from '../components/Nav';
-import api from '../../lib/api';
 import useLang from '../../lib/useLang';
 
-const HABS = ['Guia','Profesor','Cocinero','Truco','Mate','Futbol','Musica','Tango','Historia','Espanol','Charla'];
-
 const T = {
-  es:{titulo:'Mi perfil',foto:'Toca para cambiar la foto',nombre:'Nombre completo',ciudad:'Ciudad',sobre:'Sobre vos',precio:'Precio por hora de servicio',recibes:'Vos recibis',cobra:'Argentalk cobra 15%',consejo:'Se recomienda un precio accesible. Este es el precio que cobraras por hora de tu servicio. Una vez contactados, acordas el precio directamente con el viajero.',bueno:'En que sos bueno?',disponible:'Disponibilidad',disponibleBtn:'Disponible ahora',noDisponible:'No disponible',guardar:'Guardar perfil',guardando:'Guardando...',baja:'Dar de baja mi cuenta',bajaPregunta:'Ya no queres usar Argentalk?',exito:'Perfil actualizado!',fotoOk:'Foto actualizada!',errorFoto:'Error al subir foto.',errorGuardar:'Error al guardar.'},
-  en:{titulo:'My profile',foto:'Tap to change photo',nombre:'Full name',ciudad:'City',sobre:'About you',precio:'Price per hour of service',recibes:'You receive',cobra:'Argentalk charges 15%',consejo:'We recommend an affordable price. This is the price you will charge per hour of service. Once connected, you agree on the price directly with the traveler.',bueno:'What are you good at?',disponible:'Availability',disponibleBtn:'Available now',noDisponible:'Not available',guardar:'Save profile',guardando:'Saving...',baja:'Delete my account',bajaPregunta:'Do you want to leave Argentalk?',exito:'Profile updated!',fotoOk:'Photo updated!',errorFoto:'Error uploading photo.',errorGuardar:'Error saving.'},
-  pt:{titulo:'Meu perfil',foto:'Toque para mudar a foto',nombre:'Nome completo',ciudad:'Cidade',sobre:'Sobre voce',precio:'Preco por hora de servico',recibes:'Voce recebe',cobra:'Argentalk cobra 15%',consejo:'Recomendamos um preco acessivel. Este e o preco que voce cobrara por hora de servico.',bueno:'No que voce e bom?',disponible:'Disponibilidade',disponibleBtn:'Disponivel agora',noDisponible:'Nao disponivel',guardar:'Salvar perfil',guardando:'Salvando...',baja:'Excluir minha conta',bajaPregunta:'Quer sair do Argentalk?',exito:'Perfil atualizado!',fotoOk:'Foto atualizada!',errorFoto:'Erro ao enviar foto.',errorGuardar:'Erro ao salvar.'},
-  fr:{titulo:'Mon profil',foto:'Appuyer pour changer la photo',nombre:'Nom complet',ciudad:'Ville',sobre:'A propos de vous',precio:'Prix par heure de service',recibes:'Vous recevez',cobra:'Argentalk prend 15%',consejo:'Nous recommandons un prix abordable. C est le prix que vous facturerez par heure de service.',bueno:'En quoi etes-vous bon?',disponible:'Disponibilite',disponibleBtn:'Disponible maintenant',noDisponible:'Non disponible',guardar:'Sauvegarder',guardando:'Sauvegarde...',baja:'Supprimer mon compte',bajaPregunta:'Voulez-vous quitter Argentalk?',exito:'Profil mis a jour!',fotoOk:'Photo mise a jour!',errorFoto:'Erreur photo.',errorGuardar:'Erreur sauvegarde.'},
-  it:{titulo:'Il mio profilo',foto:'Tocca per cambiare foto',nombre:'Nome completo',ciudad:'Citta',sobre:'Su di te',precio:'Prezzo per ora di servizio',recibes:'Ricevi',cobra:'Argentalk prende 15%',consejo:'Consigliamo un prezzo accessibile. Questo e il prezzo che addebiterai per ora di servizio.',bueno:'In cosa sei bravo?',disponible:'Disponibilita',disponibleBtn:'Disponibile ora',noDisponible:'Non disponibile',guardar:'Salva profilo',guardando:'Salvando...',baja:'Elimina il mio account',bajaPregunta:'Vuoi lasciare Argentalk?',exito:'Profilo aggiornato!',fotoOk:'Foto aggiornata!',errorFoto:'Errore foto.',errorGuardar:'Errore salvataggio.'},
-  de:{titulo:'Mein Profil',foto:'Tippen um Foto zu aendern',nombre:'Vollstaendiger Name',ciudad:'Stadt',sobre:'Ueber dich',precio:'Preis pro Stunde Dienstleistung',recibes:'Du erhaeltst',cobra:'Argentalk nimmt 15%',consejo:'Wir empfehlen einen erschwinglichen Preis. Dies ist der Preis den Sie pro Stunde berechnen.',bueno:'Worin bist du gut?',disponible:'Verfuegbarkeit',disponibleBtn:'Jetzt verfuegbar',noDisponible:'Nicht verfuegbar',guardar:'Profil speichern',guardando:'Speichern...',baja:'Konto loeschen',bajaPregunta:'Moechtest du Argentalk verlassen?',exito:'Profil aktualisiert!',fotoOk:'Foto aktualisiert!',errorFoto:'Fehler beim Hochladen.',errorGuardar:'Fehler beim Speichern.'},
-  zh:{titulo:'我的资料',foto:'点击更换照片',nombre:'全名',ciudad:'城市',sobre:'关于你',precio:'每小时服务价格',recibes:'你收到',cobra:'Argentalk收取15%',consejo:'建议设置合理价格。这是您每小时服务收取的价格。',bueno:'你擅长什么?',disponible:'可用性',disponibleBtn:'现在可用',noDisponible:'不可用',guardar:'保存资料',guardando:'保存中...',baja:'删除我的账户',bajaPregunta:'你想离开Argentalk吗?',exito:'资料已更新!',fotoOk:'照片已更新!',errorFoto:'上传照片出错。',errorGuardar:'保存出错。'},
-  ru:{titulo:'Мой профиль',foto:'Нажмите для смены фото',nombre:'Полное имя',ciudad:'Город',sobre:'О себе',precio:'Цена за час услуги',recibes:'Вы получаете',cobra:'Argentalk берет 15%',consejo:'Рекомендуем доступную цену. Это цена которую вы будете взимать за час услуги.',bueno:'В чем вы хороши?',disponible:'Доступность',disponibleBtn:'Доступен сейчас',noDisponible:'Недоступен',guardar:'Сохранить профиль',guardando:'Сохранение...',baja:'Удалить аккаунт',bajaPregunta:'Хотите покинуть Argentalk?',exito:'Профиль обновлен!',fotoOk:'Фото обновлено!',errorFoto:'Ошибка загрузки фото.',errorGuardar:'Ошибка сохранения.'},
+  es:{titulo:'Consejos para viajar a Argentina',sub:'Todo lo que necesitás saber antes de llegar',btn:'Buscar anfitriones',cta:'¿Querés un anfitrión que te ayude a moverte por Argentina?',secciones:[{icon:'💵',titulo:'Dinero y divisas',items:['Traé dólares o euros en efectivo — es la mejor forma de cambiar al tipo de cambio más conveniente.','En Argentina existe el dólar blue (mercado paralelo) que da mucho mejor cambio que el oficial.','Podés retirar pesos en cajeros Banelco con tarjeta Wise o Revolut pagando comisión mínima.','Wise cobra ~0.5% de comisión. Revolut da hasta €200/mes gratis en cajeros.','No cambies en el aeropuerto — el tipo de cambio es muy desfavorable.','Los anfitriones de Argentalk pueden orientarte sobre dónde cambiar de forma segura.']},{icon:'🚌',titulo:'Cómo moverse',items:['En Buenos Aires existe el subte (metro), colectivos (buses), trenes y taxis/remises.','Para usar el transporte público necesitás la tarjeta SUBE — se compra en kioscos y estaciones.','Los extranjeros pueden comprar la SUBE en cualquier kiosco por ~$500 pesos argentinos.','Los buses interurbanos son excelentes — compañías como Andesmar y Chevallier cubren todo el país.','Comprá pasajes de larga distancia en plataformas.gob.ar o en la terminal de ómnibus.','Uber, InDriver y Cabify son más económicos que el taxi tradicional.']},{icon:'🍖',titulo:'Qué comer',items:['El asado es el plato nacional — carne a las brasas que se come en familia los domingos.','Los alfajores son el snack más popular — galletas rellenas de dulce de leche.','Las empanadas son perfectas para comer rápido — rellenas de carne, jamón y queso o caprese.','Las medialunas son los croissants argentinos — ideales para el desayuno con mate.','El helado argentino es considerado uno de los mejores del mundo.','La milanesa es un clásico — carne empanada frita que se come con papas fritas.']},{icon:'📱',titulo:'Conectividad y eSIM',items:['Recomendamos comprar una eSIM antes de llegar para tener datos desde el primer momento.','Holafly ofrece eSIM con datos ilimitados para Argentina — muy recomendada para viajeros.','También podés comprar un chip local de Personal, Claro o Movistar en cualquier local.','El WiFi en hostels, cafés y restaurantes es generalmente bueno en las ciudades grandes.','Próximamente agregaremos link directo para comprar tu eSIM con descuento.']},{icon:'🔒',titulo:'Seguridad',items:['Argentina es un destino seguro para turistas en comparación con otros países de la región.','Como en cualquier ciudad grande, tené cuidado con el celular en la vía pública.','Evitá mostrar objetos de valor como cámaras o joyas en zonas muy transitadas.','Usá bolsillo interior o riñonera para documentos y efectivo.','Los barrios turísticos como Palermo, San Telmo y Recoleta son muy seguros.','Tener un anfitrión local de Argentalk es la mejor forma de moverse con confianza.']}]},
+  en:{titulo:'Travel tips for Argentina',sub:'Everything you need to know before you arrive',btn:'Find hosts',cta:'Want a host to help you get around Argentina?',secciones:[{icon:'💵',titulo:'Money and currency',items:['Bring USD or EUR in cash — best way to exchange at the most favorable rate.','Argentina has the blue dollar (parallel market) which gives a much better rate than official.','You can withdraw pesos at Banelco ATMs with Wise or Revolut paying minimum fees.','Wise charges ~0.5% fee. Revolut gives up to €200/month free at ATMs.','Do not exchange at the airport — the rate is very unfavorable.','Argentalk hosts can guide you on where to exchange safely.']},{icon:'🚌',titulo:'Getting around',items:['Buenos Aires has the subte (metro), buses, trains and taxis.','To use public transport you need the SUBE card — buy it at kiosks and stations.','Foreigners can buy the SUBE at any kiosk for about 500 Argentine pesos.','Long-distance buses are excellent — companies like Andesmar and Chevallier cover the whole country.','Buy long-distance tickets at plataformas.gob.ar or at the bus terminal.','Uber, InDriver and Cabify are cheaper than traditional taxis.']},{icon:'🍖',titulo:'What to eat',items:['Asado is the national dish — barbecued meat eaten with family on Sundays.','Alfajores are the most popular snack — cookies filled with dulce de leche.','Empanadas are perfect for a quick meal — filled with meat, ham and cheese.','Medialunas are Argentine croissants — ideal for breakfast with mate.','Argentine ice cream is considered one of the best in the world.','Milanesa is a classic — breaded fried meat served with french fries.']},{icon:'📱',titulo:'Connectivity and eSIM',items:['We recommend buying an eSIM before you arrive to have data from the first moment.','Holafly offers eSIM with unlimited data for Argentina — highly recommended.','You can also buy a local SIM from Personal, Claro or Movistar.','WiFi in hostels, cafes and restaurants is generally good in large cities.','We will soon add a direct link to buy your eSIM with a discount.']},{icon:'🔒',titulo:'Safety',items:['Argentina is a safe destination for tourists compared to other countries in the region.','As in any big city, be careful with your phone in public.','Avoid showing valuables like cameras or jewelry in busy areas.','Use an inner pocket or money belt for documents and cash.','Tourist neighborhoods like Palermo, San Telmo and Recoleta are very safe.','Having a local Argentalk host to guide you is the best way to get around with confidence.']}]},
+  pt:{titulo:'Dicas para viajar para a Argentina',sub:'Tudo o que você precisa saber antes de chegar',btn:'Encontrar anfitriões',cta:'Quer um anfitrião para te ajudar a se locomover pela Argentina?',secciones:[{icon:'💵',titulo:'Dinheiro e câmbio',items:['Traga dólares ou euros em espécie.','A Argentina tem o dólar blue com taxa muito melhor que a oficial.','Você pode sacar pesos em caixas Banelco com Wise ou Revolut.','Não troque no aeroporto.','Os anfitriões do Argentalk podem orientar sobre onde trocar com segurança.']},{icon:'🚌',titulo:'Como se locomover',items:['Buenos Aires tem metrô, ônibus, trens e táxis.','Para o transporte público você precisa do cartão SUBE.','Ônibus de longa distância cobrem todo o país.','Uber, InDriver e Cabify são mais baratos que táxi tradicional.']},{icon:'🍖',titulo:'O que comer',items:['O asado é o prato nacional.','Alfajores são o lanche mais popular.','Empanadas são perfeitas para comer rápido.','O sorvete argentino é um dos melhores do mundo.']},{icon:'📱',titulo:'Conectividade e eSIM',items:['Recomendamos comprar um eSIM antes de chegar.','Holafly oferece eSIM com dados ilimitados para Argentina.','Você também pode comprar um chip local.']},{icon:'🔒',titulo:'Segurança',items:['A Argentina é um destino seguro para turistas.','Cuidado com o celular em público.','Use bolso interno para documentos e dinheiro.','Bairros como Palermo e San Telmo são muito seguros.']}]},
+  fr:{titulo:'Conseils pour voyager en Argentine',sub:"Tout ce que vous devez savoir avant d'arriver",btn:'Trouver des hôtes',cta:'Vous voulez un hôte pour vous aider?',secciones:[{icon:'💵',titulo:'Argent et devises',items:["Apportez des USD ou EUR en espèces.",'Le dollar bleu donne un meilleur taux que l officiel.','Retirez des pesos aux distributeurs Banelco avec Wise ou Revolut.',"Ne changez pas à l'aéroport.",'Les hôtes Argentalk peuvent vous guider.']},{icon:'🚌',titulo:'Se déplacer',items:['Buenos Aires a le métro, les bus, les trains et les taxis.','Vous avez besoin de la carte SUBE pour les transports.','Les bus longue distance couvrent tout le pays.','Uber, InDriver et Cabify sont moins chers que les taxis.']},{icon:'🍖',titulo:'Que manger',items:["L'asado est le plat national.",'Les alfajores sont le snack le plus populaire.','Les empanadas sont parfaites pour manger rapidement.',"La glace argentine est l'une des meilleures au monde."]},{icon:'📱',titulo:'Connectivité et eSIM',items:["Nous recommandons d'acheter un eSIM avant d'arriver.",'Holafly propose des eSIM avec données illimitées.','Vous pouvez aussi acheter une SIM locale.']},{icon:'🔒',titulo:'Sécurité',items:["L'Argentine est une destination sûre.",'Faites attention à votre téléphone en public.','Utilisez une poche intérieure pour les documents.']}]},
+  it:{titulo:'Consigli per viaggiare in Argentina',sub:'Tutto quello che devi sapere prima di arrivare',btn:'Trova host',cta:'Vuoi un host che ti aiuti a muoverti in Argentina?',secciones:[{icon:'💵',titulo:'Denaro e valute',items:['Porta USD o EUR in contanti.','Il dollaro blu dà un tasso migliore di quello ufficiale.','Puoi prelevare pesos agli ATM Banelco con Wise o Revolut.',"Non cambiare all'aeroporto.",'Gli host di Argentalk possono guidarti.']},{icon:'🚌',titulo:'Come spostarsi',items:['Buenos Aires ha metropolitana, autobus, treni e taxi.','Hai bisogno della carta SUBE.','Gli autobus a lunga percorrenza coprono tutto il paese.','Uber, InDriver e Cabify sono più economici dei taxi.']},{icon:'🍖',titulo:'Cosa mangiare',items:["L'asado è il piatto nazionale.",'Gli alfajores sono lo snack più popolare.','Le empanadas sono perfette per mangiare velocemente.','Il gelato argentino è uno dei migliori al mondo.']},{icon:'📱',titulo:'Connettività e eSIM',items:['Consigliamo di acquistare un eSIM prima di arrivare.','Holafly offre eSIM con dati illimitati.','Puoi anche acquistare una SIM locale.']},{icon:'🔒',titulo:'Sicurezza',items:["L'Argentina è una destinazione sicura.",'Fai attenzione al telefono in pubblico.','Usa una tasca interna per documenti e contanti.']}]},
+  de:{titulo:'Reisetipps für Argentinien',sub:'Alles was Sie vor der Ankunft wissen müssen',btn:'Gastgeber finden',cta:'Möchten Sie einen Gastgeber der Ihnen hilft?',secciones:[{icon:'💵',titulo:'Geld und Währung',items:['Bringen Sie USD oder EUR in bar mit.','Der blaue Dollar gibt einen viel besseren Kurs.','Sie können Pesos an Banelco-Geldautomaten mit Wise abheben.','Tauschen Sie nicht am Flughafen.','Argentalk-Gastgeber können Sie zu sicheren Wechselstellen führen.']},{icon:'🚌',titulo:'Fortbewegung',items:['Buenos Aires hat U-Bahn Busse Züge und Taxis.','Sie benötigen die SUBE-Karte.','Fernbusse decken das ganze Land ab.','Uber InDriver und Cabify sind günstiger als Taxis.']},{icon:'🍖',titulo:'Was essen',items:['Asado ist das Nationalgericht.','Alfajores sind der beliebteste Snack.','Empanadas sind perfekt für eine schnelle Mahlzeit.','Argentinisches Eis gilt als eines der besten der Welt.']},{icon:'📱',titulo:'Konnektivität und eSIM',items:['Wir empfehlen eine eSIM vor der Ankunft zu kaufen.','Holafly bietet eSIM mit unbegrenzten Daten.','Sie können auch eine lokale SIM-Karte kaufen.']},{icon:'🔒',titulo:'Sicherheit',items:['Argentinien ist ein sicheres Reiseziel.','Passen Sie in der Öffentlichkeit auf Ihr Telefon auf.','Verwenden Sie eine Innentasche für Dokumente.']}]},
+  zh:{titulo:'阿根廷旅行贴士',sub:'到达前您需要了解的一切',btn:'寻找主人',cta:'想要一个主人帮助您在阿根廷四处走动吗？',secciones:[{icon:'💵',titulo:'金钱和货币',items:['带美元或欧元现金。','阿根廷有蓝色美元，比官方汇率好得多。','可以在Banelco自动取款机用Wise或Revolut卡提取比索。','不要在机场兑换。','Argentalk的主人可以指导您在哪里安全兑换。']},{icon:'🚌',titulo:'交通出行',items:['布宜诺斯艾利斯有地铁、公共汽车、火车和出租车。','乘坐公共交通需要SUBE卡。','长途巴士覆盖全国各地。','Uber、InDriver和Cabify比传统出租车便宜。']},{icon:'🍖',titulo:'饮食',items:['阿萨多是国菜。','阿尔法霍尔是最受欢迎的零食。','恩帕纳达斯是快速用餐的完美选择。','阿根廷冰淇淋被认为是世界上最好的之一。']},{icon:'📱',titulo:'网络和eSIM',items:['建议在到达前购买eSIM。','Holafly提供阿根廷无限数据eSIM。','也可以在当地购买SIM卡。']},{icon:'🔒',titulo:'安全',items:['阿根廷是一个安全的旅游目的地。','在公共场所注意手机。','使用内袋存放证件和现金。']}]},
+  ru:{titulo:'Советы для путешествия в Аргентину',sub:'Всё что нужно знать перед приездом',btn:'Найти хозяина',cta:'Хотите хозяина который поможет вам передвигаться по Аргентине?',secciones:[{icon:'💵',titulo:'Деньги и валюта',items:['Привезите наличные USD или EUR.','В Аргентине есть синий доллар с гораздо лучшим курсом.','Можно снимать песо в банкоматах Banelco с картами Wise или Revolut.','Не меняйте в аэропорту.','Хозяева Argentalk могут подсказать где безопасно обменять.']},{icon:'🚌',titulo:'Передвижение',items:['В Буэнос-Айресе есть метро автобусы поезда и такси.','Для общественного транспорта нужна карта SUBE.','Междугородние автобусы охватывают всю страну.','Uber InDriver и Cabify дешевле традиционного такси.']},{icon:'🍖',titulo:'Что поесть',items:['Асадо — национальное блюдо.','Альфахорес — самая популярная закуска.','Эмпанадас идеальны для быстрого перекуса.','Аргентинское мороженое одно из лучших в мире.']},{icon:'📱',titulo:'Связь и eSIM',items:['Рекомендуем купить eSIM до приезда.','Holafly предлагает eSIM с безлимитным интернетом.','Также можно купить местную SIM-карту.']},{icon:'🔒',titulo:'Безопасность',items:['Аргентина безопасное направление для туристов.','Следите за телефоном на улице.','Используйте внутренний карман для документов.']}]},
 };
 
-export default function Perfil() {
-  const router = useRouter();
+export default function Consejos() {
   const { lang } = useLang();
-  const [user, setUser] = useState(null);
-  const [form, setForm] = useState({nombre:'',bio:'',precio:10,habilidades:[],ciudad:'',disponible:true});
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [msg, setMsg] = useState('');
-  const [error, setError] = useState('');
-  const fileRef = useRef(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) { router.push('/login'); return; }
-    api.get('/api/auth/me')
-      .then(r => {
-        setUser(r.data);
-        setForm({
-          nombre: r.data.nombre || '',
-          bio: r.data.bio || '',
-          precio: r.data.precio || 10,
-          habilidades: r.data.habilidades || [],
-          ciudad: r.data.ciudad || '',
-          disponible: r.data.disponible !== false
-        });
-        setLoading(false);
-      })
-      .catch(() => { localStorage.removeItem('token'); router.push('/login'); });
-  }, []);
-
-  const t = T[lang] || T.es;
-
-  const toggleH = h => setForm(f => ({
-    ...f,
-    habilidades: f.habilidades.includes(h) ? f.habilidades.filter(x => x !== h) : [...f.habilidades, h]
-  }));
-
-  const handlePhoto = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setUploading(true); setError('');
-    const reader = new FileReader();
-    reader.onload = async (ev) => {
-      try {
-        const res = await api.post('/api/upload/photo', { photo: ev.target.result });
-        setUser(u => ({ ...u, foto: res.data.url }));
-        setMsg(t.fotoOk);
-      } catch { setError(t.errorFoto); }
-      finally { setUploading(false); }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const save = async () => {
-    setSaving(true); setMsg(''); setError('');
-    try {
-      const res = await api.put('/api/users/profile', form);
-      setUser(prev => ({ ...prev, ...res.data }));
-      setMsg(t.exito);
-    } catch (err) {
-      setError(err.response?.data?.error || t.errorGuardar);
-    } finally { setSaving(false); }
-  };
-
-  const darDeBaja = async () => {
-    if (!confirm(t.bajaPregunta)) return;
-    try {
-      await api.delete('/api/users/account');
-      localStorage.clear();
-      router.push('/');
-    } catch { setError(t.errorGuardar); }
-  };
-
-  if (loading) return <div className="spinner">Cargando...</div>;
-  if (!user) return null;
+  const t = T[lang] || T.en;
 
   return (
     <>
-      <Nav links={[{href:'/dashboard',label:'Dashboard'}]} />
+      <Nav links={[{href:'/explorar',label:t.btn}]} />
       <div className="container">
-        {msg && <div className="success">{msg}</div>}
-        {error && <div className="error">{error}</div>}
-
-        <div className="card">
-          <h1>{t.titulo}</h1>
-          <div style={{textAlign:'center',marginBottom:20}}>
-            <div onClick={() => fileRef.current?.click()} style={{width:90,height:90,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32,fontWeight:700,margin:'0 auto 8px',cursor:'pointer',overflow:'hidden',position:'relative',border:'3px solid #003DA5'}}>
-              {user?.foto
-                ? <img src={user.foto} alt="foto" style={{width:'100%',height:'100%',objectFit:'cover'}} />
-                : (user?.nombre||user?.email||'A')[0].toUpperCase()
-              }
-              {uploading && <div style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',background:'rgba(0,0,0,0.5)',display:'flex',alignItems:'center',justifyContent:'center',color:'white',fontSize:11}}>...</div>}
-            </div>
-            <input ref={fileRef} type="file" accept="image/*" onChange={handlePhoto} style={{display:'none'}} />
-            <div style={{fontSize:13,color:'#003DA5',marginTop:4,cursor:'pointer'}} onClick={() => fileRef.current?.click()}>📷 {t.foto}</div>
-            <div style={{fontSize:12,color:'#888',marginTop:2}}>{user?.email}</div>
-          </div>
-
-          <div className="form-group"><label>{t.nombre}</label><input value={form.nombre} onChange={e => setForm({...form,nombre:e.target.value})} /></div>
-          <div className="form-group"><label>{t.ciudad}</label><input value={form.ciudad} onChange={e => setForm({...form,ciudad:e.target.value})} /></div>
-          <div className="form-group"><label>{t.sobre}</label><textarea rows={4} value={form.bio} onChange={e => setForm({...form,bio:e.target.value})} style={{resize:'vertical'}} /></div>
-
-          {user?.role === 'seller' && (
-            <div className="form-group">
-              <label>{t.precio}</label>
-              <div style={{display:'flex',alignItems:'center',gap:16,marginTop:8}}>
-                <input type="range" min="2" max="200" step="1" value={form.precio} onChange={e => setForm({...form,precio:parseInt(e.target.value)})} style={{flex:1}} />
-                <div style={{minWidth:80,textAlign:'center'}}>
-                  <div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>USD {form.precio}</div>
-                </div>
-              </div>
-              <div style={{background:'#fff8e1',borderRadius:8,padding:10,marginTop:8,fontSize:13,color:'#92400e',lineHeight:1.5}}>
-                💡 {t.consejo}
-              </div>
-            </div>
-          )}
+        <div className="card" style={{textAlign:'center',marginBottom:16}}>
+          <div style={{fontSize:48,marginBottom:8}}>🇦🇷</div>
+          <h1 style={{marginBottom:4}}>{t.titulo}</h1>
+          <p style={{color:'#888',fontSize:14}}>{t.sub}</p>
         </div>
 
-        {user?.role === 'seller' && (
-          <div className="card">
-            <h2>{t.bueno}</h2>
-            <div style={{display:'flex',flexWrap:'wrap',gap:8}}>
-              {HABS.map(h => (
-                <button key={h} onClick={() => toggleH(h)} style={{width:'auto',padding:'8px 16px',borderRadius:20,background:form.habilidades.includes(h)?'#003DA5':'white',color:form.habilidades.includes(h)?'white':'#003DA5',border:'1.5px solid #003DA5',fontSize:14,cursor:'pointer'}}>{h}</button>
+        {t.secciones.map((s, i) => (
+          <div key={i} className="card" style={{marginBottom:16}}>
+            <h2 style={{marginBottom:16}}>{s.icon} {s.titulo}</h2>
+            <div style={{display:'flex',flexDirection:'column',gap:10}}>
+              {s.items.map((item, j) => (
+                <div key={j} style={{display:'flex',gap:10,alignItems:'flex-start'}}>
+                  <span style={{color:'#003DA5',fontWeight:700,flexShrink:0}}>→</span>
+                  <p style={{margin:0,fontSize:14,color:'#555',lineHeight:1.6}}>{item}</p>
+                </div>
               ))}
             </div>
           </div>
-        )}
+        ))}
 
-        {user?.role === 'seller' && (
-          <div className="card">
-            <h2>{t.disponible}</h2>
-            <button onClick={() => setForm({...form,disponible:!form.disponible})} style={{width:'auto',padding:'10px 20px',background:form.disponible?'#22c55e':'#ddd',color:form.disponible?'white':'#666',border:'none',borderRadius:10,fontSize:14,cursor:'pointer'}}>
-              {form.disponible ? t.disponibleBtn : t.noDisponible}
-            </button>
-          </div>
-        )}
-
-        <button className="btn-orange" onClick={save} disabled={saving} style={{marginBottom:12}}>
-          {saving ? t.guardando : t.guardar}
-        </button>
-
-        <div style={{marginTop:20,paddingTop:20,borderTop:'1px solid #f0f0f0',textAlign:'center'}}>
-          <p style={{fontSize:13,color:'#888',marginBottom:12}}>{t.bajaPregunta}</p>
-          <button onClick={darDeBaja} style={{width:'auto',padding:'10px 20px',background:'white',color:'#cc0000',border:'1px solid #cc0000',borderRadius:10,fontSize:14,cursor:'pointer'}}>{t.baja}</button>
+        <div className="card" style={{background:'#003DA5',textAlign:'center'}}>
+          <p style={{color:'white',fontSize:15,marginBottom:16,lineHeight:1.6}}>{t.cta}</p>
+          <a href="/explorar">
+            <button className="btn-orange" style={{width:'auto',padding:'12px 28px'}}>{t.btn}</button>
+          </a>
         </div>
       </div>
     </>
