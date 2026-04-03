@@ -21,6 +21,7 @@ export default function Explorar() {
   const [sellers, setSellers] = useState([]);
   const [filtro, setFiltro] = useState('');
   const [loading, setLoading] = useState(true);
+  const [bios, setBios] = useState({});
 
   useEffect(() => {
     api.get('/api/users/sellers')
@@ -28,6 +29,23 @@ export default function Explorar() {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (lang === 'es' || sellers.length === 0) return;
+    setBios({});
+    sellers.forEach(async (s) => {
+      if (!s.bio) return;
+      try {
+        const res = await fetch('/api/translate', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ texto: s.bio, origen: 'es', destino: lang })
+        });
+        const data = await res.json();
+        if (data.traduccion) setBios(prev => ({...prev, [s._id]: data.traduccion}));
+      } catch {}
+    });
+  }, [lang, sellers]);
 
   const t = T[lang] || T.en;
 
@@ -96,7 +114,7 @@ export default function Explorar() {
                 )}
                 {s.bio && (
                   <div style={{fontSize:12,color:'#666',marginBottom:8,lineHeight:1.4,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>
-                    {s.bio}
+                    {bios[s._id] || s.bio}
                   </div>
                 )}
                 {s.puntuacion > 0 && (
