@@ -4,104 +4,133 @@ import Link from 'next/link';
 import Nav from '../components/Nav';
 import api from '../../lib/api';
 
-async function traducirTexto(texto, destino) {
-  if (!texto || destino === 'es') return texto;
-  try {
-    const res = await fetch('/api/translate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ texto, origen: 'es', destino })
-    });
-    const data = await res.json();
-    return data.traduccion || texto;
-  } catch { return texto; }
-}
+const T = {
+  es:{titulo:'Anfitriones disponibles',buscar:'Buscar...',filtrar:'Filtrar',todos:'Todos',disponible:'Disponible',verificado:'Verificado',contactar:'Contactar',porHora:'/ hora',sinAnfitriones:'No hay anfitriones disponibles.',cargando:'Cargando...'},
+  en:{titulo:'Available hosts',buscar:'Search...',filtrar:'Filter',todos:'All',disponible:'Available',verificado:'Verified',contactar:'Contact',porHora:'/ hour',sinAnfitriones:'No hosts available.',cargando:'Loading...'},
+  pt:{titulo:'Anfitrioes disponiveis',buscar:'Buscar...',filtrar:'Filtrar',todos:'Todos',disponible:'Disponivel',verificado:'Verificado',contactar:'Contatar',porHora:'/ hora',sinAnfitriones:'Nenhum anfitriao disponivel.',cargando:'Carregando...'},
+  fr:{titulo:'Hotes disponibles',buscar:'Rechercher...',filtrar:'Filtrer',todos:'Tous',disponible:'Disponible',verificado:'Verifie',contactar:'Contacter',porHora:'/ heure',sinAnfitriones:'Aucun hote disponible.',cargando:'Chargement...'},
+  it:{titulo:'Host disponibili',buscar:'Cerca...',filtrar:'Filtra',todos:'Tutti',disponible:'Disponibile',verificado:'Verificato',contactar:'Contatta',porHora:'/ ora',sinAnfitriones:'Nessun host disponibile.',cargando:'Caricamento...'},
+  de:{titulo:'Verfugbare Gastgeber',buscar:'Suchen...',filtrar:'Filtern',todos:'Alle',disponible:'Verfugbar',verificado:'Verifiziert',contactar:'Kontaktieren',porHora:'/ Stunde',sinAnfitriones:'Keine Gastgeber verfugbar.',cargando:'Laden...'},
+  zh:{titulo:'可用主人',buscar:'搜索...',filtrar:'筛选',todos:'全部',disponible:'可用',verificado:'已验证',contactar:'联系',porHora:'/ 小时',sinAnfitriones:'没有可用的主人。',cargando:'加载中...'},
+  ru:{titulo:'Доступные хозяева',buscar:'Поиск...',filtrar:'Фильтр',todos:'Все',disponible:'Доступен',verificado:'Проверен',contactar:'Связаться',porHora:'/ час',sinAnfitriones:'Нет доступных хозяев.',cargando:'Загрузка...'},
+};
 
 export default function Explorar() {
   const [sellers, setSellers] = useState([]);
-  const [filtrados, setFiltrados] = useState([]);
-  const [busqueda, setBusqueda] = useState('');
+  const [filtro, setFiltro] = useState('');
   const [loading, setLoading] = useState(true);
-  const [traduciendo, setTraduciendo] = useState(false);
+  const [lang, setLang] = useState('es');
 
   useEffect(() => {
     const savedLang = localStorage.getItem('lang') || 'es';
+    setLang(savedLang);
     api.get('/api/users/sellers')
-      .then(async r => {
-        let data = r.data;
-        if (savedLang !== 'es') {
-          setTraduciendo(true);
-          try {
-            data = await Promise.all(data.map(async s => ({
-              ...s,
-              bio: s.bio ? await traducirTexto(s.bio, savedLang) : s.bio,
-            })));
-          } catch(e) {
-            console.error('Error traduciendo:', e);
-          }
-          setTraduciendo(false);
-        }
-        setSellers(data);
-        setFiltrados(data);
-      })
-      .catch(err => console.error(err))
+      .then(r => setSellers(r.data))
+      .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
-  useEffect(() => {
-    if (!busqueda) { setFiltrados(sellers); return; }
-    const q = busqueda.toLowerCase();
-    setFiltrados(sellers.filter(s =>
-      s.nombre?.toLowerCase().includes(q) ||
-      s.ciudad?.toLowerCase().includes(q) ||
-      s.bio?.toLowerCase().includes(q) ||
-      s.habilidades?.some(h => h.toLowerCase().includes(q))
-    ));
-  }, [busqueda, sellers]);
+  const t = T[lang] || T.en;
 
-  if (loading) return <div className="spinner">Cargando...</div>;
+  const filtrados = sellers.filter(s =>
+    !filtro ||
+    s.nombre?.toLowerCase().includes(filtro.toLowerCase()) ||
+    s.bio?.toLowerCase().includes(filtro.toLowerCase()) ||
+    s.habilidades?.some(h => h.toLowerCase().includes(filtro.toLowerCase())) ||
+    s.ciudad?.toLowerCase().includes(filtro.toLowerCase())
+  );
+
+  if (loading) return (
+    <>
+      <Nav />
+      <div className="spinner">{t.cargando}</div>
+    </>
+  );
 
   return (
     <>
-      <Nav links={[{href:'/register',label:'Inscribirse'}]} />
+      <Nav />
       <div className="container">
-        <h1 style={{marginBottom:4}}>Anfitriones argentinos</h1>
-        {traduciendo && <div style={{fontSize:13,color:'#888',marginBottom:12}}>Traduciendo...</div>}
-        <div style={{marginBottom:20,marginTop:12}}>
-          <input placeholder="Buscar por nombre, ciudad, habilidad..." value={busqueda} onChange={e => setBusqueda(e.target.value)} style={{width:'100%'}} />
+        <h1 style={{marginBottom:16}}>{t.titulo}</h1>
+
+        <div style={{position:'relative',marginBottom:20}}>
+          <input
+            value={filtro}
+            onChange={e => setFiltro(e.target.value)}
+            placeholder={t.buscar}
+            style={{paddingLeft:36}}
+          />
+          <span style={{position:'absolute',left:12,top:'50%',transform:'translateY(-50%)',fontSize:16}}>🔍</span>
         </div>
+
         {filtrados.length === 0 && (
-          <div className="card" style={{textAlign:'center',color:'#888'}}>No hay anfitriones disponibles por ahora.</div>
+          <div className="card" style={{textAlign:'center',color:'#888'}}>{t.sinAnfitriones}</div>
         )}
-        {filtrados.map(s => (
-          <div key={s._id} className="card" style={{marginBottom:16}}>
-            <div style={{display:'flex',gap:16,alignItems:'flex-start'}}>
-              <div style={{width:64,height:64,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontSize:24,fontWeight:700,flexShrink:0,overflow:'hidden',border:'2px solid #003DA5'}}>
-                {s.foto ? <img src={s.foto} alt={s.nombre} style={{width:'100%',height:'100%',objectFit:'cover'}} /> : (s.nombre||s.email||'A')[0].toUpperCase()}
-              </div>
-              <div style={{flex:1}}>
-                <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
-                  <div style={{fontWeight:700,fontSize:17}}>{s.nombre||'Sin nombre'}</div>
-                  {s.verificado && <span className="badge badge-green">✓ Verificado</span>}
-                  {s.disponible && <span className="badge badge-blue">Disponible</span>}
-                </div>
-                {s.ciudad && <div style={{fontSize:13,color:'#888',marginTop:2}}>📍 {s.ciudad}</div>}
-                {s.bio && <div style={{fontSize:14,color:'#555',marginTop:6,lineHeight:1.5}}>{s.bio}</div>}
-                {s.habilidades?.length > 0 && (
-                  <div style={{display:'flex',flexWrap:'wrap',gap:6,marginTop:8}}>
-                    {s.habilidades.map((h,i) => <span key={i} style={{background:'#EBF2FF',color:'#003DA5',padding:'3px 10px',borderRadius:20,fontSize:12}}>{h}</span>)}
+
+        <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:12}}>
+          {filtrados.map(s => (
+            <div key={s._id} className="card" style={{padding:0,overflow:'hidden',borderRadius:16,display:'flex',flexDirection:'column'}}>
+              <div style={{position:'relative',height:140,background:'#EBF2FF',overflow:'hidden'}}>
+                {s.foto
+                  ? <img src={s.foto} alt={s.nombre} style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                  : <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:48,fontWeight:700,color:'#003DA5'}}>
+                      {(s.nombre||'A')[0].toUpperCase()}
+                    </div>
+                }
+                {s.verificado && (
+                  <div style={{position:'absolute',top:8,right:8,background:'#22c55e',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>
+                    ✓
                   </div>
                 )}
-                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginTop:12}}>
-                  <div style={{fontWeight:700,fontSize:18,color:'#003DA5'}}>USD {s.precio||10}</div>
-                  <Link href={`/pay?seller=${s._id}&precio=${s.precio||10}&nombre=${encodeURIComponent(s.nombre||'Anfitrion')}`}>
-                    <button className="btn-orange" style={{width:'auto',padding:'10px 20px',fontSize:14}}>Contactar</button>
+                {s.disponible && (
+                  <div style={{position:'absolute',top:8,left:8,background:'#003DA5',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>
+                    ● {t.disponible}
+                  </div>
+                )}
+              </div>
+
+              <div style={{padding:'12px',flex:1,display:'flex',flexDirection:'column'}}>
+                <div style={{fontWeight:700,fontSize:15,marginBottom:4,color:'#1a1a1a'}}>{s.nombre||'Sin nombre'}</div>
+
+                {s.ciudad && (
+                  <div style={{fontSize:12,color:'#888',marginBottom:6}}>📍 {s.ciudad}</div>
+                )}
+
+                {s.habilidades && s.habilidades.length > 0 && (
+                  <div style={{display:'flex',flexWrap:'wrap',gap:4,marginBottom:8}}>
+                    {s.habilidades.slice(0,3).map((h,i) => (
+                      <span key={i} style={{background:'#EBF2FF',color:'#003DA5',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:500}}>{h}</span>
+                    ))}
+                  </div>
+                )}
+
+                {s.bio && (
+                  <div style={{fontSize:12,color:'#666',marginBottom:8,lineHeight:1.4,flex:1,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}}>
+                    {s.bio}
+                  </div>
+                )}
+
+                {s.puntuacion > 0 && (
+                  <div style={{fontSize:12,color:'#F4A020',marginBottom:8}}>
+                    {'⭐'.repeat(Math.round(s.puntuacion))} {s.puntuacion}
+                  </div>
+                )}
+
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'auto',paddingTop:8,borderTop:'1px solid #f0f0f0'}}>
+                  <div>
+                    <div style={{fontSize:18,fontWeight:700,color:'#003DA5'}}>USD {s.precio}</div>
+                    <div style={{fontSize:11,color:'#888'}}>{t.porHora}</div>
+                  </div>
+                  <Link href={`/pay?seller=${s._id}&nombre=${encodeURIComponent(s.nombre||'')}&precio=${s.precio}`}>
+                    <button className="btn-orange" style={{width:'auto',padding:'8px 14px',fontSize:13,borderRadius:10}}>
+                      {t.contactar}
+                    </button>
                   </Link>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </>
   );
