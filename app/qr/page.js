@@ -26,7 +26,7 @@ export default function QR() {
       <div className="container" style={{textAlign:'center'}}>
         <div className="card" style={{maxWidth:340,margin:'0 auto'}}>
           <div style={{fontSize:28,fontWeight:700,color:'#4B6CB7',marginBottom:4}}>
-            Argen<span style={{color:'#F4A020'}}>talk</span> 🧉
+            Know<span style={{color:'#F4A020'}}>an</span> 🌐
           </div>
           <div style={{fontSize:14,color:'#666',marginBottom:4}}>Hablá con argentinos reales</div>
           <div style={{fontSize:12,color:'#999',marginBottom:20}}>Talk · Parlez · Parla · Sprechen · 说话 · Говорить</div>

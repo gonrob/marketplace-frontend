@@ -6,7 +6,7 @@ import useLang from '../../lib/useLang';
 
 const CULTURAS = {
   mate: {
-    icon: '🧉',
+    icon: '🌐',
     es: { titulo:'El Mate', sub:'La bebida nacional de Argentina', secciones:[{t:'¿Qué es el mate?',p:'El mate es una infusión hecha con hojas de yerba mate. Es mucho más que una bebida — es un ritual social que une a las personas. Se comparte en ronda, pasando el mate de mano en mano.'},{t:'Las reglas',p:'El cebador llena el mate y lo pasa. No se agradece hasta que quieras terminar. Si decís gracias significa que no querés más. Nunca muevas la bombilla.'}], cta:'¿Querés aprender a tomar mate con un argentino real?'},
     en: { titulo:'Mate', sub:"Argentina's national drink", secciones:[{t:'What is mate?',p:"Mate is an infusion made from dried yerba mate leaves. It's much more than a drink — it's a social ritual that brings people together, shared in a circle from hand to hand."},{t:'The rules',p:"The cebador fills the mate and passes it. Do not say thank you until you are done. Thank you means you don't want more. Never move the bombilla."}], cta:'Want to learn to drink mate with a real Argentinian?'},
     pt: { titulo:'O Mate', sub:'A bebida nacional da Argentina', secciones:[{t:'O que é o mate?',p:'O mate é uma infusão feita com folhas de erva-mate. É muito mais que uma bebida, é um ritual social que une as pessoas, compartilhado em roda.'},{t:'As regras',p:'O cebador enche e passa. Não agradeça até querer terminar. Obrigado significa que não quer mais. Nunca mova a bombilla.'}], cta:'Quer aprender a tomar mate com um argentino real?'},

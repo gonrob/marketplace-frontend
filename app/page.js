@@ -32,7 +32,7 @@ export default function Home() {
   return (
     <>
       <nav className="nav">
-        <span className="nav-logo">Argen<span>talk</span> 🧉</span>
+        <span className="nav-logo">Know<span>an</span> 🌐</span>
         <div className="nav-links">
           <div style={{position:'relative'}}>
             <button onClick={() => setShowLangs(!showLangs)} style={{width:'auto',padding:'6px 10px',fontSize:14,background:'rgba(255,255,255,0.2)',border:'none',borderRadius:8,color:'white',cursor:'pointer'}}>
@@ -56,7 +56,7 @@ export default function Home() {
       </nav>
 
       <div style={{background:'#4B6CB7',padding:'40px 20px 60px',textAlign:'center'}}>
-        <div style={{fontSize:48,marginBottom:12}}>🧉</div>
+        <div style={{fontSize:48,marginBottom:12}}>🌐</div>
         <h1 style={{color:'white',fontSize:32,marginBottom:10}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
         <p style={{color:'rgba(255,255,255,0.85)',fontSize:16,marginBottom:8}}>{t.tag}</p>
         <p style={{color:'rgba(255,255,255,0.65)',fontSize:14,marginBottom:28}}>{t.sub}</p>
@@ -68,7 +68,7 @@ export default function Home() {
 
       <div style={{maxWidth:480,margin:'-30px auto 0',padding:'0 20px 40px'}}>
         <div className="cultura-grid" style={{marginTop:0,gridTemplateColumns:'repeat(5,1fr)'}}>
-          <Link href="/cultura/mate" className="cultura-item"><span className="cultura-icon">🧉</span><div className="cultura-label">{t.mate}</div></Link>
+          <Link href="/cultura/mate" className="cultura-item"><span className="cultura-icon">🌐</span><div className="cultura-label">{t.mate}</div></Link>
           <Link href="/cultura/truco" className="cultura-item"><span className="cultura-icon">🃏</span><div className="cultura-label">{t.truco}</div></Link>
           <Link href="/cultura/futbol" className="cultura-item"><span className="cultura-icon">⚽</span><div className="cultura-label">{t.futbol}</div></Link>
           <Link href="/cultura/dulce" className="cultura-item"><span className="cultura-icon">🍮</span><div className="cultura-label">{t.dulce}</div></Link>

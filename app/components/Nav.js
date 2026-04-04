@@ -14,7 +14,7 @@ export default function Nav({ links = [] }) {
   return (
     <nav className="nav">
       <Link href="/" style={{textDecoration:'none'}}>
-        <span className="nav-logo">Argen<span>talk</span> 🧉</span>
+        <span className="nav-logo">Know<span>an</span> 🌐</span>
       </Link>
       <div className="nav-links">
         <Link href="/" style={{fontSize:13,color:'white',textDecoration:'none',opacity:0.8}}>{HOME[lang]||'🏠 Home'}</Link>

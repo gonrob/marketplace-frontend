@@ -37,7 +37,7 @@ export default function Compartir() {
           <p style={{color:'#666',fontSize:14,marginBottom:24}}>Compartí la app con tus amigos y conocidos</p>
 
           <div style={{background:'#f0f4ff',borderRadius:16,padding:24,marginBottom:20}}>
-            <div style={{fontSize:48,marginBottom:12}}>🧉</div>
+            <div style={{fontSize:48,marginBottom:12}}>🌐</div>
             <div style={{fontWeight:700,fontSize:20,color:'#4B6CB7',marginBottom:4}}>Argen<span style={{color:'#F4A020'}}>talk</span></div>
             <div style={{fontSize:13,color:'#666'}}>Hablá con argentinos reales. Viví la cultura.</div>
           </div>

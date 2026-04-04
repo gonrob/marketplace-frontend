@@ -81,7 +81,7 @@ function DashboardContent() {
   return (
     <>
       <nav className="nav">
-        <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Argen<span>talk</span> 🧉</span></Link>
+        <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Know<span>an</span> 🌐</span></Link>
         <div className="nav-links">
           <Link href="/" style={{fontSize:13,color:'white',textDecoration:'none',opacity:0.8}}>🏠 Home</Link>
           <Link href="/explorar" style={{fontSize:13,color:'white',textDecoration:'none'}}>{t.buscarAnfitriones}</Link>
@@ -151,7 +151,7 @@ function DashboardContent() {
             </div>
             <Link href="/explorar"><button className="btn-orange" style={{marginBottom:12}}>🔍 {t.buscarAnfitriones}</button></Link>
             <Link href="/perfil"><button style={{marginBottom:12}}>✏️ {t.editarPerfil}</button></Link>
-            <Link href="/cultura/mate"><button className="btn-secondary">🧉 {t.aprender}</button></Link>
+            <Link href="/cultura/mate"><button className="btn-secondary">🌐 {t.aprender}</button></Link>
           </div>
         )}
 
