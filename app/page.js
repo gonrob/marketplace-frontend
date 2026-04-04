@@ -57,7 +57,7 @@ export default function Home() {
 
       <div style={{background:'#4B6CB7',padding:'40px 20px 60px',textAlign:'center'}}>
         <div style={{fontSize:48,marginBottom:12}}>🌐</div>
-        <h1 style={{color:'white',fontSize:32,marginBottom:10}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
+        <h1 style={{color:'white',fontSize:32,marginBottom:10}}>Know<span style={{color:'#F4A020'}}>an</span></h1>
         <p style={{color:'rgba(255,255,255,0.85)',fontSize:16,marginBottom:8}}>{t.tag}</p>
         <p style={{color:'rgba(255,255,255,0.65)',fontSize:14,marginBottom:28}}>{t.sub}</p>
         <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
