@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Nav from '../components/Nav';
 
-const URL = 'https://argentalk.vercel.app';
+const URL = 'https://knowan.net';
 
 export default function Compartir() {
   const [copiado, setCopiado] = useState(false);
@@ -33,7 +33,7 @@ export default function Compartir() {
       <Nav />
       <div className="container">
         <div className="card" style={{textAlign:'center'}}>
-          <h1 style={{marginBottom:8}}>Compartir Argentalk</h1>
+          <h1 style={{marginBottom:8}}>Compartir Knowan</h1>
           <p style={{color:'#666',fontSize:14,marginBottom:24}}>Compartí la app con tus amigos y conocidos</p>
 
           <div style={{background:'#f0f4ff',borderRadius:16,padding:24,marginBottom:20}}>
@@ -50,13 +50,13 @@ export default function Compartir() {
           </div>
 
           <div style={{display:'flex',flexDirection:'column',gap:10,marginBottom:24}}>
-            <a href={`https://wa.me/?text=Conocé%20Argentalk%20-%20Hablá%20con%20argentinos%20reales%20${URL}`} target="_blank" rel="noopener noreferrer">
+            <a href={`https://wa.me/?text=Conocé%20Knowan%20-%20Hablá%20con%20argentinos%20reales%20${URL}`} target="_blank" rel="noopener noreferrer">
               <button style={{background:'#25D366',border:'none'}}>💬 Compartir por WhatsApp</button>
             </a>
-            <a href={`mailto:?subject=Conocé Argentalk&body=Hablá con argentinos reales en ${URL}`}>
+            <a href={`mailto:?subject=Conocé Knowan&body=Hablá con argentinos reales en ${URL}`}>
               <button className="btn-secondary">📧 Compartir por Email</button>
             </a>
-            <a href={`https://twitter.com/intent/tweet?text=Conocé%20Argentalk%20-%20Hablá%20con%20argentinos%20reales&url=${URL}`} target="_blank" rel="noopener noreferrer">
+            <a href={`https://twitter.com/intent/tweet?text=Conocé%20Knowan%20-%20Hablá%20con%20argentinos%20reales&url=${URL}`} target="_blank" rel="noopener noreferrer">
               <button style={{background:'#000',border:'none',color:'white'}}>𝕏 Compartir en X</button>
             </a>
           </div>

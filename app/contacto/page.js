@@ -9,8 +9,8 @@ export default function Contacto() {
         <div className="card">
           <h1>Contacto</h1>
           <p style={{color:'#666',marginBottom:20}}>¿Tenés alguna pregunta o sugerencia? Escribinos.</p>
-          <a href="mailto:argentalk26@gmail.com">
-            <button className="btn-orange">📧 Escribir a argentalk26@gmail.com</button>
+          <a href="mailto:knowan26@gmail.com">
+            <button className="btn-orange">📧 Escribir a knowan26@gmail.com</button>
           </a>
           <div style={{marginTop:20,fontSize:14,color:'#888'}}>
             También podés encontrarnos en:<br/>

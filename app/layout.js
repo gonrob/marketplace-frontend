@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'Argentalk - Hablá con argentinos reales',
+  title: 'Knowan - Hablá con argentinos reales',
   description: 'Conectá con argentinos reales. Mate, truco, fútbol y cultura argentina.',
 };
 

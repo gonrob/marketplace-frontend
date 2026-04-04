@@ -82,7 +82,7 @@ export default function Admin() {
             </div>
             <div className="card" style={{textAlign:'center',padding:16}}>
               <div style={{fontSize:22,fontWeight:700,color:'#22c55e'}}>USD {(stats.contactosTotal * 0 ).toFixed(2)}</div>
-              <div style={{fontSize:12,color:'#888'}}>Ganancia Argentalk</div>
+              <div style={{fontSize:12,color:'#888'}}>Ganancia Knowan</div>
             </div>
           </div>
         )}

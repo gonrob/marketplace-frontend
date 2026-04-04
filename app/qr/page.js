@@ -11,7 +11,7 @@ export default function QR() {
     script.src = 'https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js';
     script.onload = () => {
       if (canvasRef.current) {
-        window.QRCode.toCanvas(canvasRef.current, 'https://argentalk.vercel.app', {
+        window.QRCode.toCanvas(canvasRef.current, 'https://knowan.net', {
           width: 220, margin: 2,
           color: { dark: '#003DA5', light: '#ffffff' }
         });
@@ -34,7 +34,7 @@ export default function QR() {
             <canvas ref={canvasRef} style={{borderRadius:8}} />
           </div>
           <div style={{background:'#003DA5',color:'white',borderRadius:8,padding:'10px 16px',fontSize:14,fontWeight:600,marginBottom:12}}>
-            argentalk.vercel.app
+            knowan.net
           </div>
           <div style={{display:'flex',justifyContent:'center',gap:8,fontSize:12,color:'#888',marginBottom:20,flexWrap:'wrap'}}>
             <span>🇦🇷 ES</span><span>🇬🇧 EN</span><span>🇧🇷 PT</span><span>🇫🇷 FR</span>
