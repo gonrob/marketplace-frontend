@@ -14,7 +14,7 @@ export default function Nav({ links = [] }) {
   return (
     <nav className="nav">
       <Link href="/" style={{textDecoration:'none'}}>
-        <span className="nav-logo">Know<span>an</span> 🌐</span>
+        <img src="https://res.cloudinary.com/djtsmuzlo/image/upload/v1775331191/Disen%CC%83o_sin_ti%CC%81tulo_l1nog6.png" alt="Knowan" style={{height:'36px',objectFit:'contain'}} />
       </Link>
       <div className="nav-links">
         <Link href="/" style={{fontSize:13,color:'white',textDecoration:'none',opacity:0.8}}>{HOME[lang]||'🏠 Home'}</Link>
