@@ -33,14 +33,14 @@ export default function Consejos() {
             <div style={{display:'flex',flexDirection:'column',gap:10}}>
               {s.items.map((item, j) => (
                 <div key={j} style={{display:'flex',gap:10,alignItems:'flex-start'}}>
-                  <span style={{color:'#003DA5',fontWeight:700,flexShrink:0}}>→</span>
+                  <span style={{color:'#4B6CB7',fontWeight:700,flexShrink:0}}>→</span>
                   <p style={{margin:0,fontSize:14,color:'#555',lineHeight:1.6}}>{item}</p>
                 </div>
               ))}
             </div>
           </div>
         ))}
-        <div className="card" style={{background:'#003DA5',textAlign:'center'}}>
+        <div className="card" style={{background:'#4B6CB7',textAlign:'center'}}>
           <p style={{color:'white',fontSize:15,marginBottom:16}}>{t.cta}</p>
           <Link href="/explorar">
             <button className="btn-orange" style={{width:'auto',padding:'12px 28px'}}>{t.btn}</button>

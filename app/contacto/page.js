@@ -14,7 +14,7 @@ export default function Contacto() {
           </a>
           <div style={{marginTop:20,fontSize:14,color:'#888'}}>
             También podés encontrarnos en:<br/>
-            <a href="https://wa.me/+34000000000" style={{color:'#003DA5'}}>💬 WhatsApp</a>
+            <a href="https://wa.me/+34000000000" style={{color:'#4B6CB7'}}>💬 WhatsApp</a>
           </div>
         </div>
       </div>

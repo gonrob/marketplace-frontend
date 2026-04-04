@@ -55,7 +55,7 @@ export default function Home() {
         </div>
       </nav>
 
-      <div style={{background:'#003DA5',padding:'40px 20px 60px',textAlign:'center'}}>
+      <div style={{background:'#4B6CB7',padding:'40px 20px 60px',textAlign:'center'}}>
         <div style={{fontSize:48,marginBottom:12}}>🧉</div>
         <h1 style={{color:'white',fontSize:32,marginBottom:10}}>Argen<span style={{color:'#F4A020'}}>talk</span></h1>
         <p style={{color:'rgba(255,255,255,0.85)',fontSize:16,marginBottom:8}}>{t.tag}</p>
@@ -80,7 +80,7 @@ export default function Home() {
           <div style={{display:'flex',flexDirection:'column',gap:16,marginTop:16}}>
             {[{n:1,ti:t.p1t,d:t.p1d},{n:2,ti:t.p2t,d:t.p2d},{n:3,ti:t.p3t,d:t.p3d}].map(s => (
               <div key={s.n} style={{display:'flex',gap:14,alignItems:'flex-start'}}>
-                <div style={{width:36,height:36,borderRadius:'50%',background:s.n===3?'#F4A020':'#003DA5',color:'white',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,flexShrink:0}}>{s.n}</div>
+                <div style={{width:36,height:36,borderRadius:'50%',background:s.n===3?'#F4A020':'#4B6CB7',color:'white',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,flexShrink:0}}>{s.n}</div>
                 <div><div style={{fontWeight:600,marginBottom:4}}>{s.ti}</div><div style={{fontSize:14,color:'#666'}}>{s.d}</div></div>
               </div>
             ))}
@@ -99,9 +99,9 @@ export default function Home() {
         </Link>
 
         <div style={{textAlign:'center',padding:'8px 0 40px',display:'flex',gap:20,justifyContent:'center',flexWrap:'wrap'}}>
-          <Link href="/compartir" style={{color:'#003DA5',fontSize:14,textDecoration:'none'}}>{t.comp}</Link>
-          <Link href="/contacto" style={{color:'#003DA5',fontSize:14,textDecoration:'none'}}>{t.cont}</Link>
-          <Link href="/explorar" style={{color:'#003DA5',fontSize:14,textDecoration:'none'}}>{t.buscar}</Link>
+          <Link href="/compartir" style={{color:'#4B6CB7',fontSize:14,textDecoration:'none'}}>{t.comp}</Link>
+          <Link href="/contacto" style={{color:'#4B6CB7',fontSize:14,textDecoration:'none'}}>{t.cont}</Link>
+          <Link href="/explorar" style={{color:'#4B6CB7',fontSize:14,textDecoration:'none'}}>{t.buscar}</Link>
         </div>
       </div>
     </>

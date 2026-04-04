@@ -13,7 +13,7 @@ export default function QR() {
       if (canvasRef.current) {
         window.QRCode.toCanvas(canvasRef.current, 'https://knowan.net', {
           width: 220, margin: 2,
-          color: { dark: '#003DA5', light: '#ffffff' }
+          color: { dark: '#4B6CB7', light: '#ffffff' }
         });
       }
     };
@@ -25,7 +25,7 @@ export default function QR() {
       <Nav links={[{href:'/compartir',label:'Compartir'}]} />
       <div className="container" style={{textAlign:'center'}}>
         <div className="card" style={{maxWidth:340,margin:'0 auto'}}>
-          <div style={{fontSize:28,fontWeight:700,color:'#003DA5',marginBottom:4}}>
+          <div style={{fontSize:28,fontWeight:700,color:'#4B6CB7',marginBottom:4}}>
             Argen<span style={{color:'#F4A020'}}>talk</span> 🧉
           </div>
           <div style={{fontSize:14,color:'#666',marginBottom:4}}>Hablá con argentinos reales</div>
@@ -33,7 +33,7 @@ export default function QR() {
           <div style={{display:'flex',justifyContent:'center',marginBottom:20}}>
             <canvas ref={canvasRef} style={{borderRadius:8}} />
           </div>
-          <div style={{background:'#003DA5',color:'white',borderRadius:8,padding:'10px 16px',fontSize:14,fontWeight:600,marginBottom:12}}>
+          <div style={{background:'#4B6CB7',color:'white',borderRadius:8,padding:'10px 16px',fontSize:14,fontWeight:600,marginBottom:12}}>
             knowan.net
           </div>
           <div style={{display:'flex',justifyContent:'center',gap:8,fontSize:12,color:'#888',marginBottom:20,flexWrap:'wrap'}}>

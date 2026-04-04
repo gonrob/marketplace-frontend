@@ -72,8 +72,8 @@ function ChatContent() {
 
   return (
     <div style={{display:'flex',flexDirection:'column',height:'calc(100vh - 60px)'}}>
-      <div style={{background:'#003DA5',padding:'12px 16px',display:'flex',alignItems:'center',gap:12}}>
-        <div style={{width:40,height:40,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,overflow:'hidden',flexShrink:0}}>
+      <div style={{background:'#4B6CB7',padding:'12px 16px',display:'flex',alignItems:'center',gap:12}}>
+        <div style={{width:40,height:40,borderRadius:'50%',background:'#EBF2FF',color:'#4B6CB7',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,overflow:'hidden',flexShrink:0}}>
           {contacto?.foto
             ? <img src={contacto.foto} alt={contacto.nombre} style={{width:'100%',height:'100%',objectFit:'cover'}} />
             : (contacto?.nombre||'?')[0].toUpperCase()
@@ -96,7 +96,7 @@ function ChatContent() {
           <div key={i} style={{display:'flex',justifyContent:m.propio?'flex-end':'flex-start'}}>
             <div style={{
               maxWidth:'75%',padding:'10px 14px',borderRadius:m.propio?'18px 18px 4px 18px':'18px 18px 18px 4px',
-              background:m.propio?'#003DA5':'white',
+              background:m.propio?'#4B6CB7':'white',
               color:m.propio?'white':'#1a1a1a',
               boxShadow:'0 1px 4px rgba(0,0,0,0.1)',
               fontSize:14,lineHeight:1.5

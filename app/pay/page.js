@@ -107,7 +107,7 @@ function PayContent() {
   if (!sellerId) return (
     <div className="container">
       <div className="card" style={{textAlign:'center'}}>
-        <p>Selecciona un anfitrion desde <Link href="/explorar" style={{color:'#003DA5'}}>Explorar</Link></p>
+        <p>Selecciona un anfitrion desde <Link href="/explorar" style={{color:'#4B6CB7'}}>Explorar</Link></p>
       </div>
     </div>
   );
@@ -137,8 +137,8 @@ function PayContent() {
           )}
 
           {!tieneGratis && tieneCreditos && (
-            <div style={{background:'#f0f4ff',borderRadius:10,padding:16,marginBottom:16,border:'2px solid #003DA5'}}>
-              <div style={{fontWeight:700,color:'#003DA5',fontSize:16,marginBottom:6}}>
+            <div style={{background:'#f0f4ff',borderRadius:10,padding:16,marginBottom:16,border:'2px solid #4B6CB7'}}>
+              <div style={{fontWeight:700,color:'#4B6CB7',fontSize:16,marginBottom:6}}>
                 🎫 {t.creditos.replace('{n}', user.creditosContacto)}
               </div>
               <p style={{color:'#555',fontSize:14,margin:'0 0 12px'}}>{t.creditosDesc}</p>
@@ -168,8 +168,8 @@ function PayContent() {
               {key:'p25', label:t.p25, ahorro:'44% off'},
             ].map(p => (
               <button key={p.key} onClick={() => initPaquete(p.key)} disabled={loading}
-                style={{width:'100%',padding:'12px 16px',marginBottom:8,background:'white',border:'1.5px solid #003DA5',borderRadius:10,cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:14}}>
-                <span style={{color:'#003DA5',fontWeight:600}}>{p.label}</span>
+                style={{width:'100%',padding:'12px 16px',marginBottom:8,background:'white',border:'1.5px solid #4B6CB7',borderRadius:10,cursor:'pointer',display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:14}}>
+                <span style={{color:'#4B6CB7',fontWeight:600}}>{p.label}</span>
                 {p.ahorro && <span style={{background:'#F4A020',color:'white',padding:'2px 8px',borderRadius:20,fontSize:12,fontWeight:700}}>{p.ahorro}</span>}
               </button>
             ))}

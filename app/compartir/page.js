@@ -15,7 +15,7 @@ export default function Compartir() {
       if (canvasRef.current) {
         window.QRCode.toCanvas(canvasRef.current, URL, {
           width: 200, margin: 2,
-          color: { dark: '#003DA5', light: '#ffffff' }
+          color: { dark: '#4B6CB7', light: '#ffffff' }
         });
       }
     };
@@ -38,13 +38,13 @@ export default function Compartir() {
 
           <div style={{background:'#f0f4ff',borderRadius:16,padding:24,marginBottom:20}}>
             <div style={{fontSize:48,marginBottom:12}}>🧉</div>
-            <div style={{fontWeight:700,fontSize:20,color:'#003DA5',marginBottom:4}}>Argen<span style={{color:'#F4A020'}}>talk</span></div>
+            <div style={{fontWeight:700,fontSize:20,color:'#4B6CB7',marginBottom:4}}>Argen<span style={{color:'#F4A020'}}>talk</span></div>
             <div style={{fontSize:13,color:'#666'}}>Hablá con argentinos reales. Viví la cultura.</div>
           </div>
 
           <div style={{background:'#f0f4ff',borderRadius:10,padding:'12px 16px',display:'flex',alignItems:'center',gap:10,marginBottom:20}}>
-            <span style={{flex:1,fontSize:13,color:'#003DA5',textAlign:'left',wordBreak:'break-all'}}>{URL}</span>
-            <button onClick={copiar} style={{width:'auto',padding:'8px 16px',fontSize:13,background:copiado?'#22c55e':'#003DA5',flexShrink:0}}>
+            <span style={{flex:1,fontSize:13,color:'#4B6CB7',textAlign:'left',wordBreak:'break-all'}}>{URL}</span>
+            <button onClick={copiar} style={{width:'auto',padding:'8px 16px',fontSize:13,background:copiado?'#22c55e':'#4B6CB7',flexShrink:0}}>
               {copiado ? '¡Copiado!' : 'Copiar'}
             </button>
           </div>

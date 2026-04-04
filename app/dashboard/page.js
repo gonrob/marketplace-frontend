@@ -94,7 +94,7 @@ function DashboardContent() {
         {error && <div className="error">{error}</div>}
 
         <div className="card" style={{textAlign:'center'}}>
-          <div onClick={() => router.push('/perfil')} style={{width:80,height:80,borderRadius:'50%',background:'#EBF2FF',color:'#003DA5',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32,fontWeight:700,margin:'0 auto 12px',overflow:'hidden',cursor:'pointer',border:'3px solid #003DA5'}}>
+          <div onClick={() => router.push('/perfil')} style={{width:80,height:80,borderRadius:'50%',background:'#EBF2FF',color:'#4B6CB7',display:'flex',alignItems:'center',justifyContent:'center',fontSize:32,fontWeight:700,margin:'0 auto 12px',overflow:'hidden',cursor:'pointer',border:'3px solid #4B6CB7'}}>
             {user?.foto
               ? <img src={user.foto} alt="foto" style={{width:'100%',height:'100%',objectFit:'cover'}} />
               : (user?.nombre||user?.email||'A')[0].toUpperCase()
@@ -112,7 +112,7 @@ function DashboardContent() {
           <>
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:16}}>
               <div style={{background:'#f0f4ff',borderRadius:12,padding:'16px',textAlign:'center'}}>
-                <div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>USD {(user?.ganancias||0).toFixed(2)}</div>
+                <div style={{fontSize:24,fontWeight:700,color:'#4B6CB7'}}>USD {(user?.ganancias||0).toFixed(2)}</div>
                 <div style={{fontSize:12,color:'#888',marginTop:4}}>{t.ganancias}</div>
               </div>
               <div style={{background:'#f0fff4',borderRadius:12,padding:'16px',textAlign:'center'}}>
@@ -143,7 +143,7 @@ function DashboardContent() {
             <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
               <div>
                 <div style={{fontWeight:600,fontSize:16}}>🎫 {t.creditos}</div>
-                <div style={{fontSize:24,fontWeight:700,color:'#003DA5'}}>{user?.creditosContacto||0}</div>
+                <div style={{fontSize:24,fontWeight:700,color:'#4B6CB7'}}>{user?.creditosContacto||0}</div>
               </div>
               <Link href="/pay?paquetes=true">
                 <button className="btn-orange" style={{width:'auto',padding:'10px 16px',fontSize:13}}>📦 {t.comprar}</button>

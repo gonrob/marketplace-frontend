@@ -65,8 +65,8 @@ export default function Register() {
           <div className="card">
             <h1 style={{textAlign:'center',marginBottom:24}}>{t.elige}</h1>
             <div style={{display:'flex',flexDirection:'column',gap:12}}>
-              <button onClick={() => elegirRol('seller')} style={{padding:'20px',background:'#f0f4ff',border:'2px solid #003DA5',borderRadius:14,cursor:'pointer',textAlign:'left'}}>
-                <div style={{fontSize:20,fontWeight:700,color:'#003DA5',marginBottom:4}}>{t.anfitrion}</div>
+              <button onClick={() => elegirRol('seller')} style={{padding:'20px',background:'#f0f4ff',border:'2px solid #4B6CB7',borderRadius:14,cursor:'pointer',textAlign:'left'}}>
+                <div style={{fontSize:20,fontWeight:700,color:'#4B6CB7',marginBottom:4}}>{t.anfitrion}</div>
                 <div style={{fontSize:14,color:'#555'}}>{t.anfitrionDesc}</div>
               </button>
               <button onClick={() => elegirRol('buyer')} style={{padding:'20px',background:'#fff8e1',border:'2px solid #F4A020',borderRadius:14,cursor:'pointer',textAlign:'left'}}>
@@ -75,7 +75,7 @@ export default function Register() {
               </button>
             </div>
             <div style={{textAlign:'center',marginTop:20,fontSize:14,color:'#888'}}>
-              {t.yaRegistrado} <Link href="/login" style={{color:'#003DA5'}}>{t.login}</Link>
+              {t.yaRegistrado} <Link href="/login" style={{color:'#4B6CB7'}}>{t.login}</Link>
             </div>
           </div>
         )}
@@ -83,8 +83,8 @@ export default function Register() {
         {paso === 2 && (
           <div className="card">
             {role === 'seller' && (
-              <div style={{background:'#f0f4ff',borderRadius:12,padding:16,marginBottom:20,border:'1.5px solid #003DA5'}}>
-                <h3 style={{color:'#003DA5',marginBottom:10}}>ℹ️ {t.intro}</h3>
+              <div style={{background:'#f0f4ff',borderRadius:12,padding:16,marginBottom:20,border:'1.5px solid #4B6CB7'}}>
+                <h3 style={{color:'#4B6CB7',marginBottom:10}}>ℹ️ {t.intro}</h3>
                 <div style={{display:'flex',flexDirection:'column',gap:8,fontSize:13,color:'#555',lineHeight:1.6}}>
                   <div>🏠 {t.i1}</div>
                   <div>💰 {t.i2}</div>

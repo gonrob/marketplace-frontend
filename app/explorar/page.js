@@ -90,7 +90,7 @@ export default function Explorar() {
               <div style={{position:'relative',height:140,background:'#EBF2FF',overflow:'hidden'}}>
                 {s.foto
                   ? <img src={s.foto} alt={s.nombre} style={{width:'100%',height:'100%',objectFit:'cover'}} />
-                  : <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:48,fontWeight:700,color:'#003DA5'}}>
+                  : <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:48,fontWeight:700,color:'#4B6CB7'}}>
                       {(s.nombre||'A')[0].toUpperCase()}
                     </div>
                 }
@@ -98,7 +98,7 @@ export default function Explorar() {
                   <div style={{position:'absolute',top:8,right:8,background:'#22c55e',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>✓</div>
                 )}
                 {s.disponible && (
-                  <div style={{position:'absolute',top:8,left:8,background:'#003DA5',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>● {t.disponible}</div>
+                  <div style={{position:'absolute',top:8,left:8,background:'#4B6CB7',color:'white',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:600}}>● {t.disponible}</div>
                 )}
               </div>
 
@@ -108,7 +108,7 @@ export default function Explorar() {
                 {s.habilidades && s.habilidades.length > 0 && (
                   <div style={{display:'flex',flexWrap:'wrap',gap:4,marginBottom:8}}>
                     {s.habilidades.slice(0,3).map((h,i) => (
-                      <span key={i} style={{background:'#EBF2FF',color:'#003DA5',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:500}}>{h}</span>
+                      <span key={i} style={{background:'#EBF2FF',color:'#4B6CB7',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:500}}>{h}</span>
                     ))}
                   </div>
                 )}
@@ -124,7 +124,7 @@ export default function Explorar() {
                 )}
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'auto',paddingTop:8,borderTop:'1px solid #f0f0f0'}}>
                   <div>
-                    <div style={{fontSize:18,fontWeight:700,color:'#003DA5'}}>USD {s.precio}</div>
+                    <div style={{fontSize:18,fontWeight:700,color:'#4B6CB7'}}>USD {s.precio}</div>
                     <div style={{fontSize:11,color:'#888'}}>{t.porHora}</div>
                   </div>
                   <Link href={`/pay?seller=${s._id}&nombre=${encodeURIComponent(s.nombre||'')}&precio=${s.precio}`}>

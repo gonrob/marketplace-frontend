@@ -79,7 +79,7 @@ export default function CulturaPage({ culturaKey }) {
             <p style={{color:'#555',lineHeight:1.7,fontSize:15}}>{s.p}</p>
           </div>
         ))}
-        <div className="card" style={{background:'#003DA5',textAlign:'center'}}>
+        <div className="card" style={{background:'#4B6CB7',textAlign:'center'}}>
           <p style={{color:'white',fontSize:15,marginBottom:16,lineHeight:1.6}}>{data.cta}</p>
           <Link href="/explorar">
             <button className="btn-orange" style={{width:'auto',padding:'12px 28px'}}>{ui.btn}</button>
