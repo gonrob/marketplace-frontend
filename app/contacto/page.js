@@ -8,14 +8,10 @@ export default function Contacto() {
       <div className="container">
         <div className="card">
           <h1>Contacto</h1>
-          <p style={{color:'#666',marginBottom:20}}>¿Tenés alguna pregunta o sugerencia? Escribinos.</p>
-          <a href="mailto:knowan26@gmail.com">
-            <button className="btn-orange">📧 Escribir a knowan26@gmail.com</button>
+          <p style={{color:'#666',marginBottom:20}}>Tenes alguna pregunta o sugerencia? Escribinos.</p>
+          <a href="mailto:info.knowan@gmail.com">
+            <button className="btn-orange">📧 info.knowan@gmail.com</button>
           </a>
-          <div style={{marginTop:20,fontSize:14,color:'#888'}}>
-            También podés encontrarnos en:<br/>
-            <a href="https://wa.me/+34000000000" style={{color:'#4B6CB7'}}>💬 WhatsApp</a>
-          </div>
         </div>
       </div>
     </>
