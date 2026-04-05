@@ -9,11 +9,18 @@ const ADMIN = 'gonrobtor@gmail.com';
 export default function Admin() {
   const router = useRouter();
   const [sellers, setSellers] = useState([]);
-  const [buyers, setBuyers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('anfitriones');
   const [stats, setStats] = useState(null);
   const [emailTodos, setEmailTodos] = useState('');
+
+  const borrarCuenta = async (id, nombre) => {
+    if (!confirm(`¿Borrar la cuenta de ${nombre}?`)) return;
+    try {
+      await api.delete(`/api/users/admin/${id}`);
+      setSellers(prev => prev.filter(s => s._id !== id));
+    } catch { alert('Error al borrar.'); }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -129,6 +136,7 @@ export default function Admin() {
                           <button style={{width:'auto',padding:'6px 12px',fontSize:12,background:'#25D366',marginBottom:0}}>💬 WhatsApp</button>
                         </a>
                       )}
+                      <button onClick={() => borrarCuenta(s._id, s.nombre)} style={{width:'auto',padding:'6px 12px',fontSize:12,background:'#cc0000',marginBottom:0}}>🗑️ Borrar</button>
                     </div>
                   </div>
                 </div>
@@ -140,15 +148,18 @@ export default function Admin() {
         {tab === 'emails' && (
           <div className="card">
             <h2 style={{marginBottom:12}}>📋 Lista de emails</h2>
-            {sellers.map((s, i) => (
+            {sellers.map((s) => (
               <div key={s._id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 0',borderBottom:'1px solid #f0f0f0'}}>
                 <div>
                   <div style={{fontWeight:600,fontSize:14}}>{s.nombre||'Sin nombre'}</div>
                   <div style={{fontSize:13,color:'#555'}}>{s.email}</div>
                 </div>
-                <a href={`mailto:${s.email}`}>
-                  <button style={{width:'auto',padding:'6px 12px',fontSize:12,marginBottom:0}}>📧</button>
-                </a>
+                <div style={{display:'flex',gap:8}}>
+                  <a href={`mailto:${s.email}`}>
+                    <button style={{width:'auto',padding:'6px 12px',fontSize:12,marginBottom:0}}>📧</button>
+                  </a>
+                  <button onClick={() => borrarCuenta(s._id, s.nombre)} style={{width:'auto',padding:'6px 12px',fontSize:12,background:'#cc0000',marginBottom:0}}>🗑️</button>
+                </div>
               </div>
             ))}
             <div style={{marginTop:16,padding:12,background:'#f0f4ff',borderRadius:8,fontSize:12,color:'#555',wordBreak:'break-all'}}>
