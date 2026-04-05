@@ -1,14 +1,14 @@
+'use client';
 import './globals.css';
-
-export const metadata = {
-  title: 'Knowan - Hablá con argentinos reales',
-  description: 'Conectá con argentinos reales. Mate, truco, fútbol y cultura argentina.',
-};
+import Argento from './components/Argento';
 
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        {children}
+        <Argento />
+      </body>
     </html>
   );
 }
