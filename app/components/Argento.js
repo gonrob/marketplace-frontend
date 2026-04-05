@@ -13,6 +13,37 @@ const T = {
   ru:{placeholder:'Спросите Argento...',enviar:'Отправить',bienvenida:'Привет! Я Argento 🇦🇷\nКак я могу помочь?',duda:'Есть вопросы?'},
 };
 
+const MuñecoSVG = () => (
+  <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Boina */}
+    <ellipse cx="22" cy="10" rx="12" ry="4" fill="#75BBFD"/>
+    <rect x="10" y="9" width="24" height="5" rx="2.5" fill="#4B6CB7"/>
+    {/* Cabeza */}
+    <circle cx="22" cy="18" r="9" fill="#FFDBA4"/>
+    {/* Ojos */}
+    <circle cx="19" cy="17" r="1.5" fill="#333"/>
+    <circle cx="25" cy="17" r="1.5" fill="#333"/>
+    {/* Brillo ojos */}
+    <circle cx="19.6" cy="16.4" r="0.5" fill="white"/>
+    <circle cx="25.6" cy="16.4" r="0.5" fill="white"/>
+    {/* Sonrisa */}
+    <path d="M18 20 Q22 24 26 20" stroke="#C94B4B" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+    {/* Bigote */}
+    <path d="M19 19 Q22 20.5 25 19" stroke="#8B6240" strokeWidth="1" strokeLinecap="round" fill="none"/>
+    {/* Cuerpo */}
+    <rect x="13" y="26" width="18" height="14" rx="5" fill="#4B6CB7"/>
+    {/* Brazos */}
+    <rect x="5" y="27" width="9" height="4" rx="2" fill="#4B6CB7"/>
+    <rect x="30" y="27" width="9" height="4" rx="2" fill="#4B6CB7"/>
+    {/* Manos */}
+    <circle cx="5" cy="29" r="2.5" fill="#FFDBA4"/>
+    <circle cx="39" cy="29" r="2.5" fill="#FFDBA4"/>
+    {/* Piernas */}
+    <rect x="14" y="38" width="6" height="5" rx="2" fill="#333"/>
+    <rect x="24" y="38" width="6" height="5" rx="2" fill="#333"/>
+  </svg>
+);
+
 export default function Argento() {
   const { lang } = useLang();
   const t = T[lang] || T.en;
@@ -45,30 +76,23 @@ export default function Argento() {
       <style>{`
         @keyframes wiggle {
           0%,100%{transform:rotate(0deg) scale(1)}
-          25%{transform:rotate(-12deg) scale(1.15)}
-          75%{transform:rotate(12deg) scale(1.15)}
+          20%{transform:rotate(-15deg) scale(1.1)}
+          40%{transform:rotate(15deg) scale(1.1)}
+          60%{transform:rotate(-10deg) scale(1.05)}
+          80%{transform:rotate(10deg) scale(1.05)}
         }
         @keyframes bounce {
           0%,100%{transform:translateY(0px)}
-          50%{transform:translateY(-6px)}
+          50%{transform:translateY(-8px)}
         }
         @keyframes fadeIn {
           from{opacity:0;transform:translateY(10px)}
           to{opacity:1;transform:translateY(0)}
         }
-        .argento-btn {
-          animation: wiggle 2s ease-in-out infinite;
-        }
-        .argento-btn:hover {
-          animation: none;
-          transform: scale(1.1);
-        }
-        .argento-badge {
-          animation: bounce 1.5s ease-in-out infinite;
-        }
-        .argento-chat {
-          animation: fadeIn 0.3s ease;
-        }
+        .argento-btn { animation: wiggle 2.5s ease-in-out infinite; }
+        .argento-btn:hover { animation: none; transform: scale(1.15); }
+        .argento-badge { animation: bounce 1.8s ease-in-out infinite; }
+        .argento-chat { animation: fadeIn 0.3s ease; }
       `}</style>
 
       <div style={{position:'fixed',bottom:16,right:16,zIndex:1000,display:'flex',flexDirection:'column',alignItems:'center',gap:8}}>
@@ -77,42 +101,46 @@ export default function Argento() {
             background:'linear-gradient(135deg,#4B6CB7,#C94B4B)',
             color:'white',padding:'7px 14px',borderRadius:20,
             fontSize:13,fontWeight:700,whiteSpace:'nowrap',
-            boxShadow:'0 4px 12px rgba(0,0,0,0.25)',
-            cursor:'pointer'
+            boxShadow:'0 4px 12px rgba(0,0,0,0.25)',cursor:'pointer'
           }} onClick={() => setOpen(true)}>
             💬 {t.duda}
           </div>
         )}
         <button
-          className="argento-btn"
+          className={open ? '' : 'argento-btn'}
           onClick={() => setOpen(!open)}
           style={{
-            width:64,height:64,borderRadius:'50%',
+            width:68,height:68,borderRadius:'50%',
             background:'linear-gradient(135deg,#4B6CB7,#C94B4B)',
             border:'3px solid white',cursor:'pointer',
-            fontSize:32,display:'flex',alignItems:'center',justifyContent:'center',
-            boxShadow:'0 6px 24px rgba(0,0,0,0.3)',marginBottom:0,padding:0,
+            display:'flex',alignItems:'center',justifyContent:'center',
+            boxShadow:'0 6px 24px rgba(0,0,0,0.3)',marginBottom:0,padding:4,
           }}
         >
-          {open ? '✕' : '🧉'}
+          {open
+            ? <span style={{color:'white',fontSize:22,fontWeight:700}}>✕</span>
+            : <MuñecoSVG />
+          }
         </button>
       </div>
 
       {open && (
         <div className="argento-chat" style={{
-          position:'fixed',bottom:96,right:16,width:320,height:430,
+          position:'fixed',bottom:100,right:16,width:320,height:430,
           background:'white',borderRadius:20,
           boxShadow:'0 8px 40px rgba(0,0,0,0.25)',
           zIndex:999,display:'flex',flexDirection:'column',overflow:'hidden',
           border:'1px solid rgba(75,108,183,0.15)'
         }}>
           <div style={{background:'linear-gradient(135deg,#4B6CB7,#C94B4B)',padding:'14px 16px',display:'flex',alignItems:'center',gap:10}}>
-            <div style={{width:40,height:40,borderRadius:'50%',background:'rgba(255,255,255,0.25)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:22,border:'2px solid rgba(255,255,255,0.5)'}}>🧉</div>
+            <div style={{width:40,height:40,borderRadius:'50%',background:'rgba(255,255,255,0.2)',display:'flex',alignItems:'center',justifyContent:'center',border:'2px solid rgba(255,255,255,0.4)'}}>
+              <MuñecoSVG />
+            </div>
             <div>
               <div style={{color:'white',fontWeight:700,fontSize:15}}>Argento</div>
               <div style={{color:'rgba(255,255,255,0.8)',fontSize:11}}>Asistente de Knowan 🇦🇷</div>
             </div>
-            <button onClick={() => setOpen(false)} style={{marginLeft:'auto',background:'none',border:'none',color:'white',fontSize:18,cursor:'pointer',padding:0,marginBottom:0,width:'auto'}}>✕</button>
+            <button onClick={() => setOpen(false)} style={{marginLeft:'auto',background:'none',border:'none',color:'white',fontSize:20,cursor:'pointer',padding:0,marginBottom:0,width:'auto'}}>✕</button>
           </div>
 
           <div style={{flex:1,overflowY:'auto',padding:12,display:'flex',flexDirection:'column',gap:8,background:'#f8f9fa'}}>
