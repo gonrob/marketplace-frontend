@@ -3,41 +3,31 @@ import { useState } from 'react';
 import useLang from '../../lib/useLang';
 
 const T = {
-  es:{placeholder:'Preguntale algo a Argento...',enviar:'Enviar',bienvenida:'¡Hola! Soy Argento 🇦🇷\n¿En qué te puedo ayudar?',duda:'¿Alguna duda?'},
-  en:{placeholder:'Ask Argento something...',enviar:'Send',bienvenida:"Hey! I'm Argento 🇦🇷\nHow can I help you?",duda:'Any questions?'},
-  pt:{placeholder:'Pergunte algo ao Argento...',enviar:'Enviar',bienvenida:'Oi! Sou o Argento 🇦🇷\nComo posso te ajudar?',duda:'Alguma dúvida?'},
-  fr:{placeholder:"Posez une question à Argento...",enviar:'Envoyer',bienvenida:"Salut! Je suis Argento 🇦🇷\nComment puis-je vous aider?",duda:'Des questions?'},
-  it:{placeholder:'Chiedi qualcosa ad Argento...',enviar:'Invia',bienvenida:'Ciao! Sono Argento 🇦🇷\nCome posso aiutarti?',duda:'Hai dubbi?'},
-  de:{placeholder:'Frag Argento etwas...',enviar:'Senden',bienvenida:'Hallo! Ich bin Argento 🇦🇷\nWie kann ich helfen?',duda:'Fragen?'},
-  zh:{placeholder:'问问Argento...',enviar:'发送',bienvenida:'你好！我是Argento 🇦🇷\n我能帮你什么？',duda:'有问题吗？'},
-  ru:{placeholder:'Спросите Argento...',enviar:'Отправить',bienvenida:'Привет! Я Argento 🇦🇷\nКак я могу помочь?',duda:'Есть вопросы?'},
+  es:{placeholder:'Preguntale algo a Argento...',enviar:'Enviar',bienvenida:'¡Hola! Soy Argento 🇦🇷\n¿En qué te puedo ayudar?',duda:'🇦🇷 ¿ALGUNA DUDA SOBRE LA APP?'},
+  en:{placeholder:'Ask Argento something...',enviar:'Send',bienvenida:"Hey! I'm Argento 🇦🇷\nHow can I help you?",duda:'🇦🇷 ANY QUESTIONS ABOUT THE APP?'},
+  pt:{placeholder:'Pergunte algo ao Argento...',enviar:'Enviar',bienvenida:'Oi! Sou o Argento 🇦🇷\nComo posso te ajudar?',duda:'🇦🇷 ALGUMA DÚVIDA SOBRE O APP?'},
+  fr:{placeholder:"Posez une question à Argento...",enviar:'Envoyer',bienvenida:"Salut! Je suis Argento 🇦🇷\nComment puis-je vous aider?",duda:"🇦🇷 UNE QUESTION SUR L'APP?"},
+  it:{placeholder:'Chiedi qualcosa ad Argento...',enviar:'Invia',bienvenida:'Ciao! Sono Argento 🇦🇷\nCome posso aiutarti?',duda:"🇦🇷 DUBBI SULL'APP?"},
+  de:{placeholder:'Frag Argento etwas...',enviar:'Senden',bienvenida:'Hallo! Ich bin Argento 🇦🇷\nWie kann ich helfen?',duda:'🇦🇷 FRAGEN ZUR APP?'},
+  zh:{placeholder:'问问Argento...',enviar:'发送',bienvenida:'你好！我是Argento 🇦🇷\n我能帮你什么？',duda:'🇦🇷 对APP有疑问吗？'},
+  ru:{placeholder:'Спросите Argento...',enviar:'Отправить',bienvenida:'Привет! Я Argento 🇦🇷\nКак я могу помочь?',duda:'🇦🇷 ВОПРОСЫ ПО ПРИЛОЖЕНИЮ?'},
 };
 
 const MuñecoSVG = () => (
   <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Boina azul */}
     <ellipse cx="22" cy="10" rx="12" ry="4" fill="#75BBFD"/>
     <rect x="10" y="9" width="24" height="5" rx="2.5" fill="#4B6CB7"/>
-    {/* Cabeza */}
     <circle cx="22" cy="18" r="9" fill="#FFDBA4"/>
-    {/* Ojos */}
     <circle cx="19" cy="17" r="1.5" fill="#333"/>
     <circle cx="25" cy="17" r="1.5" fill="#333"/>
     <circle cx="19.6" cy="16.4" r="0.5" fill="white"/>
     <circle cx="25.6" cy="16.4" r="0.5" fill="white"/>
-    {/* Sonrisa */}
     <path d="M18 20 Q22 24 26 20" stroke="#C94B4B" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-    {/* Bigote */}
     <path d="M19 19 Q22 20.5 25 19" stroke="#8B6240" strokeWidth="1" strokeLinecap="round" fill="none"/>
-    {/* Cuerpo - camiseta argentina celeste y blanca */}
     <rect x="13" y="26" width="18" height="14" rx="5" fill="#74ACDF"/>
-    {/* Franja blanca */}
     <rect x="13" y="31" width="18" height="4" fill="white"/>
-    {/* Franja celeste arriba */}
     <rect x="13" y="26" width="18" height="5" rx="3" fill="#74ACDF"/>
-    {/* Franja celeste abajo */}
     <rect x="13" y="35" width="18" height="5" rx="3" fill="#74ACDF"/>
-    {/* Sol de Mayo */}
     <circle cx="22" cy="31" r="2" fill="#F6B40E"/>
     <line x1="22" y1="28" x2="22" y2="27" stroke="#F6B40E" strokeWidth="0.8"/>
     <line x1="22" y1="34" x2="22" y2="35" stroke="#F6B40E" strokeWidth="0.8"/>
@@ -47,13 +37,10 @@ const MuñecoSVG = () => (
     <line x1="24" y1="33" x2="24.7" y2="33.7" stroke="#F6B40E" strokeWidth="0.8"/>
     <line x1="24" y1="29" x2="24.7" y2="28.3" stroke="#F6B40E" strokeWidth="0.8"/>
     <line x1="20" y1="33" x2="19.3" y2="33.7" stroke="#F6B40E" strokeWidth="0.8"/>
-    {/* Brazos */}
     <rect x="5" y="27" width="9" height="4" rx="2" fill="#74ACDF"/>
     <rect x="30" y="27" width="9" height="4" rx="2" fill="#74ACDF"/>
-    {/* Manos */}
     <circle cx="5" cy="29" r="2.5" fill="#FFDBA4"/>
     <circle cx="39" cy="29" r="2.5" fill="#FFDBA4"/>
-    {/* Piernas */}
     <rect x="14" y="38" width="6" height="5" rx="2" fill="#333"/>
     <rect x="24" y="38" width="6" height="5" rx="2" fill="#333"/>
   </svg>
@@ -115,10 +102,11 @@ export default function Argento() {
           <div className="argento-badge" style={{
             background:'linear-gradient(135deg,#4B6CB7,#C94B4B)',
             color:'white',padding:'7px 14px',borderRadius:20,
-            fontSize:13,fontWeight:700,whiteSpace:'nowrap',
-            boxShadow:'0 4px 12px rgba(0,0,0,0.25)',cursor:'pointer'
+            fontSize:12,fontWeight:700,whiteSpace:'nowrap',
+            boxShadow:'0 4px 12px rgba(0,0,0,0.25)',cursor:'pointer',
+            textAlign:'center'
           }} onClick={() => setOpen(true)}>
-            💬 {t.duda}
+            {t.duda}
           </div>
         )}
         <button
