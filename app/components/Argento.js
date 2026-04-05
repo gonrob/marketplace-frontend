@@ -15,7 +15,7 @@ const T = {
 
 const MuñecoSVG = () => (
   <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-    {/* Boina */}
+    {/* Boina azul */}
     <ellipse cx="22" cy="10" rx="12" ry="4" fill="#75BBFD"/>
     <rect x="10" y="9" width="24" height="5" rx="2.5" fill="#4B6CB7"/>
     {/* Cabeza */}
@@ -23,18 +23,33 @@ const MuñecoSVG = () => (
     {/* Ojos */}
     <circle cx="19" cy="17" r="1.5" fill="#333"/>
     <circle cx="25" cy="17" r="1.5" fill="#333"/>
-    {/* Brillo ojos */}
     <circle cx="19.6" cy="16.4" r="0.5" fill="white"/>
     <circle cx="25.6" cy="16.4" r="0.5" fill="white"/>
     {/* Sonrisa */}
     <path d="M18 20 Q22 24 26 20" stroke="#C94B4B" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
     {/* Bigote */}
     <path d="M19 19 Q22 20.5 25 19" stroke="#8B6240" strokeWidth="1" strokeLinecap="round" fill="none"/>
-    {/* Cuerpo */}
-    <rect x="13" y="26" width="18" height="14" rx="5" fill="#4B6CB7"/>
+    {/* Cuerpo - camiseta argentina celeste y blanca */}
+    <rect x="13" y="26" width="18" height="14" rx="5" fill="#74ACDF"/>
+    {/* Franja blanca */}
+    <rect x="13" y="31" width="18" height="4" fill="white"/>
+    {/* Franja celeste arriba */}
+    <rect x="13" y="26" width="18" height="5" rx="3" fill="#74ACDF"/>
+    {/* Franja celeste abajo */}
+    <rect x="13" y="35" width="18" height="5" rx="3" fill="#74ACDF"/>
+    {/* Sol de Mayo */}
+    <circle cx="22" cy="31" r="2" fill="#F6B40E"/>
+    <line x1="22" y1="28" x2="22" y2="27" stroke="#F6B40E" strokeWidth="0.8"/>
+    <line x1="22" y1="34" x2="22" y2="35" stroke="#F6B40E" strokeWidth="0.8"/>
+    <line x1="19" y1="31" x2="18" y2="31" stroke="#F6B40E" strokeWidth="0.8"/>
+    <line x1="25" y1="31" x2="26" y2="31" stroke="#F6B40E" strokeWidth="0.8"/>
+    <line x1="20" y1="29" x2="19.3" y2="28.3" stroke="#F6B40E" strokeWidth="0.8"/>
+    <line x1="24" y1="33" x2="24.7" y2="33.7" stroke="#F6B40E" strokeWidth="0.8"/>
+    <line x1="24" y1="29" x2="24.7" y2="28.3" stroke="#F6B40E" strokeWidth="0.8"/>
+    <line x1="20" y1="33" x2="19.3" y2="33.7" stroke="#F6B40E" strokeWidth="0.8"/>
     {/* Brazos */}
-    <rect x="5" y="27" width="9" height="4" rx="2" fill="#4B6CB7"/>
-    <rect x="30" y="27" width="9" height="4" rx="2" fill="#4B6CB7"/>
+    <rect x="5" y="27" width="9" height="4" rx="2" fill="#74ACDF"/>
+    <rect x="30" y="27" width="9" height="4" rx="2" fill="#74ACDF"/>
     {/* Manos */}
     <circle cx="5" cy="29" r="2.5" fill="#FFDBA4"/>
     <circle cx="39" cy="29" r="2.5" fill="#FFDBA4"/>
@@ -111,7 +126,7 @@ export default function Argento() {
           onClick={() => setOpen(!open)}
           style={{
             width:68,height:68,borderRadius:'50%',
-            background:'linear-gradient(135deg,#4B6CB7,#C94B4B)',
+            background:'linear-gradient(135deg,#74ACDF,#F6B40E)',
             border:'3px solid white',cursor:'pointer',
             display:'flex',alignItems:'center',justifyContent:'center',
             boxShadow:'0 6px 24px rgba(0,0,0,0.3)',marginBottom:0,padding:4,
@@ -132,13 +147,13 @@ export default function Argento() {
           zIndex:999,display:'flex',flexDirection:'column',overflow:'hidden',
           border:'1px solid rgba(75,108,183,0.15)'
         }}>
-          <div style={{background:'linear-gradient(135deg,#4B6CB7,#C94B4B)',padding:'14px 16px',display:'flex',alignItems:'center',gap:10}}>
+          <div style={{background:'linear-gradient(135deg,#74ACDF,#F6B40E)',padding:'14px 16px',display:'flex',alignItems:'center',gap:10}}>
             <div style={{width:40,height:40,borderRadius:'50%',background:'rgba(255,255,255,0.2)',display:'flex',alignItems:'center',justifyContent:'center',border:'2px solid rgba(255,255,255,0.4)'}}>
               <MuñecoSVG />
             </div>
             <div>
               <div style={{color:'white',fontWeight:700,fontSize:15}}>Argento</div>
-              <div style={{color:'rgba(255,255,255,0.8)',fontSize:11}}>Asistente de Knowan 🇦🇷</div>
+              <div style={{color:'rgba(255,255,255,0.9)',fontSize:11}}>Asistente de Knowan 🇦🇷</div>
             </div>
             <button onClick={() => setOpen(false)} style={{marginLeft:'auto',background:'none',border:'none',color:'white',fontSize:20,cursor:'pointer',padding:0,marginBottom:0,width:'auto'}}>✕</button>
           </div>
@@ -149,7 +164,7 @@ export default function Argento() {
                 <div style={{
                   maxWidth:'80%',padding:'8px 12px',
                   borderRadius:m.rol==='user'?'16px 16px 4px 16px':'16px 16px 16px 4px',
-                  background:m.rol==='user'?'linear-gradient(135deg,#4B6CB7,#C94B4B)':'white',
+                  background:m.rol==='user'?'linear-gradient(135deg,#74ACDF,#4B6CB7)':'white',
                   color:m.rol==='user'?'white':'#1a1a1a',
                   fontSize:13,lineHeight:1.5,
                   boxShadow:'0 1px 4px rgba(0,0,0,0.1)',
