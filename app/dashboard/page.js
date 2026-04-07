@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Nav from '../components/Nav';
 import api from '../../lib/api';
 import useLang from '../../lib/useLang';
+import HostOnboarding from '../components/HostOnboarding';
 
 const ADMIN = 'gonrobtor@gmail.com';
 
@@ -24,6 +25,7 @@ function DashboardContent() {
   const searchParams = useSearchParams();
   const { lang } = useLang();
   const [user, setUser] = useState(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState('');
   const [error, setError] = useState('');
@@ -33,6 +35,10 @@ function DashboardContent() {
     try {
       const r = await api.get('/api/auth/me');
       setUser(r.data);
+      const d = r.data;
+      if (d.role === "seller" && (!d.foto || !d.ciudad || !(d.habilidades && d.habilidades.length))) {
+        setShowOnboarding(true);
+      }
     } catch {
       router.push('/login');
     } finally {
@@ -80,6 +86,7 @@ function DashboardContent() {
 
   return (
     <>
+      {showOnboarding && <HostOnboarding lang={lang} token={localStorage.getItem("token")} onComplete={() => { setShowOnboarding(false); loadUser(); }} />}
       <nav className="nav">
         <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Know<span>an</span> 🌐</span></Link>
         <div className="nav-links">
