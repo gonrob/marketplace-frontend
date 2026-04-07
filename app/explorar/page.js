@@ -53,7 +53,7 @@ export default function Explorar() {
     !filtro ||
     s.nombre?.toLowerCase().includes(filtro.toLowerCase()) ||
     s.bio?.toLowerCase().includes(filtro.toLowerCase()) ||
-    s.habilidades?.some(h => h.toLowerCase().includes(filtro.toLowerCase())) ||
+    s.habilidades?.some(h => (typeof h === 'string' ? h : h.id || '').toLowerCase().includes(filtro.toLowerCase())) ||
     s.ciudad?.toLowerCase().includes(filtro.toLowerCase())
   );
 
@@ -107,9 +107,16 @@ export default function Explorar() {
                 {s.ciudad && <div style={{fontSize:12,color:'#888',marginBottom:6}}>📍 {s.ciudad}</div>}
                 {s.habilidades && s.habilidades.length > 0 && (
                   <div style={{display:'flex',flexWrap:'wrap',gap:4,marginBottom:8}}>
-                    {s.habilidades.slice(0,3).map((h,i) => (
-                      <span key={i} style={{background:'#EBF2FF',color:'#4B6CB7',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:500}}>{h}</span>
-                    ))}
+                    {s.habilidades.slice(0,3).map((h,i) => {
+                      const nombre = typeof h === 'string' ? h : h.id?.replace(/_/g,' ') || h.id;
+                      const idioma = typeof h === 'object' && h.idioma ? h.idioma : null;
+                      const precio = typeof h === 'object' && h.precio ? h.precio : null;
+                      return (
+                        <span key={i} style={{background:'#EBF2FF',color:'#4B6CB7',borderRadius:20,padding:'2px 8px',fontSize:11,fontWeight:500}}>
+                          {nombre}{precio ? ` · USD${precio}` : ''}{idioma ? ` · ${idioma}` : ''}
+                        </span>
+                      );
+                    })}
                   </div>
                 )}
                 {s.bio && (
