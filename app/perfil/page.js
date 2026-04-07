@@ -143,7 +143,7 @@ export default function PerfilPage() {
       if (foto) {
         const formData = new FormData();
         formData.append('file', foto);
-        const up = await api.post('/api/upload', formData, {
+        const up = await api.post('/api/upload/photo', formData, {
           headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` },
         });
         fotoUrl = up.data.url;
