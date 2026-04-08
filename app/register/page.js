@@ -165,8 +165,8 @@ export default function Register() {
             <div className="form-group">
               <label>{t.password}</label>
               <div style={{position:'relative'}}>
-                <input type={showPass ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form,password:e.target.value})} style={{width:'100%',paddingRight:40,boxSizing:'border-box'}} />
-                <button type="button" onClick={() => setShowPass(p => !p)} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',fontSize:18,color:'#888'}}>
+                <input type={showPass ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form,password:e.target.value})} style={{width:'100%',paddingRight:44,paddingLeft:12,paddingTop:10,paddingBottom:10,boxSizing:'border-box',border:fieldErrors.password?'1.5px solid #ef4444':'1.5px solid #d1d5db',borderRadius:8,fontSize:14,outline:'none'}} />
+                <button type="button" onClick={() => setShowPass(p => !p)} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',fontSize:16,color:'#888',zIndex:1,padding:'4px'}}>
                   {showPass ? '🙈' : '👁️'}
                 </button>
               </div>
