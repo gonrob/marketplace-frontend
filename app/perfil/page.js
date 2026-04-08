@@ -165,7 +165,7 @@ export default function PerfilPage() {
     setEliminando(true);
     try {
       const token = localStorage.getItem('token');
-      await api.delete('/api/users/me', { headers: { Authorization: `Bearer ${token}` } });
+      await api.delete('/api/users/account', { headers: { Authorization: `Bearer ${token}` } });
       localStorage.removeItem('token');
       router.push('/');
     } catch {

@@ -86,6 +86,17 @@ function DashboardContent() {
 
   return (
     <>
+      {user && !user.emailVerificado && user.email !== 'gonrobtor@gmail.com' && (
+        <div style={{position:'fixed',inset:0,zIndex:9998,background:'rgba(255,255,255,0.97)',display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
+          <div style={{textAlign:'center',maxWidth:400}}>
+            <div style={{fontSize:60,marginBottom:16}}>📧</div>
+            <h2 style={{fontSize:22,fontWeight:800,background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',marginBottom:8}}>Verificá tu email</h2>
+            <p style={{color:'#555',fontSize:15,lineHeight:1.6,marginBottom:8}}>Te enviamos un email de verificación a <strong>{user.email}</strong></p>
+            <p style={{color:'#888',fontSize:13,marginBottom:24}}>Hacé click en el link del email para activar tu cuenta.</p>
+            <p style={{color:'#aaa',fontSize:12}}>¿No lo encontrás? Revisá tu carpeta de spam.</p>
+          </div>
+        </div>
+      )}
       {showOnboarding && <HostOnboarding lang={lang} token={localStorage.getItem("token")} onComplete={() => { setShowOnboarding(false); }} onSkip={() => setShowOnboarding(false)} />}
       <nav className="nav">
         <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Know<span>an</span> 🌐</span></Link>
