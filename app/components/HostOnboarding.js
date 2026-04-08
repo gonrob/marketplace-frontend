@@ -17,7 +17,7 @@ const ZONAS = ['Buenos Aires - Centro/Microcentro','Buenos Aires - Palermo','Bue
 
 const inp = (error) => ({ width: '100%', padding: '9px 12px', borderRadius: 8, fontSize: 13, border: `1.5px solid ${error ? '#ef4444' : '#d1d5db'}`, outline: 'none', background: '#fff', boxSizing: 'border-box' });
 
-export default function HostOnboarding({ onComplete, onSkip }) {
+export default function HostOnboarding({ onComplete }) {
   const fileRef = useRef();
   const [foto, setFoto] = useState(null);
   const [fotoPreview, setFotoPreview] = useState(null);
@@ -217,9 +217,7 @@ export default function HostOnboarding({ onComplete, onSkip }) {
         <button onClick={handleSubmit} disabled={loading} style={{ width: '100%', padding: 13, borderRadius: 12, border: 'none', background: loading ? '#ccc' : 'linear-gradient(90deg,#4B6CB7,#C94B4B)', color: '#fff', fontSize: 15, fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer', marginBottom: 10 }}>
           {loading ? 'Guardando...' : 'Guardar y publicar perfil'}
         </button>
-        <button onClick={onSkip} style={{ width: '100%', padding: 11, borderRadius: 12, background: 'transparent', border: '1.5px solid #d1d5db', color: '#888', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
-          Completar más tarde
-        </button>
+        
       </div>
     </div>
   );
