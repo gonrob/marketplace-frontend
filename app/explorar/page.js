@@ -170,7 +170,11 @@ export default function Explorar() {
                   <button onClick={e => {e.preventDefault(); setModalHost(s);}} style={{background:'transparent',border:'1.5px solid #4B6CB7',color:'#4B6CB7',borderRadius:10,padding:'7px 14px',fontSize:12,fontWeight:600,cursor:'pointer',marginRight:6}}>
                     👁️ Ver perfil
                   </button>
-                  <Link href={`/pay?seller=${s._id}&nombre=${encodeURIComponent(s.nombre||'')}&precio=${s.precio}`}>
+                  <Link href={
+                    typeof window !== 'undefined' && localStorage.getItem('token')
+                      ? `/pay?seller=${s._id}&nombre=${encodeURIComponent(s.nombre||'')}&precio=${s.precio}`
+                      : '/login'
+                  }>
                     <button className="btn-orange" style={{width:'auto',padding:'9px 20px',fontSize:13,borderRadius:10,fontWeight:700}}>
                       {t.contactar}
                     </button>
