@@ -170,7 +170,7 @@ export default function HostOnboarding({ onComplete, onSkip }) {
                         </div>
                         <div style={{ marginBottom: 10 }}>
                           <label style={{ fontSize: 12, fontWeight: 600, color: de.descripcion ? '#ef4444' : '#555', display: 'block', marginBottom: 4 }}>📝 Descripción {de.descripcion && '*'}</label>
-                          <textarea placeholder="¿Qué incluye? ¿Dónde van?" value={det.descripcion} onChange={e => update(s.id, 'descripcion', e.target.value)} rows={2} style={{ ...inp(de.descripcion), resize: 'vertical' }} />
+                          <textarea placeholder="Ej: Los lunes hago yoga a la mañana en Plaza Italia, te puedo llevar y después tomamos un café..." value={det.descripcion} onChange={e => update(s.id, 'descripcion', e.target.value)} rows={2} style={{ ...inp(de.descripcion), resize: 'vertical' }} />
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
                           <div>
