@@ -8,12 +8,12 @@ const CATEGORIAS = [
   { id: 'conciertos', emoji: '🎵', es: 'Conciertos', en: 'Concerts' },
   { id: 'futbol', emoji: '⚽', es: 'Fútbol', en: 'Football' },
   { id: 'electronica', emoji: '🎧', es: 'Electrónica', en: 'Electronic' },
-  { id: 'museos arte exposiciones', emoji: '🏛️', es: 'Cultura / Museos', en: 'Culture / Museums' },
-  { id: 'gastronomia restaurantes bares', emoji: '🍽️', es: 'Gastronomía', en: 'Food & Drink' },
+  { id: 'museo', emoji: '🏛️', es: 'Cultura / Museos', en: 'Culture / Museums' },
+  { id: 'cena', emoji: '🍽️', es: 'Gastronomía', en: 'Food & Drink' },
   { id: 'teatro', emoji: '🎭', es: 'Teatro', en: 'Theater' },
   { id: 'fiestas', emoji: '🎉', es: 'Fiestas', en: 'Parties' },
-  { id: 'tango milonga', emoji: '🌹', es: 'Tango', en: 'Tango' },
-  { id: 'asado', emoji: '🔥', es: 'Asados', en: 'BBQ' },
+  { id: 'tango', emoji: '🌹', es: 'Tango', en: 'Tango' },
+  { id: 'asado parrilla', emoji: '🔥', es: 'Asados', en: 'BBQ' },
   { id: 'deporte', emoji: '🏃', es: 'Deportes', en: 'Sports' },
 ];
 
