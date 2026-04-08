@@ -164,12 +164,10 @@ export default function Register() {
             <div className="form-group"><label style={{color:fieldErrors.telefono?'#ef4444':'inherit'}}>{t.telefono} {fieldErrors.telefono && '⚠️'}</label><input type="tel" value={form.telefono} onChange={e => { setForm({...form,telefono:e.target.value}); validateField('telefono',e.target.value); }} style={{border:fieldErrors.telefono?'1.5px solid #ef4444':'',outline:'none'}} /></div>
             <div className="form-group">
               <label>{t.password}</label>
-              <div style={{display:'flex',gap:8,alignItems:'center'}}>
-                <input type={showPass ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form,password:e.target.value})} style={{flex:1,border:fieldErrors.password?'1.5px solid #ef4444':''}} />
-                <button type="button" onClick={() => setShowPass(p => !p)} style={{flexShrink:0,background:'#f3f4f6',border:'1px solid #d1d5db',borderRadius:8,padding:'8px 10px',cursor:'pointer',fontSize:16}}>
-                  {showPass ? '🙈' : '👁️'}
-                </button>
-              </div>
+              <input type={showPass ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form,password:e.target.value})} style={{border:fieldErrors.password?'1.5px solid #ef4444':''}} />
+              <span onClick={() => setShowPass(p => !p)} style={{cursor:'pointer',fontSize:14,color:'#888',marginTop:4,display:'block'}}>
+                {showPass ? '🙈 Ocultar' : '👁️ Ver contraseña'}
+              </span>
             </div>
 
             {(role === 'seller' || role === 'pareja') && (
