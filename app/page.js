@@ -18,12 +18,21 @@ const T = {
 
 export default function Home() {
   const { lang, setLang } = useLang();
+  const [topSellers, setTopSellers] = useState([]);
+  const [vistosHoy] = useState(Math.floor(Math.random() * 8) + 2);
   const [loggedIn, setLoggedIn] = useState(false);
   const [showLangs, setShowLangs] = useState(false);
   const t = T[lang] || T.es;
 
   useEffect(() => {
     setLoggedIn(!!localStorage.getItem('token'));
+  }, []);
+
+  useEffect(() => {
+    fetch(process.env.NEXT_PUBLIC_API_URL + '/api/users/sellers')
+      .then(r => r.json())
+      .then(data => setTopSellers((data || []).filter(s => s.foto && s.disponible).slice(0, 3)))
+      .catch(() => {});
   }, []);
 
   const changeLang = (code) => {
@@ -113,6 +122,46 @@ export default function Home() {
             ))}
           </div>
         </div>
+
+        {/* PRECIO VISIBLE */}
+        <div style={{background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',borderRadius:14,padding:'16px 20px',marginBottom:16,textAlign:'center'}}>
+          <div style={{fontSize:22,fontWeight:800,color:'#fff',marginBottom:4}}>🎁 Tu primer contacto es GRATIS</div>
+          <div style={{fontSize:14,color:'rgba(255,255,255,0.9)'}}>Después solo USD 0.50 por anfitrión</div>
+        </div>
+
+        {/* ANFITRIONES DESTACADOS */}
+        {topSellers.length > 0 && (
+          <div style={{marginBottom:16}}>
+            <h2 style={{fontSize:18,fontWeight:800,color:'#222',marginBottom:12,textAlign:'center'}}>🇦🇷 Anfitriones disponibles ahora</h2>
+            <div style={{display:'flex',flexDirection:'column',gap:10}}>
+              {topSellers.map(s => (
+                <Link key={s._id} href={`/pay?seller=${s._id}&nombre=${encodeURIComponent(s.nombre||'')}&precio=${s.precio}`} style={{textDecoration:'none'}}>
+                  <div style={{background:'#fff',borderRadius:14,padding:'14px 16px',display:'flex',alignItems:'center',gap:14,boxShadow:'0 2px 12px rgba(0,0,0,0.08)',border:'1.5px solid #e5e7eb',cursor:'pointer'}}>
+                    <img src={s.foto} alt={s.nombre} style={{width:56,height:56,borderRadius:'50%',objectFit:'cover',border:'2px solid #4B6CB7',flexShrink:0}} />
+                    <div style={{flex:1}}>
+                      <div style={{fontWeight:700,fontSize:15,color:'#1a1a1a'}}>{s.nombre}</div>
+                      {s.ciudad && <div style={{fontSize:12,color:'#888'}}>📍 {s.ciudad}</div>}
+                      {s.puntuacion > 0 && <div style={{fontSize:12,color:'#F4A020'}}>{'⭐'.repeat(Math.round(s.puntuacion))} {s.puntuacion}</div>}
+                      {s.habilidades?.length > 0 && (
+                        <div style={{fontSize:11,color:'#4B6CB7',marginTop:2}}>
+                          {(typeof s.habilidades[0] === 'string' ? s.habilidades[0] : s.habilidades[0]?.id?.replace(/_/g,' '))}
+                        </div>
+                      )}
+                    </div>
+                    <div style={{textAlign:'right',flexShrink:0}}>
+                      <div style={{fontSize:16,fontWeight:800,color:'#4B6CB7'}}>USD {s.precio}</div>
+                      <div style={{fontSize:10,color:'#aaa'}}>/ hora</div>
+                      <div style={{fontSize:11,color:'#C94B4B',fontWeight:600,marginTop:4}}>👁️ {vistosHoy} hoy</div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <Link href="/explorar" style={{display:'block',textAlign:'center',marginTop:12,color:'#4B6CB7',fontSize:14,fontWeight:600,textDecoration:'none'}}>
+              Ver todos los anfitriones →
+            </Link>
+          </div>
+        )}
 
         <Link href="/consejos" style={{textDecoration:'none'}}>
           <div style={{background:'linear-gradient(135deg,#4B6CB7,#C94B4B)',borderRadius:14,padding:'16px 20px',marginBottom:16,display:'flex',alignItems:'center',gap:12,cursor:'pointer',boxShadow:'0 4px 12px rgba(0,0,0,0.15)'}}>

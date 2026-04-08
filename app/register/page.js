@@ -64,7 +64,7 @@ export default function Register() {
         email: form.email,
         password: form.password,
         telefono: form.telefono,
-        role,
+        role: role === 'pareja' ? 'seller' : role,
         foto: fotoUrl,
         metodoPago: role === 'seller' ? form.metodoPago : '',
         cuentaPago: role === 'seller' ? form.cuentaPago : '',
