@@ -23,6 +23,12 @@ export default function Explorar() {
   const [loading, setLoading] = useState(true);
   const [bios, setBios] = useState({});
   const [expanded, setExpanded] = useState({});
+  const [userActual, setUserActual] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) api.get('/api/auth/me').then(r => setUserActual(r.data)).catch(() => {});
+  }, []);
   const [modalHost, setModalHost] = useState(null);
 
   useEffect(() => {
@@ -223,6 +229,12 @@ export default function Explorar() {
                 <div style={{display:'flex',flexDirection:'column',gap:10}}>
                   {modalHost.habilidades.map((h,i) => {
                     if (typeof h === 'string') return <div key={i} style={{background:'#EBF2FF',borderRadius:10,padding:'10px 14px',fontSize:13,color:'#4B6CB7',fontWeight:600}}>{h}</div>;
+                    if (h.esCustom) return (
+                      <div key={i} style={{background:'linear-gradient(90deg,#fffbea,#fef3c7)',borderRadius:12,padding:'14px 16px',border:'2px solid #fcd34d'}}>
+                        <div style={{fontWeight:700,fontSize:14,color:'#92400e',marginBottom:6}}>✨ Experiencia única</div>
+                        <div style={{fontSize:13,color:'#555',lineHeight:1.6}}>{h.descripcion}</div>
+                      </div>
+                    );
                     return (
                       <div key={i} style={{background:'#f8faff',borderRadius:12,padding:'12px 14px',border:'1px solid #e5e7eb'}}>
                         <div style={{fontWeight:700,fontSize:14,color:'#1a1a1a',marginBottom:6,textTransform:'capitalize'}}>{(h.id||'').replace(/_/g,' ')}</div>

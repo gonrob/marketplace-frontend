@@ -27,6 +27,7 @@ export default function HostOnboarding({ onComplete, onSkip }) {
   const [detErrors, setDetErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState('');
+  const [servicioCustom, setServicioCustom] = useState('');
 
   const handleFoto = (e) => {
     const file = e.target.files[0];
@@ -93,6 +94,7 @@ export default function HostOnboarding({ onComplete, onSkip }) {
       const upData = await upRes.json();
 
       const habilidades = Object.entries(seleccionados).map(([id, d]) => ({ id, ...d }));
+      if (servicioCustom.trim()) habilidades.push({ id: 'custom', descripcion: servicioCustom.trim(), precio: '', duracion: '', personas: '', idioma: '', punto: '', esCustom: true });
       const profRes = await fetch(apiUrl + '/api/users/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
@@ -195,6 +197,19 @@ export default function HostOnboarding({ onComplete, onSkip }) {
               })}
             </div>
           ))}
+        </div>
+
+        {/* SERVICIO CUSTOM */}
+        <div style={{ background: '#fffbea', borderRadius: 14, padding: 18, marginBottom: 20, border: '1.5px solid #fcd34d' }}>
+          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 4px', color: '#92400e' }}>✨ ¿Tenés algo único para ofrecer?</p>
+          <p style={{ color: '#888', fontSize: 12, margin: '0 0 12px' }}>Escribilo con tus palabras — esto se destacará en tu perfil</p>
+          <textarea
+            value={servicioCustom}
+            onChange={e => setServicioCustom(e.target.value)}
+            placeholder="Ej: Los domingos organizo partidos de fútbol en Palermo con locales y turistas, después asado incluido 🔥"
+            rows={3}
+            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1.5px solid #fcd34d', fontSize: 13, resize: 'vertical', outline: 'none', boxSizing: 'border-box', background: '#fff' }}
+          />
         </div>
 
         {msg && <div style={{ background: '#fff0f0', border: '1px solid #fca5a5', borderRadius: 10, padding: '12px 16px', marginBottom: 16, color: '#c94b4b', fontSize: 13, fontWeight: 600 }}>{msg}</div>}
