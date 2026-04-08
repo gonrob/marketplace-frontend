@@ -49,6 +49,10 @@ function DashboardContent() {
   useEffect(() => {
     if (!localStorage.getItem('token')) { router.push('/login'); return; }
     loadUser();
+    const interval = setInterval(() => {
+      loadUser();
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
