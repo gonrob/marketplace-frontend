@@ -8,8 +8,6 @@ const CATEGORIAS = [
   { id: 'conciertos', emoji: '🎵', es: 'Conciertos', en: 'Concerts' },
   { id: 'futbol', emoji: '⚽', es: 'Fútbol', en: 'Football' },
   { id: 'electronica', emoji: '🎧', es: 'Electrónica', en: 'Electronic' },
-  { id: 'museo', emoji: '🏛️', es: 'Cultura / Museos', en: 'Culture / Museums' },
-  { id: 'cena', emoji: '🍽️', es: 'Gastronomía', en: 'Food & Drink' },
   { id: 'teatro', emoji: '🎭', es: 'Teatro', en: 'Theater' },
   { id: 'fiestas', emoji: '🎉', es: 'Fiestas', en: 'Parties' },
   { id: 'tango', emoji: '🌹', es: 'Tango', en: 'Tango' },
