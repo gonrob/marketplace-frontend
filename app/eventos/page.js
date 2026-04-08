@@ -8,8 +8,8 @@ const CATEGORIAS = [
   { id: 'conciertos', emoji: '🎵', es: 'Conciertos', en: 'Concerts' },
   { id: 'futbol', emoji: '⚽', es: 'Fútbol', en: 'Football' },
   { id: 'electronica', emoji: '🎧', es: 'Electrónica', en: 'Electronic' },
-  { id: 'cultura museos', emoji: '🏛️', es: 'Cultura / Museos', en: 'Culture / Museums' },
-  { id: 'gastronomia restaurantes', emoji: '🍽️', es: 'Gastronomía', en: 'Food & Drink' },
+  { id: 'museos arte exposiciones', emoji: '🏛️', es: 'Cultura / Museos', en: 'Culture / Museums' },
+  { id: 'gastronomia restaurantes bares', emoji: '🍽️', es: 'Gastronomía', en: 'Food & Drink' },
   { id: 'teatro', emoji: '🎭', es: 'Teatro', en: 'Theater' },
   { id: 'fiestas', emoji: '🎉', es: 'Fiestas', en: 'Parties' },
   { id: 'tango milonga', emoji: '🌹', es: 'Tango', en: 'Tango' },
@@ -161,6 +161,9 @@ export default function EventosPage() {
       {/* Resultados */}
       {buscado && (
         <div style={{ maxWidth: 700, margin: '0 auto', padding: '20px 16px 60px' }}>
+          <button onClick={() => { setBuscado(false); setEventos([]); setQuery(''); }} style={{ background: 'transparent', border: 'none', color: '#4B6CB7', fontSize: 14, fontWeight: 600, cursor: 'pointer', marginBottom: 16, padding: 0 }}>
+            ← Volver a categorías
+          </button>
           {loading ? (
             <p style={{ textAlign: 'center', color: '#4B6CB7', padding: 40 }}>{t.cargando}</p>
           ) : eventos.length === 0 ? (
