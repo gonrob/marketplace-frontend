@@ -6,12 +6,23 @@ import useLang from '../../lib/useLang';
 
 const CATEGORIAS = [
   { id: 'todos', emoji: '🎉', es: 'Todos', en: 'All' },
-  { id: 'musica', emoji: '🎵', es: 'Música', en: 'Music' },
+  { id: 'musica', emoji: '🎵', es: 'Música / Conciertos', en: 'Music / Concerts' },
   { id: 'deportes', emoji: '⚽', es: 'Deportes', en: 'Sports' },
-  { id: 'fiestas', emoji: '🎊', es: 'Fiestas', en: 'Parties' },
-  { id: 'cultura', emoji: '🏛️', es: 'Cultura', en: 'Culture' },
-  { id: 'gastronomia', emoji: '🍽️', es: 'Gastronomía', en: 'Food' },
+  { id: 'fiestas', emoji: '🎊', es: 'Festivales / Fiestas', en: 'Festivals / Parties' },
+  { id: 'cultura', emoji: '🏛️', es: 'Cultura / Teatro', en: 'Culture / Theater' },
+  { id: 'gastronomia', emoji: '🍽️', es: 'Gastronomía', en: 'Food & Drink' },
 ];
+
+const CAT_EMOJI = {
+  concerts: '🎵',
+  sports: '⚽',
+  community: '🎊',
+  festivals: '🎊',
+  'performing-arts': '🎭',
+  expos: '🏛️',
+  'food-drink': '🍽️',
+  conferences: '💼',
+};
 
 const T = {
   es: { titulo: 'Eventos en Argentina', sub: 'Encontrá el evento perfecto y viví la experiencia con un anfitrión local', comprar: 'Quiero ir', necesitas: 'Para comprar entradas necesitás contactar a un anfitrión', buscarAnfitrion: 'Buscar anfitrión', cargando: 'Cargando eventos...', sinEventos: 'No hay eventos disponibles en esta categoría.', precio: 'Precio aprox.', fecha: 'Fecha', lugar: 'Lugar' },
