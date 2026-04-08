@@ -122,10 +122,23 @@ export default function Home() {
           </div>
         </Link>
 
-        <div style={{textAlign:'center',padding:'8px 0 40px',display:'flex',gap:20,justifyContent:'center',flexWrap:'wrap'}}>
+        <div style={{textAlign:'center',padding:'8px 0 16px',display:'flex',gap:20,justifyContent:'center',flexWrap:'wrap'}}>
           <Link href="/compartir" style={{color:'#4B6CB7',fontSize:14,textDecoration:'none'}}>{t.comp}</Link>
           <Link href="/contacto" style={{color:'#4B6CB7',fontSize:14,textDecoration:'none'}}>{t.cont}</Link>
           <Link href="/explorar" style={{color:'#4B6CB7',fontSize:14,textDecoration:'none'}}>{t.buscar}</Link>
+        </div>
+
+        {/* Footer seguridad */}
+        <div style={{borderTop:'1px solid #e5e7eb',padding:'16px 0 40px',textAlign:'center'}}>
+          <div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:8,marginBottom:8,flexWrap:'wrap'}}>
+            <span style={{fontSize:13,color:'#888'}}>🔒 Pagos seguros con</span>
+            <span style={{fontWeight:700,color:'#635bff',fontSize:14}}>Stripe</span>
+            <span style={{color:'#ccc'}}>·</span>
+            <span style={{fontSize:13,color:'#888'}}>🛡️ Datos protegidos</span>
+            <span style={{color:'#ccc'}}>·</span>
+            <span style={{fontSize:13,color:'#888'}}>✅ Perfiles verificados</span>
+          </div>
+          <p style={{fontSize:11,color:'#bbb',margin:0}}>© 2026 Knowan · knowan.net</p>
         </div>
       </div>
     </>
