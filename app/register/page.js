@@ -139,9 +139,7 @@ export default function Register() {
 
             <div className="form-group"><label>{t.nombre}</label><input value={form.nombre} onChange={e => setForm({...form,nombre:e.target.value})} /></div>
             <div className="form-group"><label>{t.apellido}</label><input value={form.apellido} onChange={e => setForm({...form,apellido:e.target.value})} /></div>
-            {role === 'pareja' && (
-              <div className="form-group"><label>👫 {t.nombrePareja}</label><input value={form.nombrePareja} onChange={e => setForm({...form,nombrePareja:e.target.value})} placeholder="ej: María" /></div>
-            )}
+
             <div className="form-group"><label>{t.email}</label><input type="email" value={form.email} onChange={e => setForm({...form,email:e.target.value})} /></div>
             <div className="form-group"><label>{t.telefono}</label><input type="tel" value={form.telefono} onChange={e => setForm({...form,telefono:e.target.value})} /></div>
             <div className="form-group">
