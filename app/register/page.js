@@ -25,6 +25,7 @@ export default function Register() {
   const [fotoPreview, setFotoPreview] = useState(null);
   const fotoRef = typeof window !== 'undefined' ? require('react').useRef() : {current:null};
   const [showParejaAviso, setShowParejaAviso] = useState(false);
+  const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [lang, setLang] = useState('es');
@@ -143,7 +144,15 @@ export default function Register() {
             )}
             <div className="form-group"><label>{t.email}</label><input type="email" value={form.email} onChange={e => setForm({...form,email:e.target.value})} /></div>
             <div className="form-group"><label>{t.telefono}</label><input type="tel" value={form.telefono} onChange={e => setForm({...form,telefono:e.target.value})} /></div>
-            <div className="form-group"><label>{t.password}</label><input type="password" value={form.password} onChange={e => setForm({...form,password:e.target.value})} /></div>
+            <div className="form-group">
+              <label>{t.password}</label>
+              <div style={{position:'relative'}}>
+                <input type={showPass ? 'text' : 'password'} value={form.password} onChange={e => setForm({...form,password:e.target.value})} style={{width:'100%',paddingRight:40,boxSizing:'border-box'}} />
+                <button type="button" onClick={() => setShowPass(p => !p)} style={{position:'absolute',right:10,top:'50%',transform:'translateY(-50%)',background:'none',border:'none',cursor:'pointer',fontSize:18,color:'#888'}}>
+                  {showPass ? '🙈' : '👁️'}
+                </button>
+              </div>
+            </div>
 
             {(role === 'seller' || role === 'pareja') && (
               <>
