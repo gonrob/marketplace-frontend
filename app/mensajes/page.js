@@ -12,6 +12,9 @@ function ChatContent() {
   const conId = params.get('con');
   const [mensajes, setMensajes] = useState([]);
   const [texto, setTexto] = useState('');
+  const [showValorar, setShowValorar] = useState(false);
+  const [estrellas, setEstrellas] = useState(0);
+  const [valorado, setValorado] = useState(false);
   const [user, setUser] = useState(null);
   const [contacto, setContacto] = useState(null);
   const [socket, setSocket] = useState(null);
@@ -56,6 +59,14 @@ function ChatContent() {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [mensajes]);
+
+  const valorar = async (n) => {
+    try {
+      await api.post(`/api/users/sellers/${conId}/valorar`, { puntuacion: n });
+      setValorado(true);
+      setShowValorar(false);
+    } catch {}
+  };
 
   const enviar = () => {
     if (!texto.trim() || !socket || !conId || !user) return;
@@ -112,6 +123,31 @@ function ChatContent() {
         <div ref={bottomRef} />
       </div>
 
+      {user?.role === 'buyer' && contacto && !valorado && (
+        <div style={{padding:'10px 16px',background:'#f8faff',borderTop:'1px solid #e5e7eb',textAlign:'center'}}>
+          {!showValorar ? (
+            <button onClick={() => setShowValorar(true)} style={{background:'transparent',border:'1.5px solid #4B6CB7',color:'#4B6CB7',borderRadius:20,padding:'6px 16px',fontSize:13,fontWeight:600,cursor:'pointer'}}>
+              ⭐ Valorar a {contacto.nombre}
+            </button>
+          ) : (
+            <div>
+              <p style={{fontSize:13,color:'#555',margin:'0 0 8px'}}>¿Cómo fue tu experiencia con {contacto.nombre}?</p>
+              <div style={{display:'flex',justifyContent:'center',gap:8}}>
+                {[1,2,3,4,5].map(n => (
+                  <button key={n} onClick={() => valorar(n)} style={{fontSize:28,background:'none',border:'none',cursor:'pointer',opacity:estrellas>=n?1:0.3}} onMouseEnter={() => setEstrellas(n)} onMouseLeave={() => setEstrellas(0)}>
+                    ⭐
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+      {valorado && (
+        <div style={{padding:'10px 16px',background:'#f0fdf4',borderTop:'1px solid #6ee7b7',textAlign:'center',fontSize:13,color:'#15803d',fontWeight:600}}>
+          ✅ ¡Gracias por tu valoración!
+        </div>
+      )}
       <div style={{padding:'12px 16px',background:'white',borderTop:'1px solid #f0f0f0',display:'flex',gap:10}}>
         <input
           value={texto}
