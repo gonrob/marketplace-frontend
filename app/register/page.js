@@ -66,8 +66,8 @@ export default function Register() {
         telefono: form.telefono,
         role: role === 'pareja' ? 'seller' : role,
         foto: fotoUrl,
-        metodoPago: role === 'seller' ? form.metodoPago : '',
-        cuentaPago: role === 'seller' ? form.cuentaPago : '',
+        metodoPago: (role === 'seller' || role === 'pareja') ? form.metodoPago : '',
+        cuentaPago: (role === 'seller' || role === 'pareja') ? form.cuentaPago : '',
         nombrePareja: form.nombrePareja || '',
       });
       localStorage.setItem('token', res.data.token);
@@ -145,7 +145,7 @@ export default function Register() {
             <div className="form-group"><label>{t.telefono}</label><input type="tel" value={form.telefono} onChange={e => setForm({...form,telefono:e.target.value})} /></div>
             <div className="form-group"><label>{t.password}</label><input type="password" value={form.password} onChange={e => setForm({...form,password:e.target.value})} /></div>
 
-            {role === 'seller' && (
+            {(role === 'seller' || role === 'pareja') && (
               <>
                 <div className="form-group">
                   <label>{t.metodoPago}</label>
