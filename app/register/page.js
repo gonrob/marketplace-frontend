@@ -26,6 +26,7 @@ export default function Register() {
   const fotoRef = typeof window !== 'undefined' ? require('react').useRef() : {current:null};
   const [showParejaAviso, setShowParejaAviso] = useState(false);
   const [showPass, setShowPass] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [lang, setLang] = useState('es');
@@ -39,7 +40,26 @@ export default function Register() {
 
   const elegirRol = (r) => { setRole(r); setPaso(2); };
 
+  const validateField = (name, value) => {
+    const errs = {...fieldErrors};
+    if (name === 'nombre' && !value.trim()) errs.nombre = true; else delete errs.nombre;
+    if (name === 'apellido' && !value.trim()) errs.apellido = true; else delete errs.apellido;
+    if (name === 'email' && !/\S+@\S+\.\S+/.test(value)) errs.email = true; else delete errs.email;
+    if (name === 'telefono' && !value.trim()) errs.telefono = true; else delete errs.telefono;
+    if (name === 'password' && value.length < 6) errs.password = true; else delete errs.password;
+    setFieldErrors(errs);
+  };
+
   const registrar = async () => {
+    const errs = {};
+    if (!form.nombre.trim()) errs.nombre = true;
+    if (!form.apellido.trim()) errs.apellido = true;
+    if (!/\S+@\S+\.\S+/.test(form.email)) errs.email = true;
+    if (!form.telefono.trim()) errs.telefono = true;
+    if (form.password.length < 6) errs.password = true;
+    if (role === 'buyer' && !fotoViajero) errs.foto = true;
+    setFieldErrors(errs);
+    if (Object.keys(errs).length > 0) return;
     setLoading(true); setError('');
     try {
       if (role === 'buyer' && !fotoViajero) {
@@ -137,11 +157,11 @@ export default function Register() {
             <h1 style={{marginBottom:20}}>{t.titulo}</h1>
             {error && <div className="error">{error}</div>}
 
-            <div className="form-group"><label>{t.nombre}</label><input value={form.nombre} onChange={e => setForm({...form,nombre:e.target.value})} /></div>
-            <div className="form-group"><label>{t.apellido}</label><input value={form.apellido} onChange={e => setForm({...form,apellido:e.target.value})} /></div>
+            <div className="form-group"><label style={{color:fieldErrors.nombre?'#ef4444':'inherit'}}>{t.nombre} {fieldErrors.nombre && '⚠️'}</label><input value={form.nombre} onChange={e => { setForm({...form,nombre:e.target.value}); validateField('nombre',e.target.value); }} style={{border:fieldErrors.nombre?'1.5px solid #ef4444':'',outline:'none'}} /></div>
+            <div className="form-group"><label style={{color:fieldErrors.apellido?'#ef4444':'inherit'}}>{t.apellido} {fieldErrors.apellido && '⚠️'}</label><input value={form.apellido} onChange={e => { setForm({...form,apellido:e.target.value}); validateField('apellido',e.target.value); }} style={{border:fieldErrors.apellido?'1.5px solid #ef4444':'',outline:'none'}} /></div>
 
-            <div className="form-group"><label>{t.email}</label><input type="email" value={form.email} onChange={e => setForm({...form,email:e.target.value})} /></div>
-            <div className="form-group"><label>{t.telefono}</label><input type="tel" value={form.telefono} onChange={e => setForm({...form,telefono:e.target.value})} /></div>
+            <div className="form-group"><label style={{color:fieldErrors.email?'#ef4444':'inherit'}}>{t.email} {fieldErrors.email && '⚠️'}</label><input type="email" value={form.email} onChange={e => { setForm({...form,email:e.target.value}); validateField('email',e.target.value); }} style={{border:fieldErrors.email?'1.5px solid #ef4444':'',outline:'none'}} /></div>
+            <div className="form-group"><label style={{color:fieldErrors.telefono?'#ef4444':'inherit'}}>{t.telefono} {fieldErrors.telefono && '⚠️'}</label><input type="tel" value={form.telefono} onChange={e => { setForm({...form,telefono:e.target.value}); validateField('telefono',e.target.value); }} style={{border:fieldErrors.telefono?'1.5px solid #ef4444':'',outline:'none'}} /></div>
             <div className="form-group">
               <label>{t.password}</label>
               <div style={{position:'relative'}}>
