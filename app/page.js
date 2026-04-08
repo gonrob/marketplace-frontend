@@ -149,7 +149,7 @@ export default function Home() {
         <div style={{background:'#fff',borderRadius:'20px 20px 0 0',maxWidth:500,width:'100%',padding:'28px 24px 40px'}}>
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
             <h2 style={{fontSize:20,fontWeight:800,margin:0,background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>📲 Knowan en tu móvil</h2>
-            <button onClick={() => document.getElementById('pwa-modal').style.display='none'} style={{background:'#f3f4f6',border:'none',borderRadius:'50%',width:36,height:36,fontSize:18,cursor:'pointer'}}>✕</button>
+            <button onClick={() => document.getElementById('pwa-modal').style.display='none'} style={{background:'#e5e7eb',border:'2px solid #ccc',borderRadius:'50%',width:40,height:40,fontSize:20,cursor:'pointer',fontWeight:700,color:'#333'}}>✕</button>
           </div>
           <div style={{display:'flex',flexDirection:'column',gap:16}}>
             <div style={{background:'#f8faff',borderRadius:14,padding:16,border:'1.5px solid #e5e7eb'}}>
