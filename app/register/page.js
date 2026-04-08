@@ -21,6 +21,9 @@ export default function Register() {
   const [paso, setPaso] = useState(1);
   const [role, setRole] = useState('');
   const [form, setForm] = useState({nombre:'',apellido:'',email:'',telefono:'',password:'',metodoPago:'mercadopago',cuentaPago:'',nombrePareja:''});
+  const [fotoViajero, setFotoViajero] = useState(null);
+  const [fotoPreview, setFotoPreview] = useState(null);
+  const fotoRef = typeof window !== 'undefined' ? require('react').useRef() : {current:null};
   const [showParejaAviso, setShowParejaAviso] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -38,14 +41,34 @@ export default function Register() {
   const registrar = async () => {
     setLoading(true); setError('');
     try {
+      if (role === 'buyer' && !fotoViajero) {
+        setError('La foto de perfil es obligatoria');
+        setLoading(false);
+        return;
+      }
+
+      let fotoUrl = null;
+      if (fotoViajero) {
+        const base64 = await new Promise((res, rej) => {
+          const r = new FileReader();
+          r.onload = () => res(r.result);
+          r.onerror = rej;
+          r.readAsDataURL(fotoViajero);
+        });
+        const upRes = await api.post('/api/upload/photo', { photo: base64 });
+        fotoUrl = upRes.data.url;
+      }
+
       const res = await api.post('/api/auth/register', {
-        nombre: `${form.nombre} ${form.apellido}`.trim(),
+        nombre: form.nombre + ' ' + form.apellido,
         email: form.email,
         password: form.password,
         telefono: form.telefono,
         role,
+        foto: fotoUrl,
         metodoPago: role === 'seller' ? form.metodoPago : '',
         cuentaPago: role === 'seller' ? form.cuentaPago : '',
+        nombrePareja: form.nombrePareja || '',
       });
       localStorage.setItem('token', res.data.token);
       if (role === 'buyer') {
@@ -135,6 +158,20 @@ export default function Register() {
               </>
             )}
 
+            {role === 'buyer' && (
+              <div className="form-group" style={{marginBottom:16}}>
+                <label>📸 Foto de perfil (obligatoria)</label>
+                <div style={{display:'flex',alignItems:'center',gap:16,marginTop:8}}>
+                  <div onClick={() => fotoRef.current?.click()} style={{width:64,height:64,borderRadius:'50%',cursor:'pointer',background:fotoPreview?'transparent':'linear-gradient(135deg,#4B6CB7,#C94B4B)',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',border:'3px solid #4B6CB7',flexShrink:0}}>
+                    {fotoPreview ? <img src={fotoPreview} alt="foto" style={{width:'100%',height:'100%',objectFit:'cover'}} /> : <span style={{fontSize:24}}>👤</span>}
+                  </div>
+                  <button type="button" onClick={() => fotoRef.current?.click()} style={{background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',color:'#fff',border:'none',borderRadius:10,padding:'8px 16px',fontWeight:700,fontSize:13,cursor:'pointer'}}>
+                    {fotoPreview ? 'Cambiar foto' : 'Subir foto'}
+                  </button>
+                  <input ref={fotoRef} type="file" accept="image/*" style={{display:'none'}} onChange={e => { const f=e.target.files[0]; if(f){setFotoViajero(f);setFotoPreview(URL.createObjectURL(f));} }} />
+                </div>
+              </div>
+            )}
             <button className="btn-orange" onClick={registrar} disabled={loading}>
               {loading ? t.cargando : t.registrar}
             </button>
