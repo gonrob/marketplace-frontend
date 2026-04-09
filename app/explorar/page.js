@@ -263,6 +263,18 @@ export default function Explorar() {
               </div>
             )}
 
+            {/* GALERIA */}
+            {modalHost.galeria && modalHost.galeria.length > 0 && (
+              <div style={{marginBottom:20}}>
+                <p style={{fontWeight:700,fontSize:14,margin:'0 0 10px',color:'#222'}}>🖼️ Galería</p>
+                <div style={{display:'flex',gap:8,overflowX:'auto',paddingBottom:4}}>
+                  {modalHost.galeria.map((url,i) => (
+                    <img key={i} src={url} alt={`foto${i}`} style={{width:100,height:100,borderRadius:10,objectFit:'cover',flexShrink:0,border:'1.5px solid #e5e7eb'}} />
+                  ))}
+                </div>
+              </div>
+            )}
+
             <Link href={`/pay?seller=${modalHost._id}&nombre=${encodeURIComponent(modalHost.nombre||'')}&precio=${modalHost.precio}`}>
               <button style={{width:'100%',padding:'14px',borderRadius:12,border:'none',background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',color:'#fff',fontSize:16,fontWeight:800,cursor:'pointer'}}>
                 Contactar · USD {modalHost.precio} / hora
