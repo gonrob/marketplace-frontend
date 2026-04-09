@@ -17,63 +17,42 @@ const ZONAS = ['Buenos Aires - Centro/Microcentro','Buenos Aires - Palermo','Bue
 
 const inp = (error) => ({ width: '100%', padding: '9px 12px', borderRadius: 8, fontSize: 13, border: `1.5px solid ${error ? '#ef4444' : '#d1d5db'}`, outline: 'none', background: '#fff', boxSizing: 'border-box' });
 
-export default function HostOnboarding({ onComplete, esPareja: esParejaProps }) {
-  const [esPareja, setEsPareja] = useState(esParejaProps || false);
+export default function HostOnboarding({ onComplete }) {
+  const fileRef = useRef();
+  const fileRef2 = useRef();
+  const [esPareja, setEsPareja] = useState(false);
+
   useEffect(() => {
     if (localStorage.getItem('esPareja') === 'true') setEsPareja(true);
   }, []);
-  const fileRef = useRef();
+
   const [foto, setFoto] = useState(null);
   const [fotoPreview, setFotoPreview] = useState(null);
+  const [foto2, setFoto2] = useState(null);
+  const [fotoPreview2, setFotoPreview2] = useState(null);
+  const [nombrePareja, setNombrePareja] = useState('');
   const [zona, setZona] = useState('');
   const [seleccionados, setSeleccionados] = useState({});
+  const [servicioCustom, setServicioCustom] = useState('');
   const [errors, setErrors] = useState({});
   const [detErrors, setDetErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState('');
-  const [servicioCustom, setServicioCustom] = useState('');
-  const [foto2, setFoto2] = useState(null);
-  const [fotoPreview2, setFotoPreview2] = useState(null);
-  const [nombrePareja, setNombrePareja] = useState('');
-  const fileRef2 = useRef();
 
-  const handleFoto = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    setFoto(file);
-    setFotoPreview(URL.createObjectURL(file));
-    setErrors(p => ({ ...p, foto: false }));
-  };
+  const handleFoto = (e) => { const f = e.target.files[0]; if(f){setFoto(f);setFotoPreview(URL.createObjectURL(f));setErrors(p=>({...p,foto:false}));} };
+  const handleFoto2 = (e) => { const f = e.target.files[0]; if(f){setFoto2(f);setFotoPreview2(URL.createObjectURL(f));} };
 
-  const toggle = (id) => {
-    setSeleccionados(p => {
-      const n = { ...p };
-      if (n[id]) delete n[id];
-      else n[id] = { precio: '', duracion: '', descripcion: '', personas: '2', idioma: 'Español', punto: '' };
-      return n;
-    });
-    setErrors(p => ({ ...p, servicios: false }));
-  };
-
-  const update = (id, field, val) => {
-    setSeleccionados(p => ({ ...p, [id]: { ...p[id], [field]: val } }));
-    setDetErrors(p => ({ ...p, [id]: { ...p[id], [field]: false } }));
-  };
+  const toggle = (id) => { setSeleccionados(p => { const n={...p}; if(n[id]) delete n[id]; else n[id]={precio:'',duracion:'',descripcion:'',personas:'2',idioma:'Español',punto:''}; return n; }); setErrors(p=>({...p,servicios:false})); };
+  const update = (id, field, val) => { setSeleccionados(p=>({...p,[id]:{...p[id],[field]:val}})); setDetErrors(p=>({...p,[id]:{...p[id],[field]:false}})); };
 
   const validate = () => {
     const e = {};
     if (!foto) e.foto = true;
     if (!zona) e.zona = true;
-    if (Object.keys(seleccionados).length === 0) e.servicios = true;
+    if (Object.keys(seleccionados).length === 0 && !servicioCustom.trim()) e.servicios = true;
     setErrors(e);
     const de = {};
-    Object.entries(seleccionados).forEach(([id, d]) => {
-      const fe = {};
-      if (!d.precio) fe.precio = true;
-      if (!d.duracion) fe.duracion = true;
-      if (!d.descripcion) fe.descripcion = true;
-      if (Object.keys(fe).length) de[id] = fe;
-    });
+    Object.entries(seleccionados).forEach(([id, d]) => { const fe={}; if(!d.precio) fe.precio=true; if(!d.duracion) fe.duracion=true; if(!d.descripcion) fe.descripcion=true; if(Object.keys(fe).length) de[id]=fe; });
     setDetErrors(de);
     return Object.keys(e).length === 0 && Object.keys(de).length === 0;
   };
@@ -86,19 +65,9 @@ export default function HostOnboarding({ onComplete, esPareja: esParejaProps }) 
       const token = localStorage.getItem('token');
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-      const base64 = await new Promise((res, rej) => {
-        const r = new FileReader();
-        r.onload = () => res(r.result);
-        r.onerror = rej;
-        r.readAsDataURL(foto);
-      });
-
-      const upRes = await fetch(apiUrl + '/api/upload/photo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ photo: base64 }),
-      });
-      if (!upRes.ok) { const e = await upRes.text(); throw new Error('Upload: ' + e); }
+      const base64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(foto); });
+      const upRes = await fetch(apiUrl + '/api/upload/photo', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ photo: base64 }) });
+      if (!upRes.ok) throw new Error('Error subiendo foto');
       const upData = await upRes.json();
 
       let fotoUrl2 = null;
@@ -107,14 +76,17 @@ export default function HostOnboarding({ onComplete, esPareja: esParejaProps }) 
         const upRes2 = await fetch(apiUrl + '/api/upload/photo', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ photo: base642 }) });
         if (upRes2.ok) { const d = await upRes2.json(); fotoUrl2 = d.url; }
       }
+
       const habilidades = Object.entries(seleccionados).map(([id, d]) => ({ id, ...d }));
       if (servicioCustom.trim()) habilidades.push({ id: 'custom', descripcion: servicioCustom.trim(), precio: '', duracion: '', personas: '', idioma: '', punto: '', esCustom: true });
+
       const profRes = await fetch(apiUrl + '/api/users/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify({ foto: upData.url, habilidades, ciudad: zona, ...(fotoUrl2 && { foto2: fotoUrl2 }), ...(nombrePareja && { nombrePareja }) }),
       });
-      if (!profRes.ok) { const e = await profRes.text(); throw new Error('Profile: ' + e); }
+      if (!profRes.ok) throw new Error('Error guardando perfil');
+      localStorage.removeItem('esPareja');
       onComplete();
     } catch (err) {
       setMsg('Error: ' + err.message);
@@ -132,8 +104,11 @@ export default function HostOnboarding({ onComplete, esPareja: esParejaProps }) 
           <p style={{ color: '#666', fontSize: 13, margin: 0 }}>Completá tu perfil para aparecer en el escaparate</p>
         </div>
 
+        {/* FOTO 1 */}
         <div style={{ background: errors.foto ? '#fff5f5' : '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: `1.5px solid ${errors.foto ? '#ef4444' : '#e5e7eb'}` }}>
-          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 12px', color: errors.foto ? '#ef4444' : '#222' }}>{esPareja ? '📸 Foto 1 (tuya)' : '📸 Foto de perfil'} {errors.foto && <span style={{ fontSize: 12, fontWeight: 400 }}>— obligatoria</span>}</p>
+          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 12px', color: errors.foto ? '#ef4444' : '#222' }}>
+            📸 {esPareja ? 'Foto 1 — La tuya' : 'Foto de perfil'} {errors.foto && <span style={{ fontSize: 12, fontWeight: 400 }}>— obligatoria</span>}
+          </p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <div onClick={() => fileRef.current.click()} style={{ width: 72, height: 72, borderRadius: '50%', cursor: 'pointer', flexShrink: 0, background: fotoPreview ? 'transparent' : 'linear-gradient(135deg,#4B6CB7,#C94B4B)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: `3px solid ${errors.foto ? '#ef4444' : '#4B6CB7'}` }}>
               {fotoPreview ? <img src={fotoPreview} alt="foto" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ fontSize: 26 }}>👤</span>}
@@ -143,15 +118,36 @@ export default function HostOnboarding({ onComplete, esPareja: esParejaProps }) 
           </div>
         </div>
 
+        {/* FOTO 2 Y NOMBRE PAREJA */}
+        {esPareja && (
+          <div style={{ background: '#fdf4ff', borderRadius: 14, padding: 18, marginBottom: 16, border: '1.5px solid #C94B4B' }}>
+            <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 14px', color: '#C94B4B' }}>👫 Datos de tu pareja</p>
+            <div style={{ marginBottom: 14 }}>
+              <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 6 }}>Nombre de tu pareja</label>
+              <input value={nombrePareja} onChange={e => setNombrePareja(e.target.value)} placeholder="ej: María García" style={inp(false)} />
+            </div>
+            <p style={{ fontSize: 13, fontWeight: 700, margin: '0 0 10px', color: '#C94B4B' }}>📸 Foto 2 — La de tu pareja</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+              <div onClick={() => fileRef2.current.click()} style={{ width: 72, height: 72, borderRadius: '50%', cursor: 'pointer', flexShrink: 0, background: fotoPreview2 ? 'transparent' : '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '3px solid #C94B4B' }}>
+                {fotoPreview2 ? <img src={fotoPreview2} alt="pareja" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ fontSize: 26 }}>👤</span>}
+              </div>
+              <button onClick={() => fileRef2.current.click()} style={{ background: '#C94B4B', color: '#fff', border: 'none', borderRadius: 10, padding: '9px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>{fotoPreview2 ? 'Cambiar foto' : 'Subir foto de tu pareja'}</button>
+              <input ref={fileRef2} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFoto2} />
+            </div>
+          </div>
+        )}
+
+        {/* ZONA */}
         <div style={{ background: errors.zona ? '#fff5f5' : '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: `1.5px solid ${errors.zona ? '#ef4444' : '#e5e7eb'}` }}>
           <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 10px', color: errors.zona ? '#ef4444' : '#222' }}>📍 Zona de servicio {errors.zona && <span style={{ fontSize: 12, fontWeight: 400 }}>— obligatoria</span>}</p>
-          <select value={zona} onChange={e => { setZona(e.target.value); setErrors(p => ({ ...p, zona: false })); }} style={inp(errors.zona)}>
+          <select value={zona} onChange={e => { setZona(e.target.value); setErrors(p=>({...p,zona:false})); }} style={inp(errors.zona)}>
             <option value="">— Seleccioná tu zona —</option>
             {ZONAS.map(z => <option key={z} value={z}>{z}</option>)}
           </select>
         </div>
 
-        <div style={{ background: errors.servicios ? '#fff5f5' : '#f8faff', borderRadius: 14, padding: 18, marginBottom: 20, border: `1.5px solid ${errors.servicios ? '#ef4444' : '#e5e7eb'}` }}>
+        {/* SERVICIOS */}
+        <div style={{ background: errors.servicios ? '#fff5f5' : '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: `1.5px solid ${errors.servicios ? '#ef4444' : '#e5e7eb'}` }}>
           <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 4px', color: errors.servicios ? '#ef4444' : '#222' }}>🎯 Experiencias {errors.servicios && <span style={{ fontSize: 12, fontWeight: 400 }}>— seleccioná al menos una</span>}</p>
           <p style={{ color: '#888', fontSize: 12, margin: '0 0 16px' }}>Hacé click para configurar cada experiencia</p>
           {CATEGORIAS.map(cat => (
@@ -217,21 +213,14 @@ export default function HostOnboarding({ onComplete, esPareja: esParejaProps }) 
         <div style={{ background: '#fffbea', borderRadius: 14, padding: 18, marginBottom: 20, border: '1.5px solid #fcd34d' }}>
           <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 4px', color: '#92400e' }}>✨ ¿Tenés algo único para ofrecer?</p>
           <p style={{ color: '#888', fontSize: 12, margin: '0 0 12px' }}>Escribilo con tus palabras — esto se destacará en tu perfil</p>
-          <textarea
-            value={servicioCustom}
-            onChange={e => setServicioCustom(e.target.value)}
-            placeholder="Ej: Los domingos organizo partidos de fútbol en Palermo con locales y turistas, después asado incluido 🔥"
-            rows={3}
-            style={{ width: '100%', padding: '10px 12px', borderRadius: 10, border: '1.5px solid #fcd34d', fontSize: 13, resize: 'vertical', outline: 'none', boxSizing: 'border-box', background: '#fff' }}
-          />
+          <textarea value={servicioCustom} onChange={e => setServicioCustom(e.target.value)} placeholder="Ej: Los domingos organizo partidos de fútbol en Palermo con locales y turistas, después asado incluido 🔥" rows={3} style={{ ...inp(false), resize: 'vertical' }} />
         </div>
 
         {msg && <div style={{ background: '#fff0f0', border: '1px solid #fca5a5', borderRadius: 10, padding: '12px 16px', marginBottom: 16, color: '#c94b4b', fontSize: 13, fontWeight: 600 }}>{msg}</div>}
 
-        <button onClick={handleSubmit} disabled={loading} style={{ width: '100%', padding: 13, borderRadius: 12, border: 'none', background: loading ? '#ccc' : 'linear-gradient(90deg,#4B6CB7,#C94B4B)', color: '#fff', fontSize: 15, fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer', marginBottom: 10 }}>
+        <button onClick={handleSubmit} disabled={loading} style={{ width: '100%', padding: 13, borderRadius: 12, border: 'none', background: loading ? '#ccc' : 'linear-gradient(90deg,#4B6CB7,#C94B4B)', color: '#fff', fontSize: 15, fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer' }}>
           {loading ? 'Guardando...' : 'Guardar y publicar perfil'}
         </button>
-        
       </div>
     </div>
   );
