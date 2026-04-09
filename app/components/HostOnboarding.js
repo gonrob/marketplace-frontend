@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 const CATEGORIAS = [
   { id: 'urbanas', emoji: '🏙️', es: 'Experiencias urbanas', servicios: [{ id: 'paseos_ciudad', es: 'Paseos por la ciudad' },{ id: 'tour_barrios', es: 'Tour por barrios' },{ id: 'miradores', es: 'Miradores y vistas panorámicas' },{ id: 'vida_nocturna', es: 'Vida nocturna' }] },
