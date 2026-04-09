@@ -92,6 +92,8 @@ export default function Register() {
         nombrePareja: form.nombrePareja || '',
       });
       localStorage.setItem('token', res.data.token);
+      if (role === 'pareja') localStorage.setItem('esPareja', 'true');
+      else localStorage.removeItem('esPareja');
       if (role === 'buyer') {
         router.push('/explorar');
       } else {
