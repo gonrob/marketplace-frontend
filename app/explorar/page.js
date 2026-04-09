@@ -198,8 +198,13 @@ export default function Explorar() {
               <div style={{width:80,height:80,borderRadius:'50%',overflow:'hidden',flexShrink:0,border:'3px solid #4B6CB7',background:'#EBF2FF',display:'flex',alignItems:'center',justifyContent:'center'}}>
                 {modalHost.foto ? <img src={modalHost.foto} alt={modalHost.nombre} style={{width:'100%',height:'100%',objectFit:'cover'}} /> : <span style={{fontSize:32,fontWeight:700,color:'#4B6CB7'}}>{(modalHost.nombre||'A')[0]}</span>}
               </div>
+              {modalHost.foto2 && (
+                <div style={{width:80,height:80,borderRadius:'50%',overflow:'hidden',flexShrink:0,border:'3px solid #C94B4B',marginLeft:-16}}>
+                  <img src={modalHost.foto2} alt={modalHost.nombrePareja} style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                </div>
+              )}
               <div style={{flex:1}}>
-                <div style={{fontWeight:800,fontSize:20,color:'#1a1a1a'}}>{modalHost.nombre}</div>
+                <div style={{fontWeight:800,fontSize:20,color:'#1a1a1a'}}>{modalHost.nombre}{modalHost.nombrePareja ? ` & ${modalHost.nombrePareja}` : ''}</div>
                 {modalHost.ciudad && <div style={{fontSize:13,color:'#888',marginTop:2}}>📍 {modalHost.ciudad}</div>}
                 {modalHost.puntuacion > 0 && <div style={{fontSize:13,color:'#F4A020',marginTop:2}}>{'⭐'.repeat(Math.round(modalHost.puntuacion))} {modalHost.puntuacion}/5</div>}
               </div>
