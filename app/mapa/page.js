@@ -23,6 +23,21 @@ const CITY_COORDS = {
   "Bahía Blanca":   { lat: -38.7183, lng: -62.2663 },
 };
 
+const getCoordsForCity = (ciudad) => {
+  if (!ciudad) return null;
+  // Buscar coincidencia exacta primero
+  if (CITY_COORDS[ciudad]) return CITY_COORDS[ciudad];
+  // Buscar coincidencia parcial
+  const ciudadLower = ciudad.toLowerCase();
+  for (const [key, coords] of Object.entries(CITY_COORDS)) {
+    if (ciudadLower.includes(key.toLowerCase()) || key.toLowerCase().includes(ciudadLower.split(' ')[0].toLowerCase())) {
+      return coords;
+    }
+  }
+  // Default Buenos Aires
+  return CITY_COORDS['Buenos Aires'];
+};
+
 const MAP_CENTER = { lat: -35.5, lng: -63.0 };
 const MAP_ZOOM = 5;
 const containerStyle = { width: "100%", height: "100%" };
@@ -56,14 +71,15 @@ export default function MapaPage() {
   }, []);
 
   const withOffset = sellers
-    .filter((s) => s.disponible && s.ciudad && CITY_COORDS[s.ciudad])
+    .filter((s) => s.disponible && s.ciudad && getCoordsForCity(s.ciudad))
     .map((s, i, arr) => {
+      const coords = getCoordsForCity(s.ciudad);
       const sameCity = arr.slice(0, i).filter((x) => x.ciudad === s.ciudad).length;
       return {
         ...s,
         coords: {
-          lat: CITY_COORDS[s.ciudad].lat + sameCity * 0.04,
-          lng: CITY_COORDS[s.ciudad].lng + sameCity * 0.04,
+          lat: coords.lat + sameCity * 0.04,
+          lng: coords.lng + sameCity * 0.04,
         },
       };
     });
