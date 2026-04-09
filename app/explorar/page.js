@@ -107,6 +107,11 @@ export default function Explorar() {
                       {(s.nombre||'A')[0].toUpperCase()}
                     </div>
                 }
+                {s.foto2 && (
+                  <div style={{position:'absolute',bottom:8,right:8,width:44,height:44,borderRadius:'50%',overflow:'hidden',border:'2px solid #C94B4B'}}>
+                    <img src={s.foto2} alt={s.nombrePareja} style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                  </div>
+                )}
                 {s.disponible && (
                   <div style={{position:'absolute',top:8,left:8,background:'#4B6CB7',color:'white',borderRadius:20,padding:'2px 8px',fontSize:10,fontWeight:600}}>● {t.disponible}</div>
                 )}
@@ -119,7 +124,7 @@ export default function Explorar() {
               <div style={{padding:'16px',flex:1,display:'flex',flexDirection:'column',gap:6}}>
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
                   <div>
-                    <div style={{fontWeight:800,fontSize:17,color:'#1a1a1a'}}>{s.nombre||'Sin nombre'}</div>
+                    <div style={{fontWeight:800,fontSize:17,color:'#1a1a1a'}}>{s.nombre||'Sin nombre'}{s.nombrePareja ? ` & ${s.nombrePareja}` : ''}</div>
                     {s.ciudad && <div style={{fontSize:12,color:'#888',marginTop:2}}>📍 {s.ciudad}</div>}
                   </div>
                   <div style={{textAlign:'right',flexShrink:0}}>
