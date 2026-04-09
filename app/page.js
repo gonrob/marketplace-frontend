@@ -8,12 +8,12 @@ const LOGO = 'https://res.cloudinary.com/djtsmuzlo/image/upload/v1775331191/Dise
 const T = {
   es:{flag:'🇦🇷',n:'ES',tag:'Conectá con argentinos reales. Viví la cultura.',sub:'Mate · Truco · Fútbol · Dulce de leche',buscar:'Buscar anfitriones',inscribirse:'Inscribirse (Anfitriones & Viajeros)',como:'¿Cómo funciona?',p1t:'Elegí un anfitrión',p1d:'Filtrá por interés, habilidad o disponibilidad',p2t:'🎁 Te regalamos un chat de bienvenida',p2d:'Conocé tu primer argentino/a gratis. Si querés conocer más, solo USD 0.50 c/u',p3t:'¡Conectate!',p3d:'Después del primer contacto, son libres de continuar como quieran',entrar:'Entrar',perfil:'Mi perfil',comp:'Compartir app',cont:'Contacto',consejos:'Consejos de viaje',mapa:'Ver mapa de anfitriones',eventos:'Eventos',descargar:'📲 Descargar app',consejossub:'Dinero, transporte, seguridad y más',mate:'Mate',truco:'Truco',futbol:'Fútbol',dulce:'Dulce de leche',lunfardo:'Aprendé el lunfardo'},
   en:{flag:'🇬🇧',n:'EN',tag:'Connect with real Argentinians. Live the culture.',sub:'Mate · Truco · Football · Dulce de leche',buscar:'Find hosts',inscribirse:'Sign up (Hosts & Travelers)',como:'How does it work?',p1t:'Choose a host',p1d:'Filter by interest, skill or availability',p2t:'🎁 We gift you a welcome chat',p2d:'Meet your first Argentine for free. More hosts? Only USD 0.50 each',p3t:'Connect!',p3d:'After first contact, you are free to continue however you want',entrar:'Log in',perfil:'My profile',comp:'Share app',cont:'Contact',consejos:'Travel tips',mapa:'View host map',eventos:'Events',descargar:'📲 Download app',consejossub:'Money, transport, safety and more',mate:'Mate',truco:'Truco',futbol:'Football',dulce:'Dulce de leche',lunfardo:'Learn Argentine slang'},
-  pt:{flag:'🇧🇷',n:'PT',tag:'Conecte com argentinos reais. Viva a cultura.',sub:'Mate · Truco · Futebol · Doce de leite',buscar:'Encontrar anfitriões',inscribirse:'Cadastrar (Anfitriões & Viajantes)',como:'Como funciona?',p1t:'Escolha um anfitrião',p1d:'Filtre por interesse ou disponibilidade',p2t:'🎁 Te presentamos um chat de boas-vindas',p2d:'Conheça seu primeiro argentino grátis. Mais anfitriões? Apenas USD 0.50 cada',p3t:'Conecte-se!',p3d:'Após o primeiro contato, são livres para continuar',entrar:'Entrar',perfil:'Meu perfil',comp:'Compartilhar',cont:'Contato',consejos:'Dicas de viagem',mapa:'Ver mapa de anfitriões',eventos:'Eventos',descargar:'📲 Descargar app',consejossub:'Dinheiro, transporte, segurança e mais',mate:'Mate',truco:'Truco',futbol:'Futebol',dulce:'Doce de leite',lunfardo:'Aprenda o lunfardo'},
-  fr:{flag:'🇫🇷',n:'FR',tag:'Connectez avec de vrais Argentins. Vivez la culture.',sub:'Maté · Truco · Football · Dulce de leche',buscar:'Trouver des hôtes',inscribirse:"S'inscrire (Hôtes & Voyageurs)",como:'Comment ça marche?',p1t:'Choisissez un hôte',p1d:'Filtrez par intérêt ou disponibilité',p2t:'🎁 On vous offre un chat de bienvenue',p2d:'Rencontrez votre premier argentin gratuitement. Plus d hôtes? Seulement USD 0.50 chacun',p3t:'Connectez-vous!',p3d:'Après le premier contact, vous êtes libres',entrar:'Se connecter',perfil:'Mon profil',comp:'Partager',cont:'Contact',consejos:'Conseils de voyage',mapa:'Voir la carte des hôtes',eventos:'Événements',descargar:'📲 Télécharger',consejossub:'Argent, transport, sécurité et plus',mate:'Maté',truco:'Truco',futbol:'Football',dulce:'Dulce de leche',lunfardo:'Apprenez le lunfardo'},
-  it:{flag:'🇮🇹',n:'IT',tag:'Connettiti con veri argentini. Vivi la cultura.',sub:'Mate · Truco · Calcio · Dulce de leche',buscar:'Trova host',inscribirse:'Iscriviti (Host & Viaggiatori)',como:'Come funziona?',p1t:'Scegli un host',p1d:'Filtra per interesse o disponibilità',p2t:'🎁 Ti regaliamo una chat di benvenuto',p2d:'Conosci il tuo primo argentino gratis. Altri host? Solo USD 0.50 ciascuno',p3t:'Connettiti!',p3d:'Dopo il primo contatto siete liberi',entrar:'Accedi',perfil:'Il mio profilo',comp:'Condividi',cont:'Contatto',consejos:'Consigli di viaggio',mapa:'Vedi mappa degli host',eventos:'Eventi',descargar:'📲 Scarica app',consejossub:'Denaro, trasporti, sicurezza e altro',mate:'Mate',truco:'Truco',futbol:'Calcio',dulce:'Dulce de leche',lunfardo:'Impara il lunfardo'},
-  de:{flag:'🇩🇪',n:'DE',tag:'Verbinde dich mit echten Argentiniern. Erlebe die Kultur.',sub:'Mate · Truco · Fußball · Dulce de leche',buscar:'Gastgeber finden',inscribirse:'Registrieren (Gastgeber & Reisende)',como:'Wie funktioniert es?',p1t:'Wähle einen Gastgeber',p1d:'Filtere nach Interesse oder Verfügbarkeit',p2t:'🎁 Wir schenken dir einen Willkommens-Chat',p2d:'Lerne deinen ersten Argentinier kostenlos kennen. Weitere Gastgeber? Nur USD 0.50 pro Person',p3t:'Verbinde dich!',p3d:'Nach dem ersten Kontakt könnt ihr weitermachen',entrar:'Anmelden',perfil:'Mein Profil',comp:'Teilen',cont:'Kontakt',consejos:'Reisetipps',mapa:'Gastgeberkarte anzeigen',eventos:'Veranstaltungen',descargar:'📲 App herunterladen',consejossub:'Geld, Transport, Sicherheit und mehr',mate:'Mate',truco:'Truco',futbol:'Fußball',dulce:'Dulce de leche',lunfardo:'Lerne Lunfardo'},
-  zh:{flag:'🇨🇳',n:'ZH',tag:'与真正的阿根廷人联系。体验文化。',sub:'马黛茶·特鲁科·足球·牛奶焦糖',buscar:'寻找主人',inscribirse:'注册',como:'怎么运作？',p1t:'选择主人',p1d:'按兴趣或可用性筛选',p2t:'🎁 赠送一次欢迎聊天',p2d:'免费认识您的第一位阿根廷人。更多主人？每位仅需USD 0.50',p3t:'联系！',p3d:'第一次联系后可以自由继续',entrar:'登录',perfil:'我的资料',comp:'分享',cont:'联系',consejos:'旅行贴士',mapa:'查看房东地图',eventos:'活动',descargar:'📲 下载应用',consejossub:'金钱、交通、安全等',mate:'马黛茶',truco:'特鲁科',futbol:'足球',dulce:'牛奶焦糖',lunfardo:'学习阿根廷俚语'},
-  ru:{flag:'🇷🇺',n:'RU',tag:'Общайтесь с настоящими аргентинцами.',sub:'Мате·Труко·Футбол·Дульсе де лече',buscar:'Найти хозяина',inscribirse:'Зарегистрироваться',como:'Как это работает?',p1t:'Выберите хозяина',p1d:'Фильтр по интересам',p2t:'🎁 Дарим приветственный чат',p2d:'Познакомьтесь с первым аргентинцем бесплатно. Больше хозяев? Всего USD 0.50 каждый',p3t:'Свяжитесь!',p3d:'После первого контакта вы свободны',entrar:'Войти',perfil:'Мой профиль',comp:'Поделиться',cont:'Контакт',consejos:'Советы путешественникам',mapa:'Смотреть карту хозяев',eventos:'События',descargar:'📲 Скачать приложение',consejossub:'Деньги, транспорт, безопасность и другое',mate:'Мате',truco:'Труко',futbol:'Футбол',dulce:'Дульсе де лече',lunfardo:'Учите лунфардо'},
+  pt:{flag:'🇧🇷',n:'PT',tag:'Conecte com argentinos reais. Viva a cultura.',sub:'Mate · Truco · Futebol · Doce de leite',buscar:'Encontrar anfitriões',inscribirse:'Cadastrar (Anfitriões & Viajantes)',como:'Como funciona?',p1t:'Escolha um anfitrião',p1d:'Filtre por interesse ou disponibilidade',p2t:'🎁 Te presentamos um chat de boas-vindas',p2d:'Conheça seu primeiro argentino grátis. Mais anfitriões? Apenas USD 0.50 cada',p3t:'Conecte-se!',p3d:'Após o primeiro contato, são livres para continuar',entrar:'Entrar',perfil:'Meu perfil',comp:'Compartilhar',cont:'Contato',consejos:'Dicas de viagem',mapa:'Ver mapa de anfitriões',eventos:'Eventos',descargar:'📲 Baixar app',consejossub:'Dinheiro, transporte, segurança e mais',mate:'Mate',truco:'Truco',futbol:'Futebol',dulce:'Doce de leite',lunfardo:'Aprenda o lunfardo'},
+  fr:{flag:'🇫🇷',n:'FR',tag:'Connectez avec de vrais Argentins. Vivez la culture.',sub:'Maté · Truco · Football · Dulce de leche',buscar:'Trouver des hôtes',inscribirse:"S'inscrire (Hôtes & Voyageurs)",como:'Comment ça marche?',p1t:'Choisissez un hôte',p1d:'Filtrez par intérêt ou disponibilité',p2t:'🎁 On vous offre un chat de bienvenue',p2d:"Rencontrez votre premier argentin gratuitement.",p3t:'Connectez-vous!',p3d:'Après le premier contact, vous êtes libres',entrar:'Se connecter',perfil:'Mon profil',comp:'Partager',cont:'Contact',consejos:'Conseils de voyage',mapa:'Voir la carte des hôtes',eventos:'Événements',descargar:'📲 Télécharger',consejossub:'Argent, transport, sécurité et plus',mate:'Maté',truco:'Truco',futbol:'Football',dulce:'Dulce de leche',lunfardo:'Apprenez le lunfardo'},
+  it:{flag:'🇮🇹',n:'IT',tag:'Connettiti con veri argentini. Vivi la cultura.',sub:'Mate · Truco · Calcio · Dulce de leche',buscar:'Trova host',inscribirse:'Iscriviti (Host & Viaggiatori)',como:'Come funziona?',p1t:'Scegli un host',p1d:'Filtra per interesse o disponibilità',p2t:'🎁 Ti regaliamo una chat di benvenuto',p2d:'Conosci il tuo primo argentino gratis.',p3t:'Connettiti!',p3d:'Dopo il primo contatto siete liberi',entrar:'Accedi',perfil:'Il mio profilo',comp:'Condividi',cont:'Contatto',consejos:'Consigli di viaggio',mapa:'Vedi mappa degli host',eventos:'Eventi',descargar:'📲 Scarica app',consejossub:'Denaro, trasporti, sicurezza e altro',mate:'Mate',truco:'Truco',futbol:'Calcio',dulce:'Dulce de leche',lunfardo:'Impara il lunfardo'},
+  de:{flag:'🇩🇪',n:'DE',tag:'Verbinde dich mit echten Argentiniern. Erlebe die Kultur.',sub:'Mate · Truco · Fußball · Dulce de leche',buscar:'Gastgeber finden',inscribirse:'Registrieren (Gastgeber & Reisende)',como:'Wie funktioniert es?',p1t:'Wähle einen Gastgeber',p1d:'Filtere nach Interesse oder Verfügbarkeit',p2t:'🎁 Wir schenken dir einen Willkommens-Chat',p2d:'Lerne deinen ersten Argentinier kostenlos kennen.',p3t:'Verbinde dich!',p3d:'Nach dem ersten Kontakt könnt ihr weitermachen',entrar:'Anmelden',perfil:'Mein Profil',comp:'Teilen',cont:'Kontakt',consejos:'Reisetipps',mapa:'Gastgeberkarte anzeigen',eventos:'Veranstaltungen',descargar:'📲 App herunterladen',consejossub:'Geld, Transport, Sicherheit und mehr',mate:'Mate',truco:'Truco',futbol:'Fußball',dulce:'Dulce de leche',lunfardo:'Lerne Lunfardo'},
+  zh:{flag:'🇨🇳',n:'ZH',tag:'与真正的阿根廷人联系。体验文化。',sub:'马黛茶·特鲁科·足球·牛奶焦糖',buscar:'寻找主人',inscribirse:'注册',como:'怎么运作？',p1t:'选择主人',p1d:'按兴趣或可用性筛选',p2t:'🎁 赠送一次欢迎聊天',p2d:'免费认识您的第一位阿根廷人。',p3t:'联系！',p3d:'第一次联系后可以自由继续',entrar:'登录',perfil:'我的资料',comp:'分享',cont:'联系',consejos:'旅行贴士',mapa:'查看房东地图',eventos:'活动',descargar:'📲 下载应用',consejossub:'金钱、交通、安全等',mate:'马黛茶',truco:'特鲁科',futbol:'足球',dulce:'牛奶焦糖',lunfardo:'学习阿根廷俚语'},
+  ru:{flag:'🇷🇺',n:'RU',tag:'Общайтесь с настоящими аргентинцами.',sub:'Мате·Труко·Футбол·Дульсе де лече',buscar:'Найти хозяина',inscribirse:'Зарегистрироваться',como:'Как это работает?',p1t:'Выберите хозяина',p1d:'Фильтр по интересам',p2t:'🎁 Дарим приветственный чат',p2d:'Познакомьтесь с первым аргентинцем бесплатно.',p3t:'Свяжитесь!',p3d:'После первого контакта вы свободны',entrar:'Войти',perfil:'Мой профиль',comp:'Поделиться',cont:'Контакт',consejos:'Советы путешественникам',mapa:'Смотреть карту хозяев',eventos:'События',descargar:'📲 Скачать приложение',consejossub:'Деньги, транспорт, безопасность и другое',mate:'Мате',truco:'Труко',futbol:'Футбол',dulce:'Дульсе де лече',lunfardo:'Учите лунфардо'},
 };
 
 export default function Home() {
@@ -22,6 +22,7 @@ export default function Home() {
   const [vistosHoy] = useState(Math.floor(Math.random() * 8) + 2);
   const [loggedIn, setLoggedIn] = useState(false);
   const [showLangs, setShowLangs] = useState(false);
+  const [showPwa, setShowPwa] = useState(false);
   const t = T[lang] || T.es;
 
   useEffect(() => {
@@ -48,7 +49,7 @@ export default function Home() {
         </Link>
         <div style={{display:'flex',gap:12,alignItems:'center'}}>
           <div style={{position:'relative'}}>
-            <button onClick={() => setShowLangs(!showLangs)} style={{width:'auto',padding:'6px 10px',fontSize:14,background:'rgba(255,255,255,0.2)',border:'1px solid rgba(255,255,255,0.3)',borderRadius:8,color:'white',cursor:'pointer'}}>
+            <button onClick={() => setShowLangs(!showLangs)} style={{padding:'6px 10px',fontSize:14,background:'rgba(255,255,255,0.2)',border:'1px solid rgba(255,255,255,0.3)',borderRadius:8,color:'white',cursor:'pointer'}}>
               {t.flag} {t.n}
             </button>
             {showLangs && (
@@ -75,29 +76,11 @@ export default function Home() {
           <p style={{color:'rgba(255,255,255,0.9)',fontSize:17,marginBottom:8,fontWeight:500}}>{t.tag}</p>
           <p style={{color:'rgba(255,255,255,0.7)',fontSize:14,marginBottom:32}}>{t.sub}</p>
           <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
-            <Link href="/explorar">
-              <button style={{width:'auto',padding:'14px 32px',background:'white',color:'#C94B4B',border:'none',borderRadius:12,fontWeight:700,fontSize:15,cursor:'pointer',boxShadow:'0 4px 12px rgba(0,0,0,0.2)'}}>
-                {t.buscar}
-              </button>
-            </Link>
-            <Link href="/eventos">
-              <button style={{width:'auto',padding:'14px 32px',background:'transparent',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>
-                🎉 {t.eventos}
-              </button>
-            </Link>
-            <Link href="/mapa">
-              <button style={{width:'auto',padding:'14px 32px',background:'transparent',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>
-                🗺️ {t.mapa}
-              </button>
-            </Link>
-            <Link href="/register">
-              <button style={{width:'auto',padding:'14px 32px',background:'transparent',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>
-                {t.inscribirse}
-              </button>
-            </Link>
-            <button onClick={() => document.getElementById('pwa-modal').style.display='flex'} style={{width:'auto',padding:'14px 32px',background:'rgba(255,255,255,0.15)',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>
-              {t.descargar}
-            </button>
+            <Link href="/explorar"><button style={{padding:'14px 32px',background:'white',color:'#C94B4B',border:'none',borderRadius:12,fontWeight:700,fontSize:15,cursor:'pointer',boxShadow:'0 4px 12px rgba(0,0,0,0.2)'}}>{t.buscar}</button></Link>
+            <Link href="/eventos"><button style={{padding:'14px 32px',background:'transparent',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>🎉 {t.eventos}</button></Link>
+            <Link href="/mapa"><button style={{padding:'14px 32px',background:'transparent',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>🗺️ {t.mapa}</button></Link>
+            <Link href="/register"><button style={{padding:'14px 32px',background:'transparent',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>{t.inscribirse}</button></Link>
+            <button onClick={() => setShowPwa(true)} style={{padding:'14px 32px',background:'rgba(255,255,255,0.15)',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>{t.descargar}</button>
           </div>
         </div>
       </div>
@@ -123,13 +106,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* PRECIO VISIBLE */}
         <div style={{background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',borderRadius:14,padding:'16px 20px',marginBottom:16,textAlign:'center'}}>
           <div style={{fontSize:22,fontWeight:800,color:'#fff',marginBottom:4}}>🎁 Tu primer contacto es GRATIS</div>
           <div style={{fontSize:14,color:'rgba(255,255,255,0.9)'}}>Después solo USD 0.50 por anfitrión</div>
         </div>
 
-        {/* ANFITRIONES DESTACADOS */}
         {topSellers.length > 0 && (
           <div style={{marginBottom:16}}>
             <h2 style={{fontSize:18,fontWeight:800,color:'#222',marginBottom:12,textAlign:'center'}}>🇦🇷 Anfitriones disponibles ahora</h2>
@@ -142,11 +123,6 @@ export default function Home() {
                       <div style={{fontWeight:700,fontSize:15,color:'#1a1a1a'}}>{s.nombre}</div>
                       {s.ciudad && <div style={{fontSize:12,color:'#888'}}>📍 {s.ciudad}</div>}
                       {s.puntuacion > 0 && <div style={{fontSize:12,color:'#F4A020'}}>{'⭐'.repeat(Math.round(s.puntuacion))} {s.puntuacion}</div>}
-                      {s.habilidades?.length > 0 && (
-                        <div style={{fontSize:11,color:'#4B6CB7',marginTop:2}}>
-                          {(typeof s.habilidades[0] === 'string' ? s.habilidades[0] : s.habilidades[0]?.id?.replace(/_/g,' '))}
-                        </div>
-                      )}
                     </div>
                     <div style={{textAlign:'right',flexShrink:0}}>
                       <div style={{fontSize:16,fontWeight:800,color:'#4B6CB7'}}>USD {s.precio}</div>
@@ -157,9 +133,7 @@ export default function Home() {
                 </Link>
               ))}
             </div>
-            <Link href="/explorar" style={{display:'block',textAlign:'center',marginTop:12,color:'#4B6CB7',fontSize:14,fontWeight:600,textDecoration:'none'}}>
-              Ver todos los anfitriones →
-            </Link>
+            <Link href="/explorar" style={{display:'block',textAlign:'center',marginTop:12,color:'#4B6CB7',fontSize:14,fontWeight:600,textDecoration:'none'}}>Ver todos los anfitriones →</Link>
           </div>
         )}
 
@@ -180,7 +154,6 @@ export default function Home() {
           <Link href="/explorar" style={{color:'#4B6CB7',fontSize:14,textDecoration:'none'}}>{t.buscar}</Link>
         </div>
 
-        {/* Footer seguridad */}
         <div style={{borderTop:'1px solid #e5e7eb',padding:'16px 0 40px',textAlign:'center'}}>
           <div style={{display:'flex',justifyContent:'center',alignItems:'center',gap:8,marginBottom:8,flexWrap:'wrap'}}>
             <span style={{fontSize:13,color:'#888'}}>🔒 Pagos seguros con</span>
@@ -193,37 +166,38 @@ export default function Home() {
           <p style={{fontSize:11,color:'#bbb',margin:0}}>© 2026 Knowan · knowan.net</p>
         </div>
       </div>
-    <>
-      <div id="pwa-modal" style={{display:'none',position:'fixed',inset:0,zIndex:9999,background:'rgba(0,0,0,0.55)',alignItems:'flex-end',justifyContent:'center'}}>
-        <div style={{background:'#fff',borderRadius:'20px 20px 0 0',maxWidth:500,width:'100%',padding:'28px 24px 40px'}}>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
-            <h2 style={{fontSize:20,fontWeight:800,margin:0,background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>📲 Knowan en tu móvil</h2>
-            <button onClick={() => document.getElementById('pwa-modal').style.display='none'} style={{background:'#e5e7eb',border:'2px solid #ccc',borderRadius:'50%',width:40,height:40,fontSize:20,cursor:'pointer',fontWeight:700,color:'#333'}}>✕</button>
-          </div>
-          <div style={{display:'flex',flexDirection:'column',gap:16}}>
-            <div style={{background:'#f8faff',borderRadius:14,padding:16,border:'1.5px solid #e5e7eb'}}>
-              <p style={{fontWeight:700,fontSize:15,margin:'0 0 8px',color:'#222'}}>🤖 Android (Chrome)</p>
-              <ol style={{margin:0,paddingLeft:20,fontSize:13,color:'#555',lineHeight:1.8}}>
-                <li>Abrí knowan.net en Chrome</li>
-                <li>Tocá el menú ⋮ (3 puntos arriba a la derecha)</li>
-                <li>Tocá <strong>"Agregar a pantalla de inicio"</strong></li>
-                <li>Tocá <strong>"Agregar"</strong></li>
-              </ol>
+
+      {showPwa && (
+        <div onClick={() => setShowPwa(false)} style={{position:'fixed',inset:0,zIndex:9999,background:'rgba(0,0,0,0.55)',display:'flex',alignItems:'flex-end',justifyContent:'center'}}>
+          <div onClick={e => e.stopPropagation()} style={{background:'#fff',borderRadius:'20px 20px 0 0',maxWidth:500,width:'100%',padding:'28px 24px 40px'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20}}>
+              <h2 style={{fontSize:20,fontWeight:800,margin:0,background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>📲 Knowan en tu móvil</h2>
+              <button onClick={() => setShowPwa(false)} style={{background:'#e5e7eb',border:'2px solid #ccc',borderRadius:'50%',width:40,height:40,fontSize:20,cursor:'pointer',fontWeight:700,color:'#333'}}>✕</button>
             </div>
-            <div style={{background:'#f8faff',borderRadius:14,padding:16,border:'1.5px solid #e5e7eb'}}>
-              <p style={{fontWeight:700,fontSize:15,margin:'0 0 8px',color:'#222'}}>🍎 iPhone (Safari)</p>
-              <ol style={{margin:0,paddingLeft:20,fontSize:13,color:'#555',lineHeight:1.8}}>
-                <li>Abrí knowan.net en Safari</li>
-                <li>Tocá el botón compartir <strong>⬆️</strong> abajo</li>
-                <li>Tocá <strong>"Añadir a pantalla de inicio"</strong></li>
-                <li>Tocá <strong>"Añadir"</strong></li>
-              </ol>
+            <div style={{display:'flex',flexDirection:'column',gap:16}}>
+              <div style={{background:'#f8faff',borderRadius:14,padding:16,border:'1.5px solid #e5e7eb'}}>
+                <p style={{fontWeight:700,fontSize:15,margin:'0 0 8px',color:'#222'}}>🤖 Android (Chrome)</p>
+                <ol style={{margin:0,paddingLeft:20,fontSize:13,color:'#555',lineHeight:1.8}}>
+                  <li>Abrí knowan.net en Chrome</li>
+                  <li>Tocá el menú de 3 puntos arriba a la derecha</li>
+                  <li>Tocá Agregar a pantalla de inicio</li>
+                  <li>Tocá Agregar</li>
+                </ol>
+              </div>
+              <div style={{background:'#f8faff',borderRadius:14,padding:16,border:'1.5px solid #e5e7eb'}}>
+                <p style={{fontWeight:700,fontSize:15,margin:'0 0 8px',color:'#222'}}>🍎 iPhone (Safari)</p>
+                <ol style={{margin:0,paddingLeft:20,fontSize:13,color:'#555',lineHeight:1.8}}>
+                  <li>Abrí knowan.net en Safari</li>
+                  <li>Tocá el botón compartir abajo</li>
+                  <li>Tocá Añadir a pantalla de inicio</li>
+                  <li>Tocá Añadir</li>
+                </ol>
+              </div>
+              <p style={{fontSize:12,color:'#aaa',textAlign:'center',margin:0}}>La app se abre sin barra de navegador 🚀</p>
             </div>
-            <p style={{fontSize:12,color:'#aaa',textAlign:'center',margin:0}}>La app se abre sin barra de navegador, como una app nativa 🚀</p>
           </div>
         </div>
-      </div>
-    </>
+      )}
     </>
   );
 }
