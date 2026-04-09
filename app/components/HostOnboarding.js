@@ -17,7 +17,7 @@ const ZONAS = ['Buenos Aires - Centro/Microcentro','Buenos Aires - Palermo','Bue
 
 const inp = (error) => ({ width: '100%', padding: '9px 12px', borderRadius: 8, fontSize: 13, border: `1.5px solid ${error ? '#ef4444' : '#d1d5db'}`, outline: 'none', background: '#fff', boxSizing: 'border-box' });
 
-export default function HostOnboarding({ onComplete }) {
+export default function HostOnboarding({ onComplete, esPareja }) {
   const fileRef = useRef();
   const [foto, setFoto] = useState(null);
   const [fotoPreview, setFotoPreview] = useState(null);
@@ -28,6 +28,10 @@ export default function HostOnboarding({ onComplete }) {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState('');
   const [servicioCustom, setServicioCustom] = useState('');
+  const [foto2, setFoto2] = useState(null);
+  const [fotoPreview2, setFotoPreview2] = useState(null);
+  const [nombrePareja, setNombrePareja] = useState('');
+  const fileRef2 = useRef();
 
   const handleFoto = (e) => {
     const file = e.target.files[0];
@@ -93,12 +97,18 @@ export default function HostOnboarding({ onComplete }) {
       if (!upRes.ok) { const e = await upRes.text(); throw new Error('Upload: ' + e); }
       const upData = await upRes.json();
 
+      let fotoUrl2 = null;
+      if (foto2) {
+        const base642 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(foto2); });
+        const upRes2 = await fetch(apiUrl + '/api/upload/photo', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ photo: base642 }) });
+        if (upRes2.ok) { const d = await upRes2.json(); fotoUrl2 = d.url; }
+      }
       const habilidades = Object.entries(seleccionados).map(([id, d]) => ({ id, ...d }));
       if (servicioCustom.trim()) habilidades.push({ id: 'custom', descripcion: servicioCustom.trim(), precio: '', duracion: '', personas: '', idioma: '', punto: '', esCustom: true });
       const profRes = await fetch(apiUrl + '/api/users/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ foto: upData.url, habilidades, ciudad: zona }),
+        body: JSON.stringify({ foto: upData.url, habilidades, ciudad: zona, ...(fotoUrl2 && { foto2: fotoUrl2 }), ...(nombrePareja && { nombrePareja }) }),
       });
       if (!profRes.ok) { const e = await profRes.text(); throw new Error('Profile: ' + e); }
       onComplete();
