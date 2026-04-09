@@ -77,13 +77,21 @@ export default function HostOnboarding({ onComplete }) {
         if (upRes2.ok) { const d = await upRes2.json(); fotoUrl2 = d.url; }
       }
 
+      // Subir galeria
+      const galeriaUrls = [];
+      for (const g of galeria) {
+        const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(g.file); });
+        const ur = await fetch(apiUrl + '/api/upload/photo', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ photo: b64 }) });
+        if (ur.ok) { const ud = await ur.json(); galeriaUrls.push(ud.url); }
+      }
+
       const habilidades = Object.entries(seleccionados).map(([id, d]) => ({ id, ...d }));
       if (servicioCustom.trim()) habilidades.push({ id: 'custom', descripcion: servicioCustom.trim(), precio: '', duracion: '', personas: '', idioma: '', punto: '', esCustom: true });
 
       const profRes = await fetch(apiUrl + '/api/users/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ foto: upData.url, habilidades, ciudad: zona, ...(fotoUrl2 && { foto2: fotoUrl2 }), ...(nombrePareja && { nombrePareja }) }),
+        body: JSON.stringify({ foto: upData.url, habilidades, ciudad: zona, ...(fotoUrl2 && { foto2: fotoUrl2 }), ...(nombrePareja && { nombrePareja }), ...(galeriaUrls.length && { galeria: galeriaUrls }) }),
       });
       if (!profRes.ok) throw new Error('Error guardando perfil');
       localStorage.removeItem('esPareja');
@@ -207,6 +215,24 @@ export default function HostOnboarding({ onComplete }) {
               })}
             </div>
           ))}
+        </div>
+
+        {/* GALERIA */}
+        <div style={{ background: '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: '1.5px solid #e5e7eb' }}>
+          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 4px', color: '#222' }}>🖼️ Galería de fotos (opcional)</p>
+          <p style={{ color: '#888', fontSize: 12, margin: '0 0 14px' }}>Subí hasta 5 fotos de tus experiencias — tu coche, el barrio, la actividad...</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
+            {galeria.map((g, i) => (
+              <div key={i} style={{ position: 'relative', width: 80, height: 80 }}>
+                <img src={g.preview} alt={`foto${i}`} style={{ width: '100%', height: '100%', borderRadius: 8, objectFit: 'cover', border: '2px solid #4B6CB7' }} />
+                <button onClick={() => setGaleria(p => p.filter((_, j) => j !== i))} style={{ position: 'absolute', top: -6, right: -6, background: '#ef4444', color: '#fff', border: 'none', borderRadius: '50%', width: 20, height: 20, fontSize: 11, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+              </div>
+            ))}
+            {galeria.length < 5 && (
+              <div onClick={() => galeriaRef.current.click()} style={{ width: 80, height: 80, borderRadius: 8, border: '2px dashed #4B6CB7', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#4B6CB7', fontSize: 24 }}>+</div>
+            )}
+          </div>
+          <input ref={galeriaRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files[0]; if(f && galeria.length < 5) setGaleria(p => [...p, { file: f, preview: URL.createObjectURL(f) }]); }} />
         </div>
 
         {/* SERVICIO CUSTOM */}
