@@ -47,7 +47,7 @@ export default function Login() {
             </div>
             <button type="submit" disabled={loading}>{loading ? 'Entrando...' : 'Entrar'}</button>
           </form>
-          <div className="link">Sin cuenta? <Link href="/register">Registrarse</Link></div>
+          <div className="link">¿Olvidaste tu contraseña? <a href='/forgot-password' style='color:#C94B4B'>Recuperar</a><br/>Sin cuenta? <Link href="/register">Registrarse</Link></div>
         </div>
       </div>
     </>
