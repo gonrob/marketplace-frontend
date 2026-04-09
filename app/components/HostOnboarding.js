@@ -130,7 +130,7 @@ export default function HostOnboarding({ onComplete, esPareja: esParejaProps }) 
         </div>
 
         <div style={{ background: errors.foto ? '#fff5f5' : '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: `1.5px solid ${errors.foto ? '#ef4444' : '#e5e7eb'}` }}>
-          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 12px', color: errors.foto ? '#ef4444' : '#222' }}>📸 Foto de perfil {errors.foto && <span style={{ fontSize: 12, fontWeight: 400 }}>— obligatoria</span>}</p>
+          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 12px', color: errors.foto ? '#ef4444' : '#222' }}>{esPareja ? '📸 Foto 1 (tuya)' : '📸 Foto de perfil'} {errors.foto && <span style={{ fontSize: 12, fontWeight: 400 }}>— obligatoria</span>}</p>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <div onClick={() => fileRef.current.click()} style={{ width: 72, height: 72, borderRadius: '50%', cursor: 'pointer', flexShrink: 0, background: fotoPreview ? 'transparent' : 'linear-gradient(135deg,#4B6CB7,#C94B4B)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: `3px solid ${errors.foto ? '#ef4444' : '#4B6CB7'}` }}>
               {fotoPreview ? <img src={fotoPreview} alt="foto" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ fontSize: 26 }}>👤</span>}
