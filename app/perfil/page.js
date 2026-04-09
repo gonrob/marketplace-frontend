@@ -224,8 +224,7 @@ export default function PerfilPage() {
         {/* CAMPOS */}
         {[
           { label: t.nombre, value: nombre, set: setNombre, type: 'text' },
-          { label: t.precio, value: precio, set: setPrecio, type: 'number' },
-          { label: t.ciudad, value: ciudad, set: setCiudad, type: 'text' },
+          ...(user?.role === 'seller' ? [{ label: t.precio, value: precio, set: setPrecio, type: 'number' }, { label: t.ciudad, value: ciudad, set: setCiudad, type: 'text' }] : []),
         ].map(({ label, value, set, type }) => (
           <div key={label} style={{ marginBottom: 16 }}>
             <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>{label}</label>
@@ -243,7 +242,7 @@ export default function PerfilPage() {
         ))}
 
         {/* BIO */}
-        <div style={{ marginBottom: 16 }}>
+        {user?.role === 'seller' && <div style={{ marginBottom: 16 }}>
           <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>{t.bio}</label>
           <textarea
             value={bio}
@@ -255,7 +254,7 @@ export default function PerfilPage() {
               resize: 'vertical', boxSizing: 'border-box',
             }}
           />
-        </div>
+        </div>}
 
         {/* DISPONIBLE */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24, padding: '14px', background: '#f8faff', borderRadius: 12, border: '1.5px solid #e5e7eb' }}>
