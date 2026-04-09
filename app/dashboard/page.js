@@ -90,7 +90,7 @@ function DashboardContent() {
 
   return (
     <>
-      {user && !user.emailVerificado && user.email !== 'gonrobtor@gmail.com' && (
+      {user && !user.emailVerificado && user.email !== 'gonrobtor@gmail.com' && false && (
         <div style={{position:'fixed',inset:0,zIndex:9998,background:'rgba(255,255,255,0.97)',display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
           <div style={{textAlign:'center',maxWidth:400}}>
             <div style={{fontSize:60,marginBottom:16}}>📧</div>
