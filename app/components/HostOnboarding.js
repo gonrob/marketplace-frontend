@@ -18,7 +18,10 @@ const ZONAS = ['Buenos Aires - Centro/Microcentro','Buenos Aires - Palermo','Bue
 const inp = (error) => ({ width: '100%', padding: '9px 12px', borderRadius: 8, fontSize: 13, border: `1.5px solid ${error ? '#ef4444' : '#d1d5db'}`, outline: 'none', background: '#fff', boxSizing: 'border-box' });
 
 export default function HostOnboarding({ onComplete, esPareja: esParejaProps }) {
-  const esPareja = esParejaProps || (typeof window !== 'undefined' && localStorage.getItem('esPareja') === 'true');
+  const [esPareja, setEsPareja] = useState(esParejaProps || false);
+  useEffect(() => {
+    if (localStorage.getItem('esPareja') === 'true') setEsPareja(true);
+  }, []);
   const fileRef = useRef();
   const [foto, setFoto] = useState(null);
   const [fotoPreview, setFotoPreview] = useState(null);
