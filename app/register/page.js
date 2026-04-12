@@ -37,16 +37,31 @@ export default function Register() {
   const [onboardingData, setOnboardingData] = useState(null);
 
   const uploadFoto = async (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', 'knowan_unsigned');
-    formData.append('folder', 'knowan');
-    const up = await fetch('https://api.cloudinary.com/v1_1/djtsmuzlo/image/upload', {
-      method: 'POST',
-      body: formData
+    return new Promise((resolve) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        const max = 600;
+        let w = img.width, h = img.height;
+        if (w > max) { h = Math.round(h * max / w); w = max; }
+        if (h > max) { w = Math.round(w * max / h); h = max; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        const base64 = canvas.toDataURL('image/jpeg', 0.6);
+        URL.revokeObjectURL(url);
+        try {
+          const up = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/upload/photo-public', {
+            method: 'POST', headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({photo: base64})
+          });
+          if (up.ok) { const d = await up.json(); resolve(d.url); }
+          else resolve(null);
+        } catch { resolve(null); }
+      };
+      img.onerror = () => resolve(null);
+      img.src = url;
     });
-    if (up.ok) { const d = await up.json(); return d.secure_url; }
-    return null;
   };
 
   const validate = () => {
@@ -56,7 +71,7 @@ export default function Register() {
     if (!/\S+@\S+\.\S+/.test(form.email)) e.email = true;
     if (!form.telefono.trim()) e.telefono = true;
     if (form.password.length < 6) e.password = true;
-    if (role === 'buyer' && !foto) e.foto = true;
+    if (!foto) e.foto = true;
     setErrors(e);
     return Object.keys(e).length === 0;
   };
