@@ -55,7 +55,6 @@ export default function HostOnboarding({ onComplete }) {
 
   const validate = () => {
     const e = {};
-    if (!foto) e.foto = true;
     if (!zona) e.zona = true;
     if (Object.keys(seleccionados).length === 0 && !servicioCustom.trim()) e.servicios = true;
     setErrors(e);
@@ -71,10 +70,7 @@ export default function HostOnboarding({ onComplete }) {
       const token = localStorage.getItem('token');
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-      const base64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(foto); });
-      const upRes = await fetch(apiUrl + '/api/upload/photo', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ photo: base64 }) });
-      if (!upRes.ok) throw new Error('Error subiendo foto');
-      const upData = await upRes.json();
+      const upData = { url: null };
 
       let fotoUrl2 = null;
       if (foto2) {
@@ -97,7 +93,7 @@ export default function HostOnboarding({ onComplete }) {
       const profRes = await fetch(apiUrl + '/api/users/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ foto: upData.url, habilidades, ciudad: zona, ...(fotoUrl2 && { foto2: fotoUrl2 }), ...(nombrePareja && { nombrePareja }), ...(galeriaUrls.length && { galeria: galeriaUrls }) }),
+        body: JSON.stringify({ ...(upData.url && { foto: upData.url }), habilidades, ciudad: zona, ...(fotoUrl2 && { foto2: fotoUrl2 }), ...(nombrePareja && { nombrePareja }), ...(galeriaUrls.length && { galeria: galeriaUrls }) }),
       });
       if (!profRes.ok) throw new Error('Error guardando perfil');
       localStorage.removeItem('esPareja');
