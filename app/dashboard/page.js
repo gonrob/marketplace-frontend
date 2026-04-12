@@ -95,9 +95,15 @@ function DashboardContent() {
           <div style={{textAlign:'center',maxWidth:400}}>
             <div style={{fontSize:60,marginBottom:16}}>📧</div>
             <h2 style={{fontSize:22,fontWeight:800,background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',marginBottom:8}}>Verificá tu email</h2>
-            <p style={{color:'#555',fontSize:15,lineHeight:1.6,marginBottom:8}}>Te enviamos un email de verificación a <strong>{user.email}</strong></p>
-            <p style={{color:'#888',fontSize:13,marginBottom:24}}>Hacé click en el link del email para activar tu cuenta.</p>
-            <p style={{color:'#aaa',fontSize:12}}>¿No lo encontrás? Revisá tu carpeta de spam.</p>
+            <p style={{color:'#555',fontSize:15,lineHeight:1.6,marginBottom:16}}>Te enviamos un email a <strong>{user.email}</strong></p>
+            <div style={{background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',borderRadius:12,padding:'16px 20px',marginBottom:16,textAlign:'center'}}>
+              <p style={{color:'#fff',fontSize:18,fontWeight:800,margin:'0 0 6px'}}>📧 TE HEMOS ENVIADO UN EMAIL</p>
+              <p style={{color:'rgba(255,255,255,0.9)',fontSize:14,margin:0}}>Hacé click en el link para activar tu cuenta</p>
+            </div>
+            <div style={{background:'#fff3cd',borderRadius:12,padding:'14px 18px',border:'2px solid #ffc107',textAlign:'center'}}>
+              <p style={{color:'#856404',fontSize:16,fontWeight:800,margin:'0 0 4px'}}>⚠️ Si no lo ves, buscalo en SPAM</p>
+              <p style={{color:'#856404',fontSize:13,margin:0}}>A veces los emails van a la carpeta de spam o correo no deseado</p>
+            </div>
           </div>
         </div>
       )}
