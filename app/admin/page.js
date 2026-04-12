@@ -47,7 +47,7 @@ export default function Admin() {
           contactosTotal: s.data.reduce((acc, x) => acc + (x.totalContactos || 0), 0),
         });
         setEmailTodos(s.data.map(x => x.email).join(', '));
-      } catch { router.push('/'); }
+      } catch (err) { console.error('Admin error:', err); setLoading(false); }
       finally { setLoading(false); }
     };
     load();
