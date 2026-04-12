@@ -37,10 +37,26 @@ export default function Register() {
   const [onboardingData, setOnboardingData] = useState(null);
 
   const uploadFoto = async (file) => {
-    const base64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+    // Comprimir imagen antes de subir
+    const compressed = await new Promise((res) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const max = 800;
+        let w = img.width, h = img.height;
+        if (w > max) { h = h * max / w; w = max; }
+        if (h > max) { w = w * max / h; h = max; }
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        res(canvas.toDataURL('image/jpeg', 0.7));
+        URL.revokeObjectURL(url);
+      };
+      img.src = url;
+    });
     const up = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/upload/photo-public', {
       method: 'POST', headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({photo: base64})
+      body: JSON.stringify({photo: compressed})
     });
     if (up.ok) { const d = await up.json(); return d.url; }
     return null;
