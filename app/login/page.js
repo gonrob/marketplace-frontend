@@ -10,6 +10,7 @@ export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
+  const [recordar, setRecordar] = useState(false);
   const [success, setSuccess] = useState('');
 
   useEffect(() => {
@@ -24,7 +25,12 @@ export default function Login() {
     setError(''); setLoading(true);
     try {
       const res = await api.post('/api/auth/login', form);
-      localStorage.setItem('token', res.data.token);
+      if (recordar) {
+        localStorage.setItem('token', res.data.token);
+      } else {
+        sessionStorage.setItem('token', res.data.token);
+        localStorage.setItem('token', res.data.token);
+      }
       router.push('/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'Error al iniciar sesion.');
@@ -52,6 +58,10 @@ export default function Login() {
                   {showPass ? '🙈' : '👁️'}
                 </button>
               </div>
+            </div>
+            <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12}}>
+              <input type="checkbox" id="recordar" checked={recordar} onChange={e=>setRecordar(e.target.checked)} style={{width:16,height:16,cursor:'pointer',accentColor:'#4B6CB7'}} />
+              <label htmlFor="recordar" style={{fontSize:13,color:'#555',cursor:'pointer'}}>Mantener sesión iniciada</label>
             </div>
             <button type="submit" disabled={loading}>{loading ? 'Entrando...' : 'Entrar'}</button>
           </form>
