@@ -137,6 +137,11 @@ export default function Explorar() {
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}>
                   <div>
                     <div style={{fontWeight:800,fontSize:17,color:'#1a1a1a'}}>{s.nombre||'Sin nombre'}{s.nombrePareja ? ` & ${s.nombrePareja}` : ''}</div>
+                <div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:4}}>
+                  {s.idiomas?.map(i => <span key={i} style={{fontSize:10,background:'#EBF2FF',color:'#4B6CB7',borderRadius:10,padding:'2px 8px',fontWeight:600}}>{i}</span>)}
+                  {s.chat && <span style={{fontSize:10,background:'#f0fdf4',color:'#15803d',borderRadius:10,padding:'2px 8px',fontWeight:600}}>💬 Chat</span>}
+                  {s.videollamada && <span style={{fontSize:10,background:'#fdf4ff',color:'#C94B4B',borderRadius:10,padding:'2px 8px',fontWeight:600}}>📹 Video</span>}
+                </div>
                     {s.ciudad && <div style={{fontSize:12,color:'#888',marginTop:2}}>📍 {s.ciudad}</div>}
                   </div>
                   <div style={{textAlign:'right',flexShrink:0}}>
@@ -222,6 +227,11 @@ export default function Explorar() {
               )}
               <div style={{flex:1}}>
                 <div style={{fontWeight:800,fontSize:20,color:'#1a1a1a'}}>{modalHost.nombre}{modalHost.nombrePareja ? ` & ${modalHost.nombrePareja}` : ''}</div>
+              <div style={{display:'flex',gap:6,flexWrap:'wrap',marginTop:6}}>
+                {modalHost.idiomas?.map(i => <span key={i} style={{fontSize:12,background:'#EBF2FF',color:'#4B6CB7',borderRadius:10,padding:'3px 10px',fontWeight:600}}>{i}</span>)}
+                {modalHost.chat && <span style={{fontSize:12,background:'#f0fdf4',color:'#15803d',borderRadius:10,padding:'3px 10px',fontWeight:600}}>💬 Chat</span>}
+                {modalHost.videollamada && <span style={{fontSize:12,background:'#fdf4ff',color:'#C94B4B',borderRadius:10,padding:'3px 10px',fontWeight:600}}>📹 Video llamada</span>}
+              </div>
                 {modalHost.ciudad && <div style={{fontSize:13,color:'#888',marginTop:2}}>📍 {modalHost.ciudad}</div>}
                 {modalHost.puntuacion > 0 && <div style={{fontSize:13,color:'#F4A020',marginTop:2}}>{'⭐'.repeat(Math.round(modalHost.puntuacion))} {modalHost.puntuacion}/5</div>}
               </div>

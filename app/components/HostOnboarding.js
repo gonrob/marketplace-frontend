@@ -20,6 +20,9 @@ export default function HostOnboarding({ onComplete }) {
   const galeriaRef = useRef();
 
   const [zona, setZona] = useState('');
+  const [idiomas, setIdiomas] = useState([]);
+  const [videollamada, setVideollamada] = useState(false);
+  const [chat, setChat] = useState(false);
   const [zonaCustom, setZonaCustom] = useState('');
   const [seleccionados, setSeleccionados] = useState({});
   const [precio, setPrecio] = useState('');
@@ -66,7 +69,7 @@ export default function HostOnboarding({ onComplete }) {
       const profRes = await fetch(apiUrl + '/api/users/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ habilidades, ciudad: zona === 'Otra ciudad' && zonaCustom ? zonaCustom : zona, ...(galeriaUrls.length && { galeria: galeriaUrls }) }),
+        body: JSON.stringify({ habilidades, ciudad: zona === 'Otra ciudad' && zonaCustom ? zonaCustom : zona, idiomas, videollamada, chat, ...(galeriaUrls.length && { galeria: galeriaUrls }) }),
       });
       if (!profRes.ok) throw new Error('Error guardando perfil.');
       onComplete();
@@ -84,6 +87,30 @@ export default function HostOnboarding({ onComplete }) {
           <div style={{ fontSize: 40, marginBottom: 6 }}>🇦🇷</div>
           <h2 style={{ fontSize: 20, fontWeight: 800, margin: '0 0 6px', background: 'linear-gradient(90deg,#4B6CB7,#C94B4B)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>¿Qué experiencias podés ofrecer?</h2>
           <p style={{ color: '#666', fontSize: 13, margin: 0 }}>Seleccioná las experiencias y completá los detalles al final</p>
+        </div>
+
+        {/* IDIOMAS Y CONTACTO */}
+        <div style={{ background: '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: '1.5px solid #e5e7eb' }}>
+          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 12px', color: '#222' }}>🌍 Idiomas que hablás</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16 }}>
+            {['Español','Inglés','Portugués','Francés','Italiano','Alemán','Chino','Ruso'].map(lang => {
+              const activo = idiomas.includes(lang);
+              return (
+                <div key={lang} onClick={() => setIdiomas(p => activo ? p.filter(x=>x!==lang) : [...p,lang])} style={{ padding: '6px 14px', borderRadius: 20, border: `2px solid ${activo ? '#4B6CB7' : '#e5e7eb'}`, background: activo ? 'linear-gradient(90deg,#4B6CB7,#C94B4B)' : '#fff', color: activo ? '#fff' : '#333', fontSize: 13, fontWeight: 600, cursor: 'pointer', userSelect: 'none' }}>
+                  {activo ? '✓ ' : ''}{lang}
+                </div>
+              );
+            })}
+          </div>
+          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 12px', color: '#222' }}>📱 Podés hacer</p>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <div onClick={() => setChat(p => !p)} style={{ flex: 1, padding: '12px', borderRadius: 12, border: `2px solid ${chat ? '#4B6CB7' : '#e5e7eb'}`, background: chat ? 'linear-gradient(90deg,#4B6CB7,#C94B4B)' : '#fff', color: chat ? '#fff' : '#333', fontSize: 13, fontWeight: 600, cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}>
+              {chat ? '✓ ' : ''}💬 Chat
+            </div>
+            <div onClick={() => setVideollamada(p => !p)} style={{ flex: 1, padding: '12px', borderRadius: 12, border: `2px solid ${videollamada ? '#4B6CB7' : '#e5e7eb'}`, background: videollamada ? 'linear-gradient(90deg,#4B6CB7,#C94B4B)' : '#fff', color: videollamada ? '#fff' : '#333', fontSize: 13, fontWeight: 600, cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}>
+              {videollamada ? '✓ ' : ''}📹 Video llamada
+            </div>
+          </div>
         </div>
 
         {/* ZONA */}
