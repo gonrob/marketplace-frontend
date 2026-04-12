@@ -38,6 +38,10 @@ export default function HostOnboarding({ onComplete }) {
   const [detErrors, setDetErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState('');
+  const [galeria, setGaleria] = useState([]);
+  const [fotosExp, setFotosExp] = useState({});
+  const galeriaRef = useRef();
+  const fotosExpRef = useRef({});
 
   const handleFoto = (e) => { const f = e.target.files[0]; if(f){setFoto(f);setFotoPreview(URL.createObjectURL(f));setErrors(p=>({...p,foto:false}));} };
   const handleFoto2 = (e) => { const f = e.target.files[0]; if(f){setFoto2(f);setFotoPreview2(URL.createObjectURL(f));} };
