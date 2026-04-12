@@ -137,9 +137,9 @@ export default function HostOnboarding({ onComplete, esPareja }) {
                 {cat.servicios.map(s => {
                   const activo = !!seleccionados[s.id];
                   return (
-                    <button key={s.id} onClick={() => toggle(s.id)} style={{ padding: '8px 14px', borderRadius: 20, border: `2px solid ${activo ? '#4B6CB7' : '#e5e7eb'}`, background: activo ? 'linear-gradient(90deg,#4B6CB7,#C94B4B)' : '#fff', color: activo ? '#fff' : '#333', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+                    <div key={s.id} onClick={() => toggle(s.id)} style={{ padding: '8px 14px', borderRadius: 20, border: `2px solid ${activo ? '#4B6CB7' : '#e5e7eb'}`, background: activo ? 'linear-gradient(90deg,#4B6CB7,#C94B4B)' : '#fff', color: activo ? '#fff' : '#333', fontSize: 13, fontWeight: 600, cursor: 'pointer', userSelect: 'none' }}>
                       {activo ? '✓ ' : ''}{s.es}
-                    </button>
+                    </div>
                   );
                 })}
               </div>
