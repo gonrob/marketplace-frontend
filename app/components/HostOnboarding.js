@@ -73,16 +73,12 @@ export default function HostOnboarding({ onComplete, esPareja }) {
       const habilidades = Object.keys(seleccionados).map(id => ({ id, precio, duracion, descripcion, personas }));
       if (servicioCustom.trim()) habilidades.push({ id: 'custom', descripcion: servicioCustom.trim(), precio, duracion, personas, esCustom: true });
 
-      console.log('TOKEN:', token ? 'existe' : 'NO EXISTE');
-      console.log('HABILIDADES:', JSON.stringify(habilidades));
       const profRes = await fetch(apiUrl + '/api/users/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
         body: JSON.stringify({ habilidades, ciudad: zona, ...(fotoUrl2 && { foto2: fotoUrl2 }), ...(nombrePareja && { nombrePareja }), ...(galeriaUrls.length && { galeria: galeriaUrls }) }),
       });
-      const profData = await profRes.json();
-      console.log('RESPUESTA:', JSON.stringify(profData));
-      if (!profRes.ok) throw new Error('Error guardando perfil: ' + JSON.stringify(profData));
+      if (!profRes.ok) throw new Error('Error guardando perfil.');
       onComplete();
     } catch (err) {
       setMsg('Error: ' + err.message);
