@@ -23,7 +23,13 @@ export default function Register() {
   const [form, setForm] = useState({nombre:'',apellido:'',email:'',telefono:'',password:'',metodoPago:'mercadopago',cuentaPago:'',nombrePareja:''});
   const [fotoViajero, setFotoViajero] = useState(null);
   const [fotoPreview, setFotoPreview] = useState(null);
+  const [fotoAnfitrion, setFotoAnfitrion] = useState(null);
+  const [fotoAnfitrionPreview, setFotoAnfitrionPreview] = useState(null);
+  const [fotoPareja, setFotoPareja] = useState(null);
+  const [fotoParejaPreview, setFotoParejaPreview] = useState(null);
   const fotoRef = typeof window !== 'undefined' ? require('react').useRef() : {current:null};
+  const fotoAnfitrionRef = typeof window !== 'undefined' ? require('react').useRef() : {current:null};
+  const fotoParejaRef = typeof window !== 'undefined' ? require('react').useRef() : {current:null};
   const [showParejaAviso, setShowParejaAviso] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const [fieldErrors, setFieldErrors] = useState({});
@@ -80,13 +86,27 @@ export default function Register() {
         fotoUrl = upRes.data.url;
       }
 
+      // Subir foto anfitrion si existe
+      let fotoAnfitrionUrl = null;
+      if (fotoAnfitrion) {
+        const base64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(fotoAnfitrion); });
+        const up = await api.post('/api/upload/photo', { photo: base64 });
+        fotoAnfitrionUrl = up.data.url;
+      }
+      let fotoParejaUrl = null;
+      if (fotoPareja) {
+        const base64p = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(fotoPareja); });
+        const up2 = await api.post('/api/upload/photo', { photo: base64p });
+        fotoParejaUrl = up2.data.url;
+      }
+
       const res = await api.post('/api/auth/register', {
         nombre: form.nombre + ' ' + form.apellido,
         email: form.email,
         password: form.password,
         telefono: form.telefono,
         role: role === 'pareja' ? 'seller' : role,
-        foto: fotoUrl,
+        foto: fotoUrl || fotoAnfitrionUrl,
         metodoPago: (role === 'seller' || role === 'pareja') ? form.metodoPago : '',
         cuentaPago: (role === 'seller' || role === 'pareja') ? form.cuentaPago : '',
         nombrePareja: form.nombrePareja || '',
