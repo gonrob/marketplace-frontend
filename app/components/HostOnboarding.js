@@ -38,6 +38,10 @@ export default function HostOnboarding({ onComplete }) {
   const [detErrors, setDetErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState('');
+  const [precioGral, setPrecioGral] = useState('');
+  const [duracionGral, setDuracionGral] = useState('');
+  const [descripcionGral, setDescripcionGral] = useState('');
+  const [personasGral, setPersonasGral] = useState('2');
   const [galeria, setGaleria] = useState([]);
   const [fotosExp, setFotosExp] = useState({});
   const galeriaRef = useRef();
@@ -46,8 +50,8 @@ export default function HostOnboarding({ onComplete }) {
   const handleFoto = (e) => { const f = e.target.files[0]; if(f){setFoto(f);setFotoPreview(URL.createObjectURL(f));setErrors(p=>({...p,foto:false}));} };
   const handleFoto2 = (e) => { const f = e.target.files[0]; if(f){setFoto2(f);setFotoPreview2(URL.createObjectURL(f));} };
 
-  const toggle = (id) => { setSeleccionados(p => { const n={...p}; if(n[id]) delete n[id]; else n[id]={precio:'',duracion:'',descripcion:'',personas:'2',idioma:'Español',punto:''}; return n; }); setErrors(p=>({...p,servicios:false})); };
-  const update = (id, field, val) => { setSeleccionados(p=>({...p,[id]:{...p[id],[field]:val}})); setDetErrors(p=>({...p,[id]:{...p[id],[field]:false}})); };
+  const toggle = (id) => { setSeleccionados(p => { const n={...p}; if(n[id]) delete n[id]; else n[id]=true; return n; }); setErrors(p=>({...p,servicios:false})); };
+
 
   const validate = () => {
     const e = {};
@@ -55,10 +59,8 @@ export default function HostOnboarding({ onComplete }) {
     if (!zona) e.zona = true;
     if (Object.keys(seleccionados).length === 0 && !servicioCustom.trim()) e.servicios = true;
     setErrors(e);
-    const de = {};
-    Object.entries(seleccionados).forEach(([id, d]) => { const fe={}; if(!d.precio) fe.precio=true; if(!d.duracion) fe.duracion=true; if(!d.descripcion) fe.descripcion=true; if(Object.keys(fe).length) de[id]=fe; });
-    setDetErrors(de);
-    return Object.keys(e).length === 0 && Object.keys(de).length === 0;
+    setDetErrors({});
+    return Object.keys(e).length === 0;
   };
 
   const handleSubmit = async () => {
@@ -238,6 +240,34 @@ export default function HostOnboarding({ onComplete }) {
           </div>
           <input ref={galeriaRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files[0]; if(f && galeria.length < 5) setGaleria(p => [...p, { file: f, preview: URL.createObjectURL(f) }]); }} />
         </div>
+
+        {/* CAMPOS GENERALES */}
+        {Object.keys(seleccionados).length > 0 && (
+          <div style={{ background: '#f0f4ff', borderRadius: 14, padding: 18, marginBottom: 16, border: '1.5px solid #4B6CB7' }}>
+            <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 14px', color: '#4B6CB7' }}>📋 Detalles de tus experiencias</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 10 }}>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>💰 Precio USD (por persona)</label>
+                <input type="number" placeholder="ej: 25" value={precioGral} onChange={e => setPrecioGral(e.target.value)} style={inp(false)} />
+              </div>
+              <div>
+                <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>⏱️ Duración promedio</label>
+                <select value={duracionGral} onChange={e => setDuracionGral(e.target.value)} style={inp(false)}>
+                  <option value="">— Elegí —</option>
+                  {DURACIONES.map(d => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+            </div>
+            <div style={{ marginBottom: 10 }}>
+              <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>📝 Descripción general</label>
+              <textarea placeholder="Ej: Soy guía local, conozco todos los rincones de Buenos Aires. Te muestro la ciudad como un local." value={descripcionGral} onChange={e => setDescripcionGral(e.target.value)} rows={3} style={{ ...inp(false), resize: 'vertical' }} />
+            </div>
+            <div>
+              <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>👥 Máx. personas por experiencia</label>
+              <input type="number" min="1" max="20" value={personasGral} onChange={e => setPersonasGral(e.target.value)} style={inp(false)} />
+            </div>
+          </div>
+        )}
 
         {/* SERVICIO CUSTOM */}
         <div style={{ background: '#fffbea', borderRadius: 14, padding: 18, marginBottom: 20, border: '1.5px solid #fcd34d' }}>
