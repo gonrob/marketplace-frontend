@@ -72,6 +72,7 @@ export default function Register() {
     if (!form.telefono.trim()) e.telefono = true;
     if (form.password.length < 6) e.password = true;
     if (!foto) e.foto = true;
+    if (role === 'pareja' && !foto2) e.foto2 = true;
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -203,10 +204,11 @@ export default function Register() {
               <div onClick={() => foto2Ref.current.click()} style={{width:80,height:80,borderRadius:'50%',cursor:'pointer',background:fotoPreview2?'transparent':'#f3f4f6',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',border:'3px solid #C94B4B',margin:'0 auto 10px'}}>
                 {fotoPreview2 ? <img src={fotoPreview2} alt="pareja" style={{width:'100%',height:'100%',objectFit:'cover'}} /> : <span style={{fontSize:28}}>👤</span>}
               </div>
+              {errors.foto2 && <p style={{color:'#ef4444',fontSize:12,marginTop:4}}>La foto de tu pareja es obligatoria</p>}
               <button type="button" onClick={() => foto2Ref.current.click()} style={{background:'#C94B4B',color:'#fff',border:'none',borderRadius:10,padding:'8px 16px',fontWeight:700,fontSize:13,cursor:'pointer'}}>
                 {fotoPreview2 ? 'Cambiar' : 'Subir foto'}
               </button>
-              <input ref={foto2Ref} type="file" accept="image/*" style={{display:'none'}} onChange={e => { const f=e.target.files[0]; if(f){setFoto2(f);setFotoPreview2(URL.createObjectURL(f));} }} />
+              <input ref={foto2Ref} type="file" accept="image/*" style={{display:'none'}} onChange={e => { const f=e.target.files[0]; if(f){setFoto2(f);setFotoPreview2(URL.createObjectURL(f));setErrors(p=>({...p,foto2:false}));} }} />
             </div>
           )}
 
