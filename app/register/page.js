@@ -205,6 +205,12 @@ export default function Register() {
 
             <div className="form-group"><label style={{color:fieldErrors.nombre?'#ef4444':'inherit'}}>{t.nombre} {fieldErrors.nombre && '⚠️'}</label><input value={form.nombre} onChange={e => { setForm({...form,nombre:e.target.value}); validateField('nombre',e.target.value); }} style={{border:fieldErrors.nombre?'1.5px solid #ef4444':'',outline:'none'}} /></div>
             <div className="form-group"><label style={{color:fieldErrors.apellido?'#ef4444':'inherit'}}>{t.apellido} {fieldErrors.apellido && '⚠️'}</label><input value={form.apellido} onChange={e => { setForm({...form,apellido:e.target.value}); validateField('apellido',e.target.value); }} style={{border:fieldErrors.apellido?'1.5px solid #ef4444':'',outline:'none'}} /></div>
+            {role === 'pareja' && (
+              <div className="form-group">
+                <label>👫 Nombre y apellido de tu pareja</label>
+                <input value={form.nombrePareja} onChange={e => setForm({...form,nombrePareja:e.target.value})} placeholder="ej: María García" />
+              </div>
+            )}
 
             <div className="form-group"><label style={{color:fieldErrors.email?'#ef4444':'inherit'}}>{t.email} {fieldErrors.email && '⚠️'}</label><input type="email" value={form.email} onChange={e => { setForm({...form,email:e.target.value}); validateField('email',e.target.value); }} style={{border:fieldErrors.email?'1.5px solid #ef4444':'',outline:'none'}} /></div>
             <div className="form-group"><label style={{color:fieldErrors.telefono?'#ef4444':'inherit'}}>{t.telefono} {fieldErrors.telefono && '⚠️'}</label><input type="tel" value={form.telefono} onChange={e => { setForm({...form,telefono:e.target.value}); validateField('telefono',e.target.value); }} style={{border:fieldErrors.telefono?'1.5px solid #ef4444':'',outline:'none'}} /></div>
