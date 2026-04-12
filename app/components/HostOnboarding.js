@@ -180,7 +180,7 @@ export default function HostOnboarding({ onComplete }) {
         {msg && <div style={{ background: '#fff0f0', border: '1px solid #fca5a5', borderRadius: 10, padding: '12px 16px', marginBottom: 16, color: '#c94b4b', fontSize: 13, fontWeight: 600 }}>{msg}</div>}
 
         <button onClick={handleSubmit} disabled={loading} style={{ width: '100%', padding: 13, borderRadius: 12, border: 'none', background: loading ? '#ccc' : 'linear-gradient(90deg,#4B6CB7,#C94B4B)', color: '#fff', fontSize: 15, fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer' }}>
-          {loading ? '⏳ Guardando...' : '✅ Guardar y publicar perfil'}
+          {loading ? '⏳ Procesando... puede tardar unos minutos, no cerrés la página' : '✅ Guardar y publicar perfil'}
         </button>
       </div>
     </div>
