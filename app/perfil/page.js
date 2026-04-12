@@ -220,19 +220,22 @@ export default function PerfilPage() {
 
         {/* CAMPOS */}
         {[
-          { label: t.nombre, value: nombre, set: setNombre, type: 'text' },
+          { label: t.nombre, value: nombre, set: setNombre, type: 'text', readonly: true },
           ...(user?.role === 'seller' ? [{ label: t.precio, value: precio, set: setPrecio, type: 'number' }, { label: t.ciudad, value: ciudad, set: setCiudad, type: 'text' }] : []),
-        ].map(({ label, value, set, type }) => (
+        ].map(({ label, value, set, type, readonly }) => (
           <div key={label} style={{ marginBottom: 16 }}>
             <label style={{ fontSize: 13, fontWeight: 600, color: '#444', display: 'block', marginBottom: 6 }}>{label}</label>
             <input
               type={type}
               value={value}
-              onChange={e => set(e.target.value)}
+              onChange={e => !readonly && set(e.target.value)}
+              readOnly={readonly}
               style={{
                 width: '100%', padding: '10px 14px', borderRadius: 10,
                 border: '1.5px solid #d1d5db', fontSize: 14, outline: 'none',
                 boxSizing: 'border-box',
+                background: readonly ? '#f3f4f6' : '#fff',
+                color: readonly ? '#999' : '#1a1a1a',
               }}
             />
           </div>
