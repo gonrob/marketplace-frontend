@@ -56,7 +56,7 @@ export default function Register() {
     if (!/\S+@\S+\.\S+/.test(form.email)) e.email = true;
     if (!form.telefono.trim()) e.telefono = true;
     if (form.password.length < 6) e.password = true;
-    if (!foto) e.foto = true;
+    if (role === 'buyer' && !foto) e.foto = true;
     setErrors(e);
     return Object.keys(e).length === 0;
   };
