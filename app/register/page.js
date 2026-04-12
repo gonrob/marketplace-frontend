@@ -185,14 +185,31 @@ export default function Register() {
           </div>
           <div className="form-group">
             <label style={{color:errors.telefono?'#ef4444':'inherit'}}>{t.telefono} {errors.telefono&&'⚠️'}</label>
-            <input type="tel" value={form.telefono} onChange={e=>{setForm({...form,telefono:e.target.value});setErrors(p=>({...p,telefono:false}));}} style={inp(errors.telefono)} />
+            <div style={{display:'flex',gap:8}}>
+              <select value={form.prefijo||'+54'} onChange={e=>setForm({...form,prefijo:e.target.value})} style={{padding:'10px 8px',borderRadius:10,border:'1.5px solid #d1d5db',fontSize:13,outline:'none',background:'#fff',flexShrink:0}}>
+                <option value="+54">🇦🇷 +54</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+44">🇬🇧 +44</option>
+                <option value="+55">🇧🇷 +55</option>
+                <option value="+33">🇫🇷 +33</option>
+                <option value="+49">🇩🇪 +49</option>
+                <option value="+39">🇮🇹 +39</option>
+                <option value="+34">🇪🇸 +34</option>
+                <option value="+86">🇨🇳 +86</option>
+                <option value="+7">🇷🇺 +7</option>
+                <option value="+81">🇯🇵 +81</option>
+                <option value="+52">🇲🇽 +52</option>
+                <option value="+56">🇨🇱 +56</option>
+                <option value="+598">🇺🇾 +598</option>
+                <option value="+595">🇵🇾 +595</option>
+              </select>
+              <input type="tel" value={form.telefono} onChange={e=>{setForm({...form,telefono:e.target.value});setErrors(p=>({...p,telefono:false}));}} style={{...inp(errors.telefono),flex:1}} placeholder="Número sin prefijo" />
+            </div>
           </div>
           <div className="form-group">
             <label style={{color:errors.password?'#ef4444':'inherit'}}>{t.password} {errors.password&&'⚠️'}</label>
-            <div style={{display:'flex',gap:8}}>
-              <input type={showPass?'text':'password'} value={form.password} onChange={e=>{setForm({...form,password:e.target.value});setErrors(p=>({...p,password:false}));}} style={{...inp(errors.password),flex:1}} />
-              <button type="button" onClick={()=>setShowPass(p=>!p)} style={{background:'#f3f4f6',border:'1px solid #d1d5db',borderRadius:8,padding:'8px 10px',cursor:'pointer'}}>{showPass?'🙈':'👁️'}</button>
-            </div>
+            <input type={showPass?'text':'password'} value={form.password} onChange={e=>{setForm({...form,password:e.target.value});setErrors(p=>({...p,password:false}));}} style={inp(errors.password)} />
+            <span onClick={()=>setShowPass(p=>!p)} style={{fontSize:12,color:'#4B6CB7',cursor:'pointer',display:'block',marginTop:4}}>{showPass?'🙈 Ocultar':'👁️ Ver contraseña'}</span>
           </div>
 
           {(role === 'seller' || role === 'pareja') && (
