@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 
 const CATEGORIAS = [
   { id: 'urbanas', emoji: '🏙️', es: 'Experiencias urbanas', servicios: [{ id: 'paseos_ciudad', es: 'Paseos por la ciudad' },{ id: 'tour_barrios', es: 'Tour por barrios' },{ id: 'miradores', es: 'Miradores y vistas panorámicas' },{ id: 'vida_nocturna', es: 'Vida nocturna' }] },
@@ -16,13 +16,9 @@ const ZONAS = ['Buenos Aires - Centro/Microcentro','Buenos Aires - Palermo','Bue
 
 const inp = (error) => ({ width: '100%', padding: '9px 12px', borderRadius: 8, fontSize: 13, border: `1.5px solid ${error ? '#ef4444' : '#d1d5db'}`, outline: 'none', background: '#fff', boxSizing: 'border-box' });
 
-export default function HostOnboarding({ onComplete, esPareja }) {
-  const fileRef2 = useRef();
+export default function HostOnboarding({ onComplete }) {
   const galeriaRef = useRef();
 
-  const [foto2, setFoto2] = useState(null);
-  const [fotoPreview2, setFotoPreview2] = useState(null);
-  const [nombrePareja, setNombrePareja] = useState('');
   const [zona, setZona] = useState('');
   const [seleccionados, setSeleccionados] = useState({});
   const [precio, setPrecio] = useState('');
@@ -56,13 +52,6 @@ export default function HostOnboarding({ onComplete, esPareja }) {
       const token = localStorage.getItem('token');
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-      let fotoUrl2 = null;
-      if (foto2) {
-        const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(foto2); });
-        const ur = await fetch(apiUrl + '/api/upload/photo', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }, body: JSON.stringify({ photo: b64 }) });
-        if (ur.ok) { const d = await ur.json(); fotoUrl2 = d.url; }
-      }
-
       const galeriaUrls = [];
       for (const g of galeria) {
         const b64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(g.file); });
@@ -76,12 +65,12 @@ export default function HostOnboarding({ onComplete, esPareja }) {
       const profRes = await fetch(apiUrl + '/api/users/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ habilidades, ciudad: zona, ...(fotoUrl2 && { foto2: fotoUrl2 }), ...(nombrePareja && { nombrePareja }), ...(galeriaUrls.length && { galeria: galeriaUrls }) }),
+        body: JSON.stringify({ habilidades, ciudad: zona, ...(galeriaUrls.length && { galeria: galeriaUrls }) }),
       });
       if (!profRes.ok) throw new Error('Error guardando perfil.');
       onComplete();
     } catch (err) {
-      setMsg('Error: ' + err.message);
+      setMsg(err.message);
     } finally {
       setLoading(false);
     }
@@ -95,6 +84,32 @@ export default function HostOnboarding({ onComplete, esPareja }) {
           <h2 style={{ fontSize: 20, fontWeight: 800, margin: '0 0 6px', background: 'linear-gradient(90deg,#4B6CB7,#C94B4B)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>¿Qué experiencias podés ofrecer?</h2>
           <p style={{ color: '#666', fontSize: 13, margin: 0 }}>Seleccioná las experiencias y completá los detalles al final</p>
         </div>
+
+        {/* ZONA */}
+        <div style={{ background: errors.zona ? '#fff5f5' : '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: `1.5px solid ${errors.zona ? '#ef4444' : '#e5e7eb'}` }}>
+          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 10px', color: errors.zona ? '#ef4444' : '#222' }}>📍 Zona de servicio {errors.zona && <span style={{ fontSize: 12, fontWeight: 400 }}>— obligatoria</span>}</p>
+          <select value={zona} onChange={e => { setZona(e.target.value); setErrors(p=>({...p,zona:false})); }} style={inp(errors.zona)}>
+            <option value="">— Seleccioná tu zona —</option>
+            {ZONAS.map(z => <option key={z} value={z}>{z}</option>)}
+          </select>
+        </div>
+
+        {/* EXPERIENCIAS */}
+        <div style={{ background: errors.servicios ? '#fff5f5' : '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: `1.5px solid ${errors.servicios ? '#ef4444' : '#e5e7eb'}` }}>
+          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 4px', color: errors.servicios ? '#ef4444' : '#222' }}>🎯 Experiencias {errors.servicios && <span style={{ fontSize: 12, fontWeight: 400 }}>— seleccioná al menos una</span>}</p>
+          <p style={{ color: '#888', fontSize: 12, margin: '0 0 16px' }}>Tocá para seleccionar — los detalles los completás abajo</p>
+          {CATEGORIAS.map(cat => (
+            <div key={cat.id} style={{ marginBottom: 16 }}>
+              <p style={{ fontWeight: 700, fontSize: 13, color: '#444', margin: '0 0 8px' }}>{cat.emoji} {cat.es}</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                {cat.servicios.map(s => {
+                  const activo = !!seleccionados[s.id];
+                  return (
+                    <div key={s.id} onClick={() => toggle(s.id)} style={{ padding: '8px 14px', borderRadius: 20, border: `2px solid ${activo ? '#4B6CB7' : '#e5e7eb'}`, background: activo ? 'linear-gradient(90deg,#4B6CB7,#C94B4B)' : '#fff', color: activo ? '#fff' : '#333', fontSize: 13, fontWeight: 600, cursor: 'pointer', userSelect: 'none' }}>
+                      {activo ? '✓ ' : ''}{s.es}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -123,7 +138,7 @@ export default function HostOnboarding({ onComplete, esPareja }) {
             </div>
             <div>
               <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 4 }}>👥 Máx. personas</label>
-              <input type="number" min="1" max="20" value={personas} onChange={e => setPersonas(e.target.value)} style={{...inp(false), maxWidth: 100}} />
+              <input type="number" min="1" max="20" value={personas} onChange={e => setPersonas(e.target.value)} style={{ ...inp(false), maxWidth: 100 }} />
             </div>
           </div>
         )}
@@ -156,7 +171,7 @@ export default function HostOnboarding({ onComplete, esPareja }) {
         {msg && <div style={{ background: '#fff0f0', border: '1px solid #fca5a5', borderRadius: 10, padding: '12px 16px', marginBottom: 16, color: '#c94b4b', fontSize: 13, fontWeight: 600 }}>{msg}</div>}
 
         <button onClick={handleSubmit} disabled={loading} style={{ width: '100%', padding: 13, borderRadius: 12, border: 'none', background: loading ? '#ccc' : 'linear-gradient(90deg,#4B6CB7,#C94B4B)', color: '#fff', fontSize: 15, fontWeight: 800, cursor: loading ? 'not-allowed' : 'pointer' }}>
-          {loading ? 'Guardando...' : '✅ Guardar y publicar perfil'}
+          {loading ? '⏳ Guardando...' : '✅ Guardar y publicar perfil'}
         </button>
       </div>
     </div>
