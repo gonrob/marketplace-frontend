@@ -10,6 +10,42 @@ const T = {
   en:{titulo:'Create account',elige:'Are you a host or traveler?',anfitrion:'🏠 I am a host',anfitrionDesc:'I want to share my culture and earn money',pareja:'👫 We are a couple host',parejaDesc:'We offer experiences together as a couple',viajero:'🌍 I am a traveler',viajeroDesc:'I want to connect with real Argentinians',nombre:'First name',apellido:'Last name',email:'Email',telefono:'Phone (to contact your host)',password:'Password',siguiente:'Next',registrar:'Create account',cargando:'Creating...',login:'Log in',yaRegistrado:'Already have an account',metodoPago:'Payment method',mercadopago:'Mercado Pago',transferencia:'Bank transfer',cuentaPago:'MP Email or CBU/Alias',error:'Error creating account.',confirmar:'Account created! Check your email to confirm.'},
 };
 
+const PAISES = [
+  ['+93','🇦🇫','Afganistán'],['+355','🇦🇱','Albania'],['+213','🇩🇿','Argelia'],['+376','🇦🇩','Andorra'],['+244','🇦🇴','Angola'],
+  ['+54','🇦🇷','Argentina'],['+374','🇦🇲','Armenia'],['+61','🇦🇺','Australia'],['+43','🇦🇹','Austria'],['+994','🇦🇿','Azerbaiyán'],
+  ['+1242','🇧🇸','Bahamas'],['+973','🇧🇭','Baréin'],['+880','🇧🇩','Bangladés'],['+375','🇧🇾','Bielorrusia'],['+32','🇧🇪','Bélgica'],
+  ['+501','🇧🇿','Belice'],['+229','🇧🇯','Benín'],['+975','🇧🇹','Bután'],['+591','🇧🇴','Bolivia'],['+387','🇧🇦','Bosnia'],
+  ['+267','🇧🇼','Botsuana'],['+55','🇧🇷','Brasil'],['+673','🇧🇳','Brunéi'],['+359','🇧🇬','Bulgaria'],['+226','🇧🇫','Burkina Faso'],
+  ['+257','🇧🇮','Burundi'],['+238','🇨🇻','Cabo Verde'],['+855','🇰🇭','Camboya'],['+237','🇨🇲','Camerún'],['+1','🇨🇦','Canadá'],
+  ['+236','🇨🇫','R. Centroafricana'],['+235','🇹🇩','Chad'],['+56','🇨🇱','Chile'],['+86','🇨🇳','China'],['+57','🇨🇴','Colombia'],
+  ['+269','🇰🇲','Comoras'],['+242','🇨🇬','Congo'],['+506','🇨🇷','Costa Rica'],['+385','🇭🇷','Croacia'],['+53','🇨🇺','Cuba'],
+  ['+357','🇨🇾','Chipre'],['+420','🇨🇿','Chequia'],['+45','🇩🇰','Dinamarca'],['+253','🇩🇯','Yibuti'],['+1809','🇩🇴','R. Dominicana'],
+  ['+593','🇪🇨','Ecuador'],['+20','🇪🇬','Egipto'],['+503','🇸🇻','El Salvador'],['+240','🇬🇶','G. Ecuatorial'],['+291','🇪🇷','Eritrea'],
+  ['+372','🇪🇪','Estonia'],['+268','🇸🇿','Esuatini'],['+251','🇪🇹','Etiopía'],['+679','🇫🇯','Fiyi'],['+358','🇫🇮','Finlandia'],
+  ['+33','🇫🇷','Francia'],['+241','🇬🇦','Gabón'],['+220','🇬🇲','Gambia'],['+995','🇬🇪','Georgia'],['+49','🇩🇪','Alemania'],
+  ['+233','🇬🇭','Ghana'],['+30','🇬🇷','Grecia'],['+502','🇬🇹','Guatemala'],['+224','🇬🇳','Guinea'],['+245','🇬🇼','Guinea-Bisáu'],
+  ['+592','🇬🇾','Guyana'],['+509','🇭🇹','Haití'],['+504','🇭🇳','Honduras'],['+36','🇭🇺','Hungría'],['+354','🇮🇸','Islandia'],
+  ['+91','🇮🇳','India'],['+62','🇮🇩','Indonesia'],['+98','🇮🇷','Irán'],['+964','🇮🇶','Irak'],['+353','🇮🇪','Irlanda'],
+  ['+972','🇮🇱','Israel'],['+39','🇮🇹','Italia'],['+1876','🇯🇲','Jamaica'],['+81','🇯🇵','Japón'],['+962','🇯🇴','Jordania'],
+  ['+7','🇰🇿','Kazajistán'],['+254','🇰🇪','Kenia'],['+965','🇰🇼','Kuwait'],['+996','🇰🇬','Kirguistán'],['+856','🇱🇦','Laos'],
+  ['+371','🇱🇻','Letonia'],['+961','🇱🇧','Líbano'],['+266','🇱🇸','Lesoto'],['+231','🇱🇷','Liberia'],['+218','🇱🇾','Libia'],
+  ['+423','🇱🇮','Liechtenstein'],['+370','🇱🇹','Lituania'],['+352','🇱🇺','Luxemburgo'],['+261','🇲🇬','Madagascar'],['+265','🇲🇼','Malaui'],
+  ['+60','🇲🇾','Malasia'],['+960','🇲🇻','Maldivas'],['+223','🇲🇱','Mali'],['+356','🇲🇹','Malta'],['+212','🇲🇦','Marruecos'],
+  ['+222','🇲🇷','Mauritania'],['+230','🇲🇺','Mauricio'],['+52','🇲🇽','México'],['+373','🇲🇩','Moldavia'],['+377','🇲🇨','Mónaco'],
+  ['+976','🇲🇳','Mongolia'],['+382','🇲🇪','Montenegro'],['+258','🇲🇿','Mozambique'],['+264','🇳🇦','Namibia'],['+977','🇳🇵','Nepal'],
+  ['+31','🇳🇱','Países Bajos'],['+64','🇳🇿','Nueva Zelanda'],['+505','🇳🇮','Nicaragua'],['+227','🇳🇪','Níger'],['+234','🇳🇬','Nigeria'],
+  ['+47','🇳🇴','Noruega'],['+968','🇴🇲','Omán'],['+92','🇵🇰','Pakistán'],['+507','🇵🇦','Panamá'],['+675','🇵🇬','Papúa N. Guinea'],
+  ['+595','🇵🇾','Paraguay'],['+51','🇵🇪','Perú'],['+63','🇵🇭','Filipinas'],['+48','🇵🇱','Polonia'],['+351','🇵🇹','Portugal'],
+  ['+974','🇶🇦','Qatar'],['+40','🇷🇴','Rumania'],['+7','🇷🇺','Rusia'],['+250','🇷🇼','Ruanda'],['+966','🇸🇦','Arabia Saudita'],
+  ['+221','🇸🇳','Senegal'],['+381','🇷🇸','Serbia'],['+232','🇸🇱','Sierra Leona'],['+65','🇸🇬','Singapur'],['+421','🇸🇰','Eslovaquia'],
+  ['+386','🇸🇮','Eslovenia'],['+252','🇸🇴','Somalia'],['+27','🇿🇦','Sudáfrica'],['+34','🇪🇸','España'],['+94','🇱🇰','Sri Lanka'],
+  ['+249','🇸🇩','Sudán'],['+597','🇸🇷','Surinam'],['+46','🇸🇪','Suecia'],['+41','🇨🇭','Suiza'],['+963','🇸🇾','Siria'],
+  ['+886','🇹🇼','Taiwán'],['+992','🇹🇯','Tayikistán'],['+255','🇹🇿','Tanzania'],['+66','🇹🇭','Tailandia'],['+228','🇹🇬','Togo'],
+  ['+1868','🇹🇹','Trinidad y Tobago'],['+216','🇹🇳','Túnez'],['+90','🇹🇷','Turquía'],['+993','🇹🇲','Turkmenistán'],['+256','🇺🇬','Uganda'],
+  ['+380','🇺🇦','Ucrania'],['+971','🇦🇪','Emiratos Árabes'],['+44','🇬🇧','Reino Unido'],['+1','🇺🇸','EE.UU.'],['+598','🇺🇾','Uruguay'],
+  ['+998','🇺🇿','Uzbekistán'],['+58','🇻🇪','Venezuela'],['+84','🇻🇳','Vietnam'],['+967','🇾🇪','Yemen'],['+260','🇿🇲','Zambia'],['+263','🇿🇼','Zimbabue'],
+].sort((a,b) => a[2].localeCompare(b[2]));
+
 const inp = (error) => ({width:'100%',padding:'10px 14px',borderRadius:10,border:`1.5px solid ${error?'#ef4444':'#d1d5db'}`,fontSize:14,outline:'none',boxSizing:'border-box'});
 
 export default function Register() {
@@ -234,22 +270,8 @@ export default function Register() {
           <div className="form-group">
             <label style={{color:errors.telefono?'#ef4444':'inherit'}}>{t.telefono} {errors.telefono&&'⚠️'}</label>
             <div style={{display:'flex',gap:8}}>
-              <select value={form.prefijo||'+54'} onChange={e=>setForm({...form,prefijo:e.target.value})} style={{padding:'10px 4px',borderRadius:10,border:'1.5px solid #d1d5db',fontSize:11,outline:'none',background:'#fff',width:72,flexShrink:0}}>
-                <option value="+54">🇦🇷 +54</option>
-                <option value="+1">🇺🇸 +1</option>
-                <option value="+44">🇬🇧 +44</option>
-                <option value="+55">🇧🇷 +55</option>
-                <option value="+33">🇫🇷 +33</option>
-                <option value="+49">🇩🇪 +49</option>
-                <option value="+39">🇮🇹 +39</option>
-                <option value="+34">🇪🇸 +34</option>
-                <option value="+86">🇨🇳 +86</option>
-                <option value="+7">🇷🇺 +7</option>
-                <option value="+81">🇯🇵 +81</option>
-                <option value="+52">🇲🇽 +52</option>
-                <option value="+56">🇨🇱 +56</option>
-                <option value="+598">🇺🇾 +598</option>
-                <option value="+595">🇵🇾 +595</option>
+              <select value={form.prefijo||'+54'} onChange={e=>setForm({...form,prefijo:e.target.value})} style={{padding:'10px 4px',borderRadius:10,border:'1.5px solid #d1d5db',fontSize:11,outline:'none',background:'#fff',width:80,flexShrink:0}}>
+                {PAISES.map(([code,flag,name]) => <option key={code+name} value={code}>{flag} {code} {name}</option>)}
               </select>
               <input type="tel" value={form.telefono} onChange={e=>{setForm({...form,telefono:e.target.value});setErrors(p=>({...p,telefono:false}));}} style={{...inp(errors.telefono),flex:1}} placeholder="WhatsApp" />
             </div>
