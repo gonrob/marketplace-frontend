@@ -20,6 +20,7 @@ export default function HostOnboarding({ onComplete }) {
   const galeriaRef = useRef();
 
   const [zona, setZona] = useState('');
+  const [zonaCustom, setZonaCustom] = useState('');
   const [seleccionados, setSeleccionados] = useState({});
   const [precio, setPrecio] = useState('');
   const [duracion, setDuracion] = useState('');
@@ -65,7 +66,7 @@ export default function HostOnboarding({ onComplete }) {
       const profRes = await fetch(apiUrl + '/api/users/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-        body: JSON.stringify({ habilidades, ciudad: zona, ...(galeriaUrls.length && { galeria: galeriaUrls }) }),
+        body: JSON.stringify({ habilidades, ciudad: zona === 'Otra ciudad' && zonaCustom ? zonaCustom : zona, ...(galeriaUrls.length && { galeria: galeriaUrls }) }),
       });
       if (!profRes.ok) throw new Error('Error guardando perfil.');
       onComplete();
@@ -92,6 +93,14 @@ export default function HostOnboarding({ onComplete }) {
             <option value="">— Seleccioná tu zona —</option>
             {ZONAS.map(z => <option key={z} value={z}>{z}</option>)}
           </select>
+          {zona === 'Otra ciudad' && (
+            <input
+              value={zonaCustom}
+              onChange={e => setZonaCustom(e.target.value)}
+              placeholder="Escribí tu ciudad o pueblo..."
+              style={{...inp(false), marginTop: 8}}
+            />
+          )}
         </div>
 
         {/* EXPERIENCIAS */}
