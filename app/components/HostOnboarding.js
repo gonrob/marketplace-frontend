@@ -16,7 +16,7 @@ const ZONAS = ['Buenos Aires - Centro/Microcentro','Buenos Aires - Palermo','Bue
 
 const inp = (error) => ({ width: '100%', padding: '9px 12px', borderRadius: 8, fontSize: 13, border: `1.5px solid ${error ? '#ef4444' : '#d1d5db'}`, outline: 'none', background: '#fff', boxSizing: 'border-box' });
 
-export default function HostOnboarding({ onComplete, esPareja }) {
+export default function HostOnboarding({ onComplete, esPareja, token: tokenProp }) {
   const fileRef2 = useRef();
   const galeriaRef = useRef();
 
@@ -53,7 +53,7 @@ export default function HostOnboarding({ onComplete, esPareja }) {
     if (!validate()) { setMsg('Completá los campos obligatorios.'); return; }
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
+      const token = tokenProp || localStorage.getItem('token');
       const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
       let fotoUrl2 = null;
