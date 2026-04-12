@@ -110,6 +110,7 @@ export default function Register() {
     if (!foto) e.foto = true;
     if (role === 'pareja' && !foto2) e.foto2 = true;
     setErrors(e);
+    if (Object.keys(e).length > 0) setError('⬆️ Subí y completá el formulario');
     return Object.keys(e).length === 0;
   };
 
