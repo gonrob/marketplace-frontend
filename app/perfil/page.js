@@ -141,17 +141,14 @@ export default function PerfilPage() {
       let fotoUrl = user?.foto;
 
       if (foto) {
-        const formData = new FormData();
-        formData.append('file', foto);
-        const up = await api.post('/api/upload/photo', formData, {
-          headers: { 'Content-Type': 'multipart/form-data', Authorization: `Bearer ${token}` },
-        });
+        const base64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(foto); });
+        const up = await api.post('/api/upload/photo', { photo: base64 });
         fotoUrl = up.data.url;
       }
 
-      await api.patch('/api/users/me', {
+      await api.put('/api/users/profile', {
         nombre, bio, precio, ciudad, disponible, habilidades, foto: fotoUrl,
-      }, { headers: { Authorization: `Bearer ${token}` } });
+      });
 
       setMsg(t.guardadoOk);
     } catch {
