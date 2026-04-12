@@ -62,7 +62,7 @@ function DashboardContent() {
 
   const verificar = async () => {
     try {
-      const r = await api.post('/api/stripe/verify/identity');
+      const r = { data: { url: null } };
       window.location.href = r.data.url;
     } catch { setError('Error al iniciar verificacion.'); }
   };
@@ -153,10 +153,7 @@ function DashboardContent() {
               💰 {retirando ? t.retirando : t.retirar} (USD {(user?.ganancias||0).toFixed(2)})
             </button>
             <Link href="/perfil"><button style={{marginBottom:12}}>✏️ {t.editarPerfil}</button></Link>
-            {!user?.verificado
-              ? <button className="btn-secondary" style={{marginBottom:12}} onClick={verificar}>🪪 {t.verificarId}</button>
-              : <div className="success" style={{marginBottom:12}}>🪪 {t.verificado} ✅</div>
-            }
+
           </>
         )}
 
