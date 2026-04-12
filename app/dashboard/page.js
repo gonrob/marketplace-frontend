@@ -101,7 +101,7 @@ function DashboardContent() {
           </div>
         </div>
       )}
-      {showOnboarding && <HostOnboarding lang={lang} token={localStorage.getItem("token")} onComplete={() => { setShowOnboarding(false); }} onSkip={() => setShowOnboarding(false)} />}
+      {showOnboarding && <HostOnboarding lang={lang} token={localStorage.getItem("token")} onComplete={() => { setShowOnboarding(false); loadUser(); }} />}
       <nav className="nav">
         <Link href="/" style={{textDecoration:'none'}}><span className="nav-logo">Know<span>an</span> 🌐</span></Link>
         <div className="nav-links">
