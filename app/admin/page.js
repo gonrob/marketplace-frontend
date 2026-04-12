@@ -30,6 +30,8 @@ export default function Admin() {
       try {
         const me = await api.get('/api/auth/me');
         if (me.data.email !== ADMIN) { router.push('/'); return; }
+        // Doble verificacion
+        if (me.data.role !== 'seller') { router.push('/'); return; }
         const s = await api.get('/api/users/sellers');
         const b = await api.get('/api/users/buyers');
         setSellers(s.data);
