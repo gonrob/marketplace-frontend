@@ -279,8 +279,8 @@ export default function Register() {
               {loading ? t.cargando : t.registrar}
             </button>
           ) : (
-            <button onClick={irAlOnboarding} className="btn-orange">
-              Siguiente → Configurar experiencias
+            <button onClick={irAlOnboarding} disabled={loading} className="btn-orange">
+              {loading ? '⏳ Creando cuenta...' : 'Siguiente → Configurar experiencias'}
             </button>
           )}
           <button onClick={() => setPaso(1)} style={{background:'none',border:'none',color:'#888',cursor:'pointer',marginTop:12,fontSize:13,display:'block',width:'100%'}}>← Volver</button>
