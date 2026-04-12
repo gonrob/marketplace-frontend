@@ -141,7 +141,7 @@ export default function Register() {
       else localStorage.removeItem('esPareja');
 
       alert(t.confirmar);
-      router.push('/dashboard');
+      router.push(role === 'buyer' ? '/explorar?verificar=1' : '/dashboard');
     } catch (err) {
       setError(err.message || t.error);
     } finally { setLoading(false); }
@@ -297,7 +297,7 @@ export default function Register() {
       esPareja={role === 'pareja'}
       onComplete={() => {
         alert('¡Cuenta creada! Revisá tu email para confirmar.');
-        router.push('/dashboard');
+        router.push(role === 'buyer' ? '/explorar?verificar=1' : '/dashboard');
       }}
     />
   );

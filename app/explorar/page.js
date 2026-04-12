@@ -24,10 +24,12 @@ export default function Explorar() {
   const [bios, setBios] = useState({});
   const [expanded, setExpanded] = useState({});
   const [userActual, setUserActual] = useState(null);
+  const [showVerificarBanner, setShowVerificarBanner] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) api.get('/api/auth/me').then(r => setUserActual(r.data)).catch(() => {});
+    if (window.location.search.includes('verificar=1')) setShowVerificarBanner(true);
   }, []);
   const [modalHost, setModalHost] = useState(null);
 
@@ -68,6 +70,11 @@ export default function Explorar() {
   if (loading) return (
     <>
       <Nav />
+      {showVerificarBanner && (
+        <div style={{background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',padding:'14px 20px',textAlign:'center',position:'sticky',top:0,zIndex:200}}>
+          <p style={{color:'#fff',fontSize:14,fontWeight:600,margin:0}}>📧 Te enviamos un email de verificación — revisá tu bandeja y spam para activar tu cuenta</p>
+        </div>
+      )}
       <div className="spinner">{t.cargando}</div>
     </>
   );
@@ -75,6 +82,11 @@ export default function Explorar() {
   return (
     <>
       <Nav />
+      {showVerificarBanner && (
+        <div style={{background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',padding:'14px 20px',textAlign:'center',position:'sticky',top:0,zIndex:200}}>
+          <p style={{color:'#fff',fontSize:14,fontWeight:600,margin:0}}>📧 Te enviamos un email de verificación — revisá tu bandeja y spam para activar tu cuenta</p>
+        </div>
+      )}
       <div className="container">
         <h1 style={{marginBottom:16}}>{t.titulo}</h1>
 
