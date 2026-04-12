@@ -186,7 +186,7 @@ export default function Register() {
           <div className="form-group">
             <label style={{color:errors.telefono?'#ef4444':'inherit'}}>{t.telefono} {errors.telefono&&'⚠️'}</label>
             <div style={{display:'flex',gap:8}}>
-              <select value={form.prefijo||'+54'} onChange={e=>setForm({...form,prefijo:e.target.value})} style={{padding:'10px 8px',borderRadius:10,border:'1.5px solid #d1d5db',fontSize:13,outline:'none',background:'#fff',flexShrink:0}}>
+              <select value={form.prefijo||'+54'} onChange={e=>setForm({...form,prefijo:e.target.value})} style={{padding:'10px 6px',borderRadius:10,border:'1.5px solid #d1d5db',fontSize:12,outline:'none',background:'#fff',flexShrink:0,maxWidth:90}}>
                 <option value="+54">🇦🇷 +54</option>
                 <option value="+1">🇺🇸 +1</option>
                 <option value="+44">🇬🇧 +44</option>
@@ -203,7 +203,7 @@ export default function Register() {
                 <option value="+598">🇺🇾 +598</option>
                 <option value="+595">🇵🇾 +595</option>
               </select>
-              <input type="tel" value={form.telefono} onChange={e=>{setForm({...form,telefono:e.target.value});setErrors(p=>({...p,telefono:false}));}} style={{...inp(errors.telefono),flex:1}} placeholder="Número sin prefijo" />
+              <input type="tel" value={form.telefono} onChange={e=>{setForm({...form,telefono:e.target.value});setErrors(p=>({...p,telefono:false}));}} style={{...inp(errors.telefono),flex:2,minWidth:0}} placeholder="Número sin prefijo" />
             </div>
           </div>
           <div className="form-group">
