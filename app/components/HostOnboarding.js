@@ -118,20 +118,6 @@ export default function HostOnboarding({ onComplete }) {
           <p style={{ color: '#666', fontSize: 13, margin: 0 }}>Completá tu perfil para aparecer en el escaparate</p>
         </div>
 
-        {/* FOTO 1 */}
-        <div style={{ background: errors.foto ? '#fff5f5' : '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: `1.5px solid ${errors.foto ? '#ef4444' : '#e5e7eb'}` }}>
-          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 12px', color: errors.foto ? '#ef4444' : '#222' }}>
-            📸 {esPareja ? 'Foto 1 — La tuya' : 'Foto de perfil'} {errors.foto && <span style={{ fontSize: 12, fontWeight: 400 }}>— obligatoria</span>}
-          </p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div onClick={() => fileRef.current.click()} style={{ width: 72, height: 72, borderRadius: '50%', cursor: 'pointer', flexShrink: 0, background: fotoPreview ? 'transparent' : 'linear-gradient(135deg,#4B6CB7,#C94B4B)', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: `3px solid ${errors.foto ? '#ef4444' : '#4B6CB7'}` }}>
-              {fotoPreview ? <img src={fotoPreview} alt="foto" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ fontSize: 26 }}>👤</span>}
-            </div>
-            <button onClick={() => fileRef.current.click()} style={{ background: 'linear-gradient(90deg,#4B6CB7,#C94B4B)', color: '#fff', border: 'none', borderRadius: 10, padding: '9px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>{fotoPreview ? 'Cambiar foto' : 'Subir foto'}</button>
-            <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFoto} />
-          </div>
-        </div>
-
         {/* FOTO 2 Y NOMBRE PAREJA */}
         {esPareja && (
           <div style={{ background: '#fdf4ff', borderRadius: 14, padding: 18, marginBottom: 16, border: '1.5px solid #C94B4B' }}>
