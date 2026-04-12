@@ -95,53 +95,6 @@ export default function HostOnboarding({ onComplete, esPareja }) {
           <h2 style={{ fontSize: 20, fontWeight: 800, margin: '0 0 6px', background: 'linear-gradient(90deg,#4B6CB7,#C94B4B)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>¿Qué experiencias podés ofrecer?</h2>
           <p style={{ color: '#666', fontSize: 13, margin: 0 }}>Seleccioná las experiencias y completá los detalles al final</p>
         </div>
-
-        {/* FOTO Y DATOS PAREJA */}
-        {esPareja && (
-          <div style={{ background: '#fdf4ff', borderRadius: 14, padding: 18, marginBottom: 16, border: '1.5px solid #C94B4B' }}>
-            <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 14px', color: '#C94B4B' }}>👫 Datos de tu pareja</p>
-            <div style={{ marginBottom: 14 }}>
-              <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 6 }}>Nombre de tu pareja</label>
-              <input value={nombrePareja} onChange={e => setNombrePareja(e.target.value)} placeholder="ej: María García" style={inp(false)} />
-            </div>
-            <p style={{ fontSize: 13, fontWeight: 700, margin: '0 0 10px', color: '#C94B4B' }}>📸 Foto de tu pareja</p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <div onClick={() => fileRef2.current.click()} style={{ width: 72, height: 72, borderRadius: '50%', cursor: 'pointer', flexShrink: 0, background: fotoPreview2 ? 'transparent' : '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', border: '3px solid #C94B4B' }}>
-                {fotoPreview2 ? <img src={fotoPreview2} alt="pareja" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <span style={{ fontSize: 26 }}>👤</span>}
-              </div>
-              <button onClick={() => fileRef2.current.click()} style={{ background: '#C94B4B', color: '#fff', border: 'none', borderRadius: 10, padding: '9px 18px', fontWeight: 700, fontSize: 13, cursor: 'pointer' }}>
-                {fotoPreview2 ? 'Cambiar foto' : 'Subir foto de tu pareja'}
-              </button>
-              <input ref={fileRef2} type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files[0]; if(f){setFoto2(f);setFotoPreview2(URL.createObjectURL(f));} }} />
-            </div>
-          </div>
-        )}
-
-        {/* ZONA */}
-        <div style={{ background: errors.zona ? '#fff5f5' : '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: `1.5px solid ${errors.zona ? '#ef4444' : '#e5e7eb'}` }}>
-          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 10px', color: errors.zona ? '#ef4444' : '#222' }}>📍 Zona de servicio {errors.zona && <span style={{ fontSize: 12, fontWeight: 400 }}>— obligatoria</span>}</p>
-          <select value={zona} onChange={e => { setZona(e.target.value); setErrors(p=>({...p,zona:false})); }} style={inp(errors.zona)}>
-            <option value="">— Seleccioná tu zona —</option>
-            {ZONAS.map(z => <option key={z} value={z}>{z}</option>)}
-          </select>
-        </div>
-
-        {/* EXPERIENCIAS */}
-        <div style={{ background: errors.servicios ? '#fff5f5' : '#f8faff', borderRadius: 14, padding: 18, marginBottom: 16, border: `1.5px solid ${errors.servicios ? '#ef4444' : '#e5e7eb'}` }}>
-          <p style={{ fontWeight: 700, fontSize: 14, margin: '0 0 4px', color: errors.servicios ? '#ef4444' : '#222' }}>🎯 Experiencias {errors.servicios && <span style={{ fontSize: 12, fontWeight: 400 }}>— seleccioná al menos una</span>}</p>
-          <p style={{ color: '#888', fontSize: 12, margin: '0 0 16px' }}>Tocá para seleccionar — los detalles los completás abajo</p>
-          {CATEGORIAS.map(cat => (
-            <div key={cat.id} style={{ marginBottom: 16 }}>
-              <p style={{ fontWeight: 700, fontSize: 13, color: '#444', margin: '0 0 8px' }}>{cat.emoji} {cat.es}</p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-                {cat.servicios.map(s => {
-                  const activo = !!seleccionados[s.id];
-                  return (
-                    <div key={s.id} onClick={() => toggle(s.id)} style={{ padding: '8px 14px', borderRadius: 20, border: `2px solid ${activo ? '#4B6CB7' : '#e5e7eb'}`, background: activo ? 'linear-gradient(90deg,#4B6CB7,#C94B4B)' : '#fff', color: activo ? '#fff' : '#333', fontSize: 13, fontWeight: 600, cursor: 'pointer', userSelect: 'none' }}>
-                      {activo ? '✓ ' : ''}{s.es}
-                    </div>
-                  );
-                })}
               </div>
             </div>
           ))}
