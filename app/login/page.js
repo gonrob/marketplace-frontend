@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Nav from '../components/Nav';
@@ -10,6 +10,13 @@ export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.search.includes('verified=1')) {
+      setSuccess('✅ Email verificado. Ya podés iniciar sesión.');
+    }
+  }, []);
   const [loading, setLoading] = useState(false);
 
   const submit = async e => {
@@ -30,6 +37,7 @@ export default function Login() {
       <div className="container">
         <div className="card">
           <h1>Iniciar sesion</h1>
+          {success && <div className="success">{success}</div>}
           {error && <div className="error">{error}</div>}
           <form onSubmit={submit}>
             <div className="form-group">
