@@ -86,19 +86,18 @@ export default function Register() {
         fotoUrl = upRes.data.url;
       }
 
-      // Subir foto anfitrion si existe
-      let fotoAnfitrionUrl = null;
-      if (fotoAnfitrion) {
-        const base64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(fotoAnfitrion); });
-        const up = await api.post('/api/upload/photo', { photo: base64 });
-        fotoAnfitrionUrl = up.data.url;
-      }
-      let fotoParejaUrl = null;
-      if (fotoPareja) {
-        const base64p = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(fotoPareja); });
-        const up2 = await api.post('/api/upload/photo', { photo: base64p });
-        fotoParejaUrl = up2.data.url;
-      }
+      // Subir foto anfitrion si existe (sin token, antes del registro)
+      const uploadFoto = async (file) => {
+        const base64 = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(file); });
+        const up = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/upload/photo-public', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ photo: base64 })
+        });
+        if (up.ok) { const d = await up.json(); return d.url; }
+        return null;
+      };
+      let fotoAnfitrionUrl = fotoAnfitrion ? await uploadFoto(fotoAnfitrion) : null;
+      let fotoParejaUrl = fotoPareja ? await uploadFoto(fotoPareja) : null;
 
       const res = await api.post('/api/auth/register', {
         nombre: form.nombre + ' ' + form.apellido,

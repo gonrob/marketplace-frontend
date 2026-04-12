@@ -101,7 +101,7 @@ export default function HostOnboarding({ onComplete }) {
       });
       if (!profRes.ok) throw new Error('Error guardando perfil');
       localStorage.removeItem('esPareja');
-      onComplete();
+      onComplete('email_sent');
     } catch (err) {
       setMsg('Error: ' + err.message);
     } finally {
