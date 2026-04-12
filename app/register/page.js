@@ -58,9 +58,37 @@ export default function Register() {
     return Object.keys(e).length === 0;
   };
 
-  const irAlOnboarding = () => {
+  const irAlOnboarding = async () => {
     if (!validate()) return;
-    setPaso(3);
+    setLoading(true); setError('');
+    try {
+      let fotoUrl = foto ? await uploadFoto(foto) : null;
+      let fotoUrl2 = foto2 ? await uploadFoto(foto2) : null;
+      const res = await fetch(process.env.NEXT_PUBLIC_API_URL + '/api/auth/register', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({
+          nombre: form.nombre + ' ' + form.apellido,
+          email: form.email,
+          password: form.password,
+          telefono: form.telefono,
+          role: role === 'pareja' ? 'seller' : role,
+          foto: fotoUrl,
+          foto2: fotoUrl2,
+          nombrePareja: form.nombrePareja || '',
+          metodoPago: form.metodoPago,
+          cuentaPago: form.cuentaPago,
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || t.error);
+      localStorage.setItem('token', data.token);
+      if (role === 'pareja') localStorage.setItem('esPareja', 'true');
+      else localStorage.removeItem('esPareja');
+      setPaso(3);
+    } catch (err) {
+      setError(err.message || t.error);
+    } finally { setLoading(false); }
   };
 
   const crearCuenta = async (extraData = {}) => {
@@ -243,12 +271,13 @@ export default function Register() {
     </>
   );
 
-  // Paso 3 — onboarding anfitrion
+  // Paso 3 — onboarding anfitrion (cuenta ya creada antes)
   if (paso === 3) return (
     <HostOnboarding
       esPareja={role === 'pareja'}
-      onComplete={async (data) => {
-        await crearCuenta(data || {});
+      onComplete={() => {
+        alert('¡Cuenta creada! Revisá tu email para confirmar.');
+        router.push('/dashboard');
       }}
     />
   );
