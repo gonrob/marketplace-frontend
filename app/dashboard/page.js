@@ -36,7 +36,7 @@ function DashboardContent() {
       const r = await api.get('/api/auth/me');
       setUser(r.data);
       const d = r.data;
-      if (d.role === "seller" && !(d.habilidades && d.habilidades.length) && !d.foto) {
+      if (d.role === "seller" && !(d.habilidades && d.habilidades.length)) {
         setShowOnboarding(true);
       }
     } catch {
