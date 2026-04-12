@@ -9,6 +9,7 @@ const ADMIN = 'gonrobtor@gmail.com';
 export default function Admin() {
   const router = useRouter();
   const [sellers, setSellers] = useState([]);
+  const [buyers, setBuyers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('anfitriones');
   const [stats, setStats] = useState(null);
@@ -30,8 +31,14 @@ export default function Admin() {
         const me = await api.get('/api/auth/me');
         if (me.data.email !== ADMIN) { router.push('/'); return; }
         const s = await api.get('/api/users/sellers');
+        const b = await api.get('/api/users/buyers');
         setSellers(s.data);
+        setBuyers(b.data);
         setStats({
+          totalViajeros: b.data.length,
+          viajerosVerificados: b.data.filter(x => x.emailVerificado).length,
+          totalViajeros: b.data.length,
+          viajerosVerificados: b.data.filter(x => x.emailVerificado).length,
           total: s.data.length,
           verificados: s.data.filter(x => x.verificado).length,
           disponibles: s.data.filter(x => x.disponible).length,
@@ -102,7 +109,8 @@ export default function Admin() {
         </div>
 
         <div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
-          <button style={tabStyle('anfitriones')} onClick={() => setTab('anfitriones')}>👥 Anfitriones</button>
+          <button style={tabStyle('anfitriones')} onClick={() => setTab('anfitriones')}>👥 Anfitriones ({sellers.length})</button>
+          <button style={tabStyle('viajeros')} onClick={() => setTab('viajeros')}>🌍 Viajeros ({buyers.length})</button>
           <button style={tabStyle('emails')} onClick={() => setTab('emails')}>📧 Emails</button>
         </div>
 
@@ -140,6 +148,36 @@ export default function Admin() {
                     </div>
                   </div>
                 </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {tab === 'viajeros' && (
+          <div>
+            <div style={{background:'#f0f4ff',borderRadius:12,padding:16,marginBottom:16,display:'flex',gap:20}}>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:28,fontWeight:800,color:'#4B6CB7'}}>{buyers.length}</div>
+                <div style={{fontSize:12,color:'#888'}}>Total viajeros</div>
+              </div>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:28,fontWeight:800,color:'#22c55e'}}>{buyers.filter(x=>x.emailVerificado).length}</div>
+                <div style={{fontSize:12,color:'#888'}}>Verificados</div>
+              </div>
+              <div style={{textAlign:'center'}}>
+                <div style={{fontSize:28,fontWeight:800,color:'#f59e0b'}}>{buyers.filter(x=>!x.emailVerificado).length}</div>
+                <div style={{fontSize:12,color:'#888'}}>Sin verificar</div>
+              </div>
+            </div>
+            {buyers.map(b => (
+              <div key={b._id} style={{background:'white',borderRadius:12,padding:16,marginBottom:10,display:'flex',alignItems:'center',gap:14,boxShadow:'0 2px 8px rgba(0,0,0,0.06)'}}>
+                {b.foto ? <img src={b.foto} alt={b.nombre} style={{width:48,height:48,borderRadius:'50%',objectFit:'cover',flexShrink:0}} /> : <div style={{width:48,height:48,borderRadius:'50%',background:'#f3f4f6',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>👤</div>}
+                <div style={{flex:1}}>
+                  <div style={{fontWeight:700,fontSize:14}}>{b.nombre}</div>
+                  <div style={{fontSize:12,color:'#888'}}>{b.email}</div>
+                  <div style={{fontSize:11,color:'#aaa'}}>{b.telefono} · {new Date(b.createdAt).toLocaleDateString()}</div>
+                </div>
+                <span style={{fontSize:11,padding:'3px 8px',borderRadius:20,background:b.emailVerificado?'#dcfce7':'#fef3c7',color:b.emailVerificado?'#15803d':'#92400e',fontWeight:600}}>{b.emailVerificado?'✅ Verificado':'⏳ Sin verificar'}</span>
               </div>
             ))}
           </div>
