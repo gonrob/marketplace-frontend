@@ -179,6 +179,30 @@ export default function Register() {
             <h1 style={{marginBottom:20}}>{t.titulo}</h1>
             {error && <div className="error">{error}</div>}
 
+            {(role === 'seller' || role === 'pareja') && (
+              <div style={{textAlign:'center',marginBottom:20}}>
+                <div onClick={() => fotoAnfitrionRef.current.click()} style={{width:90,height:90,borderRadius:'50%',cursor:'pointer',background:fotoAnfitrionPreview?'transparent':'linear-gradient(135deg,#4B6CB7,#C94B4B)',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',border:'3px solid #4B6CB7',margin:'0 auto 10px'}}>
+                  {fotoAnfitrionPreview ? <img src={fotoAnfitrionPreview} alt="foto" style={{width:'100%',height:'100%',objectFit:'cover'}} /> : <span style={{fontSize:32}}>👤</span>}
+                </div>
+                <button type="button" onClick={() => fotoAnfitrionRef.current.click()} style={{background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',color:'#fff',border:'none',borderRadius:10,padding:'8px 20px',fontWeight:700,fontSize:13,cursor:'pointer'}}>
+                  📸 {fotoAnfitrionPreview ? 'Cambiar foto' : 'Subir tu foto'}
+                </button>
+                <input ref={fotoAnfitrionRef} type="file" accept="image/*" style={{display:'none'}} onChange={e => { const f=e.target.files[0]; if(f){setFotoAnfitrion(f);setFotoAnfitrionPreview(URL.createObjectURL(f));} }} />
+                {role === 'pareja' && (
+                  <div style={{marginTop:14,paddingTop:14,borderTop:'1px solid #f3f4f6'}}>
+                    <p style={{fontWeight:700,fontSize:13,color:'#C94B4B',margin:'0 0 10px'}}>📸 Foto de tu pareja</p>
+                    <div onClick={() => fotoParejaRef.current.click()} style={{width:80,height:80,borderRadius:'50%',cursor:'pointer',background:fotoParejaPreview?'transparent':'#f3f4f6',display:'flex',alignItems:'center',justifyContent:'center',overflow:'hidden',border:'3px solid #C94B4B',margin:'0 auto 10px'}}>
+                      {fotoParejaPreview ? <img src={fotoParejaPreview} alt="pareja" style={{width:'100%',height:'100%',objectFit:'cover'}} /> : <span style={{fontSize:28}}>👤</span>}
+                    </div>
+                    <button type="button" onClick={() => fotoParejaRef.current.click()} style={{background:'#C94B4B',color:'#fff',border:'none',borderRadius:10,padding:'8px 20px',fontWeight:700,fontSize:13,cursor:'pointer'}}>
+                      {fotoParejaPreview ? 'Cambiar foto' : 'Subir foto de tu pareja'}
+                    </button>
+                    <input ref={fotoParejaRef} type="file" accept="image/*" style={{display:'none'}} onChange={e => { const f=e.target.files[0]; if(f){setFotoPareja(f);setFotoParejaPreview(URL.createObjectURL(f));} }} />
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="form-group"><label style={{color:fieldErrors.nombre?'#ef4444':'inherit'}}>{t.nombre} {fieldErrors.nombre && '⚠️'}</label><input value={form.nombre} onChange={e => { setForm({...form,nombre:e.target.value}); validateField('nombre',e.target.value); }} style={{border:fieldErrors.nombre?'1.5px solid #ef4444':'',outline:'none'}} /></div>
             <div className="form-group"><label style={{color:fieldErrors.apellido?'#ef4444':'inherit'}}>{t.apellido} {fieldErrors.apellido && '⚠️'}</label><input value={form.apellido} onChange={e => { setForm({...form,apellido:e.target.value}); validateField('apellido',e.target.value); }} style={{border:fieldErrors.apellido?'1.5px solid #ef4444':'',outline:'none'}} /></div>
 
