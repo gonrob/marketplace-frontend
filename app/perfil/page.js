@@ -98,6 +98,9 @@ export default function PerfilPage() {
   const [ciudad, setCiudad] = useState('');
   const [disponible, setDisponible] = useState(false);
   const [habilidades, setHabilidades] = useState([]);
+  const [idiomas, setIdiomas] = useState([]);
+  const [chat, setChat] = useState(false);
+  const [videollamada, setVideollamada] = useState(false);
   const [foto, setFoto] = useState(null);
   const [fotoPreview, setFotoPreview] = useState(null);
   const [msg, setMsg] = useState('');
@@ -118,6 +121,9 @@ export default function PerfilPage() {
         setCiudad(u.ciudad || '');
         setDisponible(u.disponible || false);
         setHabilidades(u.habilidades || []);
+        setIdiomas(u.idiomas || []);
+        setChat(u.chat || false);
+        setVideollamada(u.videollamada || false);
         setFotoPreview(u.foto || null);
       })
       .catch(() => router.push('/login'));
@@ -147,7 +153,7 @@ export default function PerfilPage() {
       }
 
       await api.put('/api/users/profile', {
-        nombre, bio, precio, ciudad, disponible, habilidades, foto: fotoUrl,
+        nombre, bio, precio, ciudad, disponible, habilidades, foto: fotoUrl, idiomas, chat, videollamada,
       });
 
       setMsg(t.guardadoOk);
@@ -289,6 +295,32 @@ export default function PerfilPage() {
                   </button>
                 );
               })}
+            </div>
+          </div>
+        )}
+
+        {/* IDIOMAS */}
+        {user?.role === 'seller' && (
+          <div style={{ marginBottom: 20 }}>
+            <label style={{ fontSize: 13, fontWeight: 700, color: '#333', display: 'block', marginBottom: 10 }}>🌍 Idiomas que hablás</label>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+              {['Español','Inglés','Portugués','Francés','Italiano','Alemán','Chino','Ruso'].map(lang => {
+                const activo = idiomas.includes(lang);
+                return (
+                  <div key={lang} onClick={() => setIdiomas(p => activo ? p.filter(x=>x!==lang) : [...p,lang])} style={{ padding: '6px 14px', borderRadius: 20, border: `2px solid ${activo ? '#4B6CB7' : '#e5e7eb'}`, background: activo ? 'linear-gradient(90deg,#4B6CB7,#C94B4B)' : '#fff', color: activo ? '#fff' : '#333', fontSize: 13, fontWeight: 600, cursor: 'pointer', userSelect: 'none' }}>
+                    {activo ? '✓ ' : ''}{lang}
+                  </div>
+                );
+              })}
+            </div>
+            <label style={{ fontSize: 13, fontWeight: 700, color: '#333', display: 'block', marginBottom: 10 }}>📱 Modalidad de contacto</label>
+            <div style={{ display: 'flex', gap: 10 }}>
+              <div onClick={() => setChat(p => !p)} style={{ flex: 1, padding: '12px', borderRadius: 12, border: `2px solid ${chat ? '#4B6CB7' : '#e5e7eb'}`, background: chat ? 'linear-gradient(90deg,#4B6CB7,#C94B4B)' : '#fff', color: chat ? '#fff' : '#333', fontSize: 13, fontWeight: 600, cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}>
+                {chat ? '✓ ' : ''}💬 Chat
+              </div>
+              <div onClick={() => setVideollamada(p => !p)} style={{ flex: 1, padding: '12px', borderRadius: 12, border: `2px solid ${videollamada ? '#4B6CB7' : '#e5e7eb'}`, background: videollamada ? 'linear-gradient(90deg,#4B6CB7,#C94B4B)' : '#fff', color: videollamada ? '#fff' : '#333', fontSize: 13, fontWeight: 600, cursor: 'pointer', textAlign: 'center', userSelect: 'none' }}>
+                {videollamada ? '✓ ' : ''}📹 Video llamada
+              </div>
             </div>
           </div>
         )}
