@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Nav from '../components/Nav';
 import api from '../../lib/api';
 
-const ADMIN = 'gonrobtor@gmail.com';
+const ADMINS = ['gonrobtor@gmail.com', 'info.knowan@gmail.com'];
 
 export default function Admin() {
   const router = useRouter();
@@ -44,7 +44,7 @@ export default function Admin() {
     const load = async () => {
       try {
         const me = await api.get('/api/auth/me');
-        if (me.data.email !== ADMIN) { router.push('/'); return; }
+        if (!ADMINS.includes(me.data.email)) { router.push('/'); return; }
         const s = await api.get('/api/users/sellers');
         setSellers(s.data);
         let bData = [];
