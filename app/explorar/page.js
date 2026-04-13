@@ -6,14 +6,14 @@ import api from '../../lib/api';
 import useLang from '../../lib/useLang';
 
 const T = {
-  es:{titulo:'Anfitriones disponibles',buscar:'Buscar...',disponible:'Disponible',verificado:'Verificado',contactar:'Contactar',porHora:'/ hora',sinAnfitriones:'No hay anfitriones disponibles.',cargando:'Cargando...'},
-  en:{titulo:'Available hosts',buscar:'Search...',disponible:'Available',verificado:'Verified',contactar:'Contact',porHora:'/ hour',sinAnfitriones:'No hosts available.',cargando:'Loading...'},
-  pt:{titulo:'Anfitrioes disponiveis',buscar:'Buscar...',disponible:'Disponivel',verificado:'Verificado',contactar:'Contatar',porHora:'/ hora',sinAnfitriones:'Nenhum anfitriao disponivel.',cargando:'Carregando...'},
-  fr:{titulo:'Hotes disponibles',buscar:'Rechercher...',disponible:'Disponible',verificado:'Verifie',contactar:'Contacter',porHora:'/ heure',sinAnfitriones:'Aucun hote disponible.',cargando:'Chargement...'},
-  it:{titulo:'Host disponibili',buscar:'Cerca...',disponible:'Disponibile',verificado:'Verificato',contactar:'Contatta',porHora:'/ ora',sinAnfitriones:'Nessun host disponibile.',cargando:'Caricamento...'},
-  de:{titulo:'Verfugbare Gastgeber',buscar:'Suchen...',disponible:'Verfugbar',verificado:'Verifiziert',contactar:'Kontaktieren',porHora:'/ Stunde',sinAnfitriones:'Keine Gastgeber verfugbar.',cargando:'Laden...'},
-  zh:{titulo:'可用主人',buscar:'搜索...',disponible:'可用',verificado:'已验证',contactar:'联系',porHora:'/ 小时',sinAnfitriones:'没有可用的主人。',cargando:'加载中...'},
-  ru:{titulo:'Доступные хозяева',buscar:'Поиск...',disponible:'Доступен',verificado:'Проверен',contactar:'Связаться',porHora:'/ час',sinAnfitriones:'Нет доступных хозяев.',cargando:'Загрузка...'},
+  es:{titulo:'Anfitriones disponibles',buscar:'Buscar...',disponible:'Disponible',verificado:'Verificado',contactar:'Contactar',verPerfil:'👁️ Ver perfil',porHora:'/ hora',sinAnfitriones:'No hay anfitriones disponibles.',cargando:'Cargando...'},
+  en:{titulo:'Available hosts',buscar:'Search...',disponible:'Available',verificado:'Verified',contactar:'Contact',verPerfil:'👁️ View profile',porHora:'/ hour',sinAnfitriones:'No hosts available.',cargando:'Loading...'},
+  pt:{titulo:'Anfitrioes disponiveis',buscar:'Buscar...',disponible:'Disponivel',verificado:'Verificado',contactar:'Contatar',verPerfil:'👁️ Ver perfil',porHora:'/ hora',sinAnfitriones:'Nenhum anfitriao disponivel.',cargando:'Carregando...'},
+  fr:{titulo:'Hotes disponibles',buscar:'Rechercher...',disponible:'Disponible',verificado:'Verifie',contactar:'Contacter',verPerfil:'👁️ Voir profil',porHora:'/ heure',sinAnfitriones:'Aucun hote disponible.',cargando:'Chargement...'},
+  it:{titulo:'Host disponibili',buscar:'Cerca...',disponible:'Disponibile',verificado:'Verificato',contactar:'Contatta',verPerfil:'👁️ Vedi profilo',porHora:'/ ora',sinAnfitriones:'Nessun host disponibile.',cargando:'Caricamento...'},
+  de:{titulo:'Verfugbare Gastgeber',buscar:'Suchen...',disponible:'Verfugbar',verificado:'Verifiziert',contactar:'Kontaktieren',verPerfil:'👁️ Profil ansehen',porHora:'/ Stunde',sinAnfitriones:'Keine Gastgeber verfugbar.',cargando:'Laden...'},
+  zh:{titulo:'可用主人',buscar:'搜索...',disponible:'可用',verificado:'已验证',contactar:'联系',verPerfil:'👁️ 查看资料',porHora:'/ 小时',sinAnfitriones:'没有可用的主人。',cargando:'加载中...'},
+  ru:{titulo:'Доступные хозяева',buscar:'Поиск...',disponible:'Доступен',verificado:'Проверен',contactar:'Связаться',verPerfil:'👁️ Посмотреть профиль',porHora:'/ час',sinAnfitriones:'Нет доступных хозяев.',cargando:'Загрузка...'},
 };
 
 export default function Explorar() {
@@ -196,7 +196,7 @@ export default function Explorar() {
                     {s.puntuacion > 0 && <span style={{fontSize:12,color:'#F4A020'}}>{'⭐'.repeat(Math.round(s.puntuacion))} {s.puntuacion}</span>}
                   </div>
                   <button onClick={e => {e.preventDefault(); setModalHost(s);}} style={{background:'transparent',border:'1.5px solid #4B6CB7',color:'#4B6CB7',borderRadius:10,padding:'7px 14px',fontSize:12,fontWeight:600,cursor:'pointer',marginRight:6}}>
-                    👁️ Ver perfil
+                    {t.verPerfil || '👁️ Ver perfil'}
                   </button>
                   <Link href={
                     typeof window !== 'undefined' && localStorage.getItem('token')
