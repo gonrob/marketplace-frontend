@@ -63,8 +63,11 @@ function TicketsContent() {
         </div>
 
         <div style={{ background: '#fffbea', borderRadius: 12, padding: 14, marginBottom: 20, border: '1.5px solid #fcd34d' }}>
-          <p style={{ fontSize: 13, color: '#555', margin: 0, lineHeight: 1.6 }}>
-            ℹ️ Pagás USD 1.00 de gastos de servicio a KNOWAN. Luego te redirigimos al sitio de venta oficial para comprar tu entrada.
+          <p style={{ fontSize: 14, color: '#555', margin: '0 0 10px', lineHeight: 1.7, fontWeight: 600 }}>
+            ℹ️ ¿Por qué USD 1.00?
+          </p>
+          <p style={{ fontSize: 13, color: '#555', margin: 0, lineHeight: 1.7 }}>
+            KNOWAN cobra <strong>USD 1.00 de gasto de gestión</strong> por conectarte con los mejores eventos en Argentina. Este pago cubre la búsqueda, verificación y acceso a los links oficiales de compra de entradas. Luego te redirigimos directamente al sitio oficial para que compres tu entrada de forma segura.
           </p>
         </div>
 
