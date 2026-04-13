@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Nav from '../components/Nav';
 import api from '../../lib/api';
 
-const ADMINS = ['info.knowan@gmail.com', 'info.knowan@gmail.com'];
+const ADMINS = ['info.knowan@gmail.com'];
 
 export default function Admin() {
   const router = useRouter();
@@ -15,9 +15,9 @@ export default function Admin() {
   const [stats, setStats] = useState(null);
   const [asunto, setAsunto] = useState('');
   const [mensaje, setMensaje] = useState('');
+  const [emailIndividual, setEmailIndividual] = useState('');
   const [enviando, setEnviando] = useState(false);
   const [emailMsg, setEmailMsg] = useState('');
-  const [emailIndividual, setEmailIndividual] = useState('');
 
   const borrarCuenta = async (id, nombre) => {
     if (!confirm('Borrar la cuenta de ' + nombre + '?')) return;
@@ -28,15 +28,22 @@ export default function Admin() {
     } catch { alert('Error al borrar.'); }
   };
 
-  const enviarEmailMasivo = async (role) => {
+  const enviarEmail = async (role, soloNoVerificados) => {
     if (!asunto || !mensaje) { setEmailMsg('Completa asunto y mensaje.'); return; }
-    if (!confirm('Enviar email a todos los ' + (role === 'buyer' ? 'viajeros' : 'anfitriones') + ' verificados?')) return;
     setEnviando(true); setEmailMsg('');
     try {
-      const r = await api.post('/api/users/email-masivo', { asunto, mensaje, role, ...(emailIndividual && { emailIndividual }) });
+      const body = { asunto, mensaje };
+      if (emailIndividual) body.emailIndividual = emailIndividual;
+      else { body.role = role; if (soloNoVerificados) body.soloNoVerificados = true; }
+      const r = await api.post('/api/users/email-masivo', body);
       setEmailMsg('OK: ' + r.data.message);
     } catch { setEmailMsg('Error al enviar.'); }
     finally { setEnviando(false); }
+  };
+
+  const cartaVerificacion = () => {
+    setAsunto('Importante: verificá tu cuenta en Knowan');
+    setMensaje('Hola,\n\nDesde el equipo de Knowan queremos agradecerte por formar parte de nuestra comunidad.\n\nPara mejorar tu experiencia y la de los viajeros que te contactan, te pedimos que:\n\n✅ Verificá tu email haciendo click en el link que te enviamos al registrarte\n📸 Agregá una foto de perfil para que los viajeros puedan conocerte\n\nTe recomendamos borrar tu cuenta actual y crear una nueva para que todo quede correctamente configurado. Es rápido y sencillo.\n\nDisculpá las molestias. Todo esto es para mejorar la app y brindarte la mejor experiencia posible.\n\nMuchas gracias por ser parte de Knowan.\n\nUn abrazo,\nEl equipo de Knowan\nknowان.net');
   };
 
   useEffect(() => {
@@ -70,6 +77,11 @@ export default function Admin() {
     background: tab === t ? '#4B6CB7' : 'white',
     color: tab === t ? 'white' : '#4B6CB7',
     cursor: 'pointer', fontWeight: 600, fontSize: 13,
+  });
+
+  const btnStyle = (color) => ({
+    flex: 1, padding: '10px', background: color, color: '#fff',
+    border: 'none', borderRadius: 10, fontWeight: 700, cursor: 'pointer', fontSize: 12,
   });
 
   return (
@@ -112,9 +124,7 @@ export default function Admin() {
                     <div style={{ fontSize: 12, color: '#888' }}>{s.email}</div>
                     <div style={{ fontSize: 11, color: '#aaa' }}>{s.ciudad} · {s.totalContactos || 0} contactos · USD {s.ganancias || 0}</div>
                   </div>
-                  <div style={{ display: 'flex', gap: 6 }}>
-                    <button onClick={() => borrarCuenta(s._id, s.nombre)} style={{ padding: '6px 10px', fontSize: 12, background: '#cc0000', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>BORRAR</button>
-                  </div>
+                  <button onClick={() => borrarCuenta(s._id, s.nombre)} style={{ padding: '6px 10px', fontSize: 12, background: '#cc0000', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>BORRAR</button>
                 </div>
               </div>
             ))}
@@ -162,38 +172,52 @@ export default function Admin() {
         {tab === 'emails' && (
           <div>
             <h2 style={{ marginBottom: 16 }}>Email masivo desde Knowan</h2>
+
+            <button onClick={cartaVerificacion} style={{ width: '100%', padding: '10px', background: '#f0f4ff', border: '1.5px solid #4B6CB7', color: '#4B6CB7', borderRadius: 10, fontWeight: 600, fontSize: 13, cursor: 'pointer', marginBottom: 16 }}>
+              Cargar carta de verificacion de Knowan
+            </button>
+
             <div style={{ marginBottom: 12 }}>
-              <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 6 }}>Email individual (opcional — si lo completás, solo se envía a esa persona)</label>
-              <input value={emailIndividual} onChange={e => setEmailIndividual(e.target.value)} placeholder="ejemplo@email.com" style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid #d1d5db', fontSize: 14, outline: 'none', boxSizing: 'border-box' }} />
+              <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 6 }}>Email individual (opcional)</label>
+              <input value={emailIndividual} onChange={e => setEmailIndividual(e.target.value)} placeholder="Si lo completás, solo se envía a esa persona" style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid #d1d5db', fontSize: 14, outline: 'none', boxSizing: 'border-box' }} />
             </div>
+
             <div style={{ marginBottom: 12 }}>
               <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 6 }}>Asunto</label>
               <input value={asunto} onChange={e => setAsunto(e.target.value)} placeholder="Novedades de Knowan" style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid #d1d5db', fontSize: 14, outline: 'none', boxSizing: 'border-box' }} />
             </div>
+
             <div style={{ marginBottom: 16 }}>
               <label style={{ fontSize: 13, fontWeight: 600, display: 'block', marginBottom: 6 }}>Mensaje</label>
-              <textarea value={mensaje} onChange={e => setMensaje(e.target.value)} placeholder="Escribi el mensaje aqui..." rows={6} style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid #d1d5db', fontSize: 14, outline: 'none', boxSizing: 'border-box', resize: 'vertical' }} />
+              <textarea value={mensaje} onChange={e => setMensaje(e.target.value)} rows={6} style={{ width: '100%', padding: '10px 14px', borderRadius: 10, border: '1.5px solid #d1d5db', fontSize: 14, outline: 'none', boxSizing: 'border-box', resize: 'vertical' }} />
             </div>
+
             {emailMsg && <div style={{ padding: '10px 14px', borderRadius: 10, marginBottom: 12, background: '#f0fdf4', color: '#15803d', fontWeight: 600, fontSize: 13 }}>{emailMsg}</div>}
-            <div style={{ display: 'flex', gap: 10 }}>
-              <button onClick={() => enviarEmailMasivo('seller')} disabled={enviando} style={{ flex: 1, padding: '12px', background: 'linear-gradient(90deg,#4B6CB7,#C94B4B)', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, cursor: 'pointer' }}>
-                {enviando ? 'Enviando...' : emailIndividual ? 'Enviar email' : 'Enviar a anfitriones'}
+
+            {emailIndividual ? (
+              <button onClick={() => enviarEmail()} disabled={enviando} style={btnStyle('linear-gradient(90deg,#4B6CB7,#C94B4B)')}>
+                {enviando ? 'Enviando...' : 'Enviar email individual'}
               </button>
-              {!emailIndividual && <button onClick={() => enviarEmailMasivo('buyer')} disabled={enviando} style={{ flex: 1, padding: '12px', background: 'linear-gradient(90deg,#C94B4B,#F4A020)', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, cursor: 'pointer' }}>
-                {enviando ? 'Enviando...' : 'Enviar a viajeros'}
-              </button>}
-            </div>
-            {!emailIndividual && (
-              <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
-                <button onClick={async () => { setEnviando(true); try { const r = await api.post('/api/users/email-masivo', { asunto, mensaje, role: 'seller', soloNoVerificados: true }); setEmailMsg('OK: ' + r.data.message); } catch { setEmailMsg('Error'); } finally { setEnviando(false); } }} disabled={enviando} style={{ flex: 1, padding: '12px', background: '#888', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, cursor: 'pointer' }}>
-                  Recordar verificar a anfitriones
-                </button>
-                <button onClick={async () => { setEnviando(true); try { const r = await api.post('/api/users/email-masivo', { asunto, mensaje, role: 'buyer', soloNoVerificados: true }); setEmailMsg('OK: ' + r.data.message); } catch { setEmailMsg('Error'); } finally { setEnviando(false); } }} disabled={enviando} style={{ flex: 1, padding: '12px', background: '#888', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, cursor: 'pointer' }}>
-                  Recordar verificar a viajeros
-                </button>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={() => enviarEmail('seller')} disabled={enviando} style={btnStyle('linear-gradient(90deg,#4B6CB7,#C94B4B)')}>
+                    {enviando ? '...' : 'Todos los anfitriones'}
+                  </button>
+                  <button onClick={() => enviarEmail('buyer')} disabled={enviando} style={btnStyle('linear-gradient(90deg,#C94B4B,#F4A020)')}>
+                    {enviando ? '...' : 'Todos los viajeros'}
+                  </button>
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button onClick={() => enviarEmail('seller', true)} disabled={enviando} style={btnStyle('#888')}>
+                    {enviando ? '...' : 'Anfitriones sin verificar'}
+                  </button>
+                  <button onClick={() => enviarEmail('buyer', true)} disabled={enviando} style={btnStyle('#888')}>
+                    {enviando ? '...' : 'Viajeros sin verificar'}
+                  </button>
+                </div>
               </div>
             )}
-            </div>
           </div>
         )}
       </div>
