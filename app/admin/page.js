@@ -220,7 +220,7 @@ export default function Admin() {
               </button>
             </div>
           </div>
-        )} style={{width:'auto',padding:'6px 12px',fontSize:12,background:'#cc0000',marginBottom:0}}>🗑️</button>
+        )}
                 </div>
               </div>
             ))}
