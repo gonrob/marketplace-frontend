@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import Nav from '../components/Nav';
+import useLang from '../../lib/useLang';
 import api from '../../lib/api';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
@@ -37,11 +38,24 @@ function CheckoutForm({ eventoUrl }) {
   );
 }
 
+const T = {
+  es:{titulo:'Comprar ticket',servicio:'Gastos de servicio',porque:'¿Por qué USD 1.00?',explicacion:'KNOWAN cobra USD 1.00 de gasto de gestión por conectarte con los mejores eventos en Argentina. Luego te redirigimos al sitio oficial.',pagar:'Pagar USD 1.00 · Gastos de servicio',procesando:'Procesando...',preparando:{t.preparando}},
+  en:{titulo:'Buy ticket',servicio:'Service fee',porque:'Why USD 1.00?',explicacion:'KNOWAN charges USD 1.00 as a management fee for connecting you with the best events in Argentina. We then redirect you to the official site.',pagar:'Pay USD 1.00 · Service fee',procesando:'Processing...',preparando:'Preparing payment...'},
+  pt:{titulo:'Comprar ingresso',servicio:'Taxa de serviço',porque:'Por que USD 1.00?',explicacion:'KNOWAN cobra USD 1.00 como taxa de gestão. Em seguida, redirecionamos para o site oficial.',pagar:'Pagar USD 1.00 · Taxa de serviço',procesando:'Processando...',preparando:'Preparando...'},
+  fr:{titulo:'Acheter un billet',servicio:'Frais de service',porque:'Pourquoi USD 1.00?',explicacion:"KNOWAN facture USD 1.00 comme frais de gestion. Nous vous redirigeons ensuite vers le site officiel.",pagar:'Payer USD 1.00 · Frais de service',procesando:'Traitement...',preparando:'Préparation...'},
+  it:{titulo:'Acquista biglietto',servicio:'Costi di servizio',porque:'Perché USD 1.00?',explicacion:"KNOWAN addebita USD 1.00 come spese di gestione. Ti reindirizziamo poi al sito ufficiale.",pagar:'Paga USD 1.00 · Costi di servizio',procesando:'Elaborazione...',preparando:'Preparazione...'},
+  de:{titulo:'Ticket kaufen',servicio:'Servicegebühr',porque:'Warum USD 1.00?',explicacion:'KNOWAN berechnet USD 1.00 als Verwaltungsgebühr. Wir leiten Sie dann zur offiziellen Website weiter.',pagar:'USD 1.00 zahlen · Servicegebühr',procesando:'Verarbeitung...',preparando:'Vorbereitung...'},
+  zh:{titulo:'购票',servicio:'服务费',porque:'为什么USD 1.00?',explicacion:'KNOWAN收取USD 1.00作为管理费。然后我们将您重定向到官方网站。',pagar:'支付USD 1.00 · 服务费',procesando:'处理中...',preparando:'准备中...'},
+  ru:{titulo:'Купить билет',servicio:'Плата за обслуживание',porque:'Почему USD 1.00?',explicacion:'KNOWAN взимает USD 1.00 в качестве платы за управление. Затем мы перенаправляем вас на официальный сайт.',pagar:'Оплатить USD 1.00 · Плата за обслуживание',procesando:'Обработка...',preparando:'Подготовка...'},
+};
+
 function TicketsContent() {
   const params = useSearchParams();
   const router = useRouter();
   const eventoNombre = decodeURIComponent(params.get('evento') || '');
   const eventoUrl = decodeURIComponent(params.get('url') || '');
+  const { lang } = useLang();
+  const t = T[lang] || T.es;
   const [clientSecret, setClientSecret] = useState('');
   const [error, setError] = useState('');
 
