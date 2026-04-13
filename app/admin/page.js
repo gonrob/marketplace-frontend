@@ -19,9 +19,9 @@ export default function Admin() {
   const [emailMsg, setEmailMsg] = useState('');
 
   const borrarCuenta = async (id, nombre) => {
-    if (!confirm(`Borrar la cuenta de ${nombre}?`)) return;
+    if (!confirm('Borrar la cuenta de ' + nombre + '?')) return;
     try {
-      await api.delete(`/api/users/admin/${id}`);
+      await api.delete('/api/users/admin/' + id);
       setSellers(prev => prev.filter(s => s._id !== id));
       setBuyers(prev => prev.filter(s => s._id !== id));
     } catch { alert('Error al borrar.'); }
@@ -29,7 +29,7 @@ export default function Admin() {
 
   const enviarEmailMasivo = async (role) => {
     if (!asunto || !mensaje) { setEmailMsg('Completa asunto y mensaje.'); return; }
-    if (!confirm(`Enviar email a todos los ${role === 'buyer' ? 'viajeros' : 'anfitriones'} verificados?`)) return;
+    if (!confirm('Enviar email a todos los ' + (role === 'buyer' ? 'viajeros' : 'anfitriones') + ' verificados?')) return;
     setEnviando(true); setEmailMsg('');
     try {
       const r = await api.post('/api/users/email-masivo', { asunto, mensaje, role });
@@ -53,8 +53,6 @@ export default function Admin() {
         setStats({
           totalAnfitriones: s.data.length,
           totalViajeros: bData.length,
-          verificados: s.data.filter(x => x.verificado).length,
-          disponibles: s.data.filter(x => x.disponible).length,
           gananciasTotal: s.data.reduce((acc, x) => acc + (x.ganancias || 0), 0).toFixed(2),
           contactosTotal: s.data.reduce((acc, x) => acc + (x.totalContactos || 0), 0),
         });
@@ -107,17 +105,17 @@ export default function Admin() {
             {sellers.map(s => (
               <div key={s._id} style={{ background: 'white', borderRadius: 12, padding: 16, marginBottom: 10, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  {s.foto && <img src={s.foto} style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover' }} />}
+                  {s.foto && <img src={s.foto} alt={s.nombre} style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover' }} />}
                   <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 700, fontSize: 15 }}>{s.nombre}</div>
                     <div style={{ fontSize: 12, color: '#888' }}>{s.email}</div>
-                    <div style={{ fontSize: 11, color: '#aaa' }}>{s.ciudad} · {s.totalContactos || 0} contactos · USD {s.ganancias || 0} ganancias</div>
+                    <div style={{ fontSize: 11, color: '#aaa' }}>{s.ciudad} · {s.totalContactos || 0} contactos · USD {s.ganancias || 0}</div>
                   </div>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    <a href={`mailto:${s.email}`}>
-                      <button style={{ padding: '6px 10px', fontSize: 12, background: '#4B6CB7', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>📧</button>
+                    <a href={'mailto:' + s.email}>
+                      <button style={{ padding: '6px 10px', fontSize: 12, background: '#4B6CB7', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>EMAIL</button>
                     </a>
-                    <button onClick={() => borrarCuenta(s._id, s.nombre)} style={{ padding: '6px 10px', fontSize: 12, background: '#cc0000', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>🗑️</button>
+                    <button onClick={() => borrarCuenta(s._id, s.nombre)} style={{ padding: '6px 10px', fontSize: 12, background: '#cc0000', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>BORRAR</button>
                   </div>
                 </div>
               </div>
@@ -143,15 +141,20 @@ export default function Admin() {
             </div>
             {buyers.map(b => (
               <div key={b._id} style={{ background: 'white', borderRadius: 12, padding: 16, marginBottom: 10, display: 'flex', alignItems: 'center', gap: 14, boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
-                {b.foto ? <img src={b.foto} style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} /> : <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>👤</div>}
+                {b.foto
+                  ? <img src={b.foto} alt={b.nombre} style={{ width: 48, height: 48, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }} />
+                  : <div style={{ width: 48, height: 48, borderRadius: '50%', background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>?</div>
+                }
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 700, fontSize: 14 }}>{b.nombre}</div>
                   <div style={{ fontSize: 12, color: '#888' }}>{b.email}</div>
-                  <div style={{ fontSize: 11, color: '#aaa' }}>{b.telefono} · {new Date(b.createdAt).toLocaleDateString()}</div>
+                  <div style={{ fontSize: 11, color: '#aaa' }}>{b.telefono}</div>
                 </div>
                 <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
-                  <span style={{ fontSize: 11, padding: '3px 8px', borderRadius: 20, background: b.emailVerificado ? '#dcfce7' : '#fef3c7', color: b.emailVerificado ? '#15803d' : '#92400e', fontWeight: 600 }}>{b.emailVerificado ? 'Verificado' : 'Sin verificar'}</span>
-                  <button onClick={() => borrarCuenta(b._id, b.nombre)} style={{ padding: '6px 10px', fontSize: 12, background: '#cc0000', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>🗑️</button>
+                  <span style={{ fontSize: 11, padding: '3px 8px', borderRadius: 20, background: b.emailVerificado ? '#dcfce7' : '#fef3c7', color: b.emailVerificado ? '#15803d' : '#92400e', fontWeight: 600 }}>
+                    {b.emailVerificado ? 'Verificado' : 'Sin verificar'}
+                  </span>
+                  <button onClick={() => borrarCuenta(b._id, b.nombre)} style={{ padding: '6px 10px', fontSize: 12, background: '#cc0000', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>BORRAR</button>
                 </div>
               </div>
             ))}
