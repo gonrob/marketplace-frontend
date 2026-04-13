@@ -16,6 +16,44 @@ const T = {
   ru:{titulo:'Доступные хозяева',buscar:'Поиск...',disponible:'Доступен',verificado:'Проверен',contactar:'Связаться',verPerfil:'👁️ Посмотреть профиль',porHora:'/ час',sinAnfitriones:'Нет доступных хозяев.',cargando:'Загрузка...'},
 };
 
+
+const HAB_NAMES = {
+  paseos_ciudad: {es:'Paseos por la ciudad',en:'City walks',pt:'Passeios pela cidade',fr:'Promenades en ville',it:'Passeggiate in città',de:'Stadtspaziergänge',zh:'城市漫步',ru:'Прогулки по городу'},
+  tour_barrios: {es:'Tour por barrios',en:'Neighborhood tour',pt:'Tour pelos bairros',fr:'Tour des quartiers',it:'Tour dei quartieri',de:'Stadtteil-Tour',zh:'街区游览',ru:'Тур по районам'},
+  miradores: {es:'Miradores y vistas',en:'Viewpoints',pt:'Mirantes',fr:'Belvédères',it:'Belvederi',de:'Aussichtspunkte',zh:'观景台',ru:'Смотровые площадки'},
+  vida_nocturna: {es:'Vida nocturna',en:'Nightlife',pt:'Vida noturna',fr:'Vie nocturne',it:'Vita notturna',de:'Nachtleben',zh:'夜生活',ru:'Ночная жизнь'},
+  partido_futbol: {es:'Ver partido de fútbol',en:'Watch football match',pt:'Ver jogo de futebol',fr:'Match de foot',it:'Partita di calcio',de:'Fußballspiel',zh:'看足球比赛',ru:'Футбольный матч'},
+  jugar_futbol: {es:'Jugar fútbol con locales',en:'Play football with locals',pt:'Jogar futebol com locais',fr:'Jouer au foot',it:'Giocare a calcio',de:'Fußball spielen',zh:'和本地人踢球',ru:'Играть в футбол'},
+  actividades_deportivas: {es:'Actividades deportivas',en:'Sports activities',pt:'Atividades esportivas',fr:'Activités sportives',it:'Attività sportive',de:'Sportaktivitäten',zh:'体育活动',ru:'Спортивные активности'},
+  tour_gastronomico: {es:'Tour gastronómico',en:'Food tour',pt:'Tour gastronômico',fr:'Tour gastronomique',it:'Tour gastronomico',de:'Gastronomie-Tour',zh:'美食之旅',ru:'Гастрономический тур'},
+  restaurantes_locales: {es:'Restaurantes locales',en:'Local restaurants',pt:'Restaurantes locais',fr:'Restaurants locaux',it:'Ristoranti locali',de:'Lokale Restaurants',zh:'当地餐厅',ru:'Местные рестораны'},
+  asado: {es:'Asado argentino',en:'Argentine BBQ',pt:'Churrasco argentino',fr:'Barbecue argentin',it:'Asado argentino',de:'Argentinisches BBQ',zh:'阿根廷烤肉',ru:'Аргентинский барбекю'},
+  cocina: {es:'Clases de cocina',en:'Cooking classes',pt:'Aulas de culinária',fr:'Cours de cuisine',it:'Lezioni di cucina',de:'Kochkurse',zh:'烹饪课',ru:'Кулинарные классы'},
+  bares_vinos: {es:'Ruta de bares y vinos',en:'Bars and wine tour',pt:'Rota de bares e vinhos',fr:'Route des bars et vins',it:'Giro di bar e vini',de:'Bar- und Wein-Tour',zh:'酒吧和葡萄酒之旅',ru:'Тур по барам и винам'},
+  tour_cultural: {es:'Tour cultural',en:'Cultural tour',pt:'Tour cultural',fr:'Tour culturel',it:'Tour culturale',de:'Kulturelle Tour',zh:'文化游览',ru:'Культурный тур'},
+  museos: {es:'Museos y galerías',en:'Museums and galleries',pt:'Museus e galerias',fr:'Musées et galeries',it:'Musei e gallerie',de:'Museen und Galerien',zh:'博物馆和画廊',ru:'Музеи и галереи'},
+  espectaculos: {es:'Espectáculos',en:'Shows',pt:'Espetáculos',fr:'Spectacles',it:'Spettacoli',de:'Veranstaltungen',zh:'演出',ru:'Шоу'},
+  excursiones: {es:'Excursiones',en:'Excursions',pt:'Excursões',fr:'Excursions',it:'Escursioni',de:'Ausflüge',zh:'郊游',ru:'Экскурсии'},
+  senderismo: {es:'Senderismo',en:'Hiking',pt:'Caminhadas',fr:'Randonnée',it:'Escursionismo',de:'Wandern',zh:'徒步旅行',ru:'Пешие походы'},
+  campo: {es:'Día de campo',en:'Country day',pt:'Dia no campo',fr:'Journée à la campagne',it:'Giornata in campagna',de:'Landausflug',zh:'乡村一日游',ru:'День на природе'},
+  acuaticas: {es:'Actividades acuáticas',en:'Water activities',pt:'Atividades aquáticas',fr:'Activités nautiques',it:'Attività acquatiche',de:'Wasseraktivitäten',zh:'水上活动',ru:'Водные активности'},
+  acompanamiento: {es:'Acompañamiento',en:'Accompaniment',pt:'Acompanhamento',fr:'Accompagnement',it:'Accompagnamento',de:'Begleitung',zh:'陪同',ru:'Сопровождение'},
+  traslados: {es:'Traslados',en:'Transfers',pt:'Traslados',fr:'Transferts',it:'Trasferimenti',de:'Transfers',zh:'接送',ru:'Трансферы'},
+  itinerarios: {es:'Itinerarios',en:'Itineraries',pt:'Itinerários',fr:'Itinéraires',it:'Itinerari',de:'Reisepläne',zh:'行程规划',ru:'Маршруты'},
+  traduccion: {es:'Traducción',en:'Translation',pt:'Tradução',fr:'Traduction',it:'Traduzione',de:'Übersetzung',zh:'翻译',ru:'Перевод'},
+  salir_locales: {es:'Salir con locales',en:'Go out with locals',pt:'Sair com locais',fr:'Sortir avec des locaux',it:'Uscire con i locali',de:'Mit Einheimischen ausgehen',zh:'和本地人出行',ru:'Прогулки с местными'},
+  mate: {es:'Experiencia mate',en:'Mate experience',pt:'Experiência mate',fr:'Expérience maté',it:'Esperienza mate',de:'Mate-Erlebnis',zh:'马黛茶体验',ru:'Опыт мате'},
+  mercados: {es:'Compras en mercados',en:'Market shopping',pt:'Compras em mercados',fr:'Shopping aux marchés',it:'Shopping ai mercati',de:'Markteinkäufe',zh:'市场购物',ru:'Шоппинг на рынках'},
+  networking: {es:'Networking',en:'Networking',pt:'Networking',fr:'Réseautage',it:'Networking',de:'Networking',zh:'社交',ru:'Нетворкинг'},
+  custom: {es:'Experiencia única',en:'Unique experience',pt:'Experiência única',fr:'Expérience unique',it:'Esperienza unica',de:'Einzigartiges Erlebnis',zh:'独特体验',ru:'Уникальный опыт'},
+};
+
+const getHabName = (h, lang) => {
+  const id = typeof h === 'string' ? h : (h.id || '');
+  if (h.esCustom) return HAB_NAMES.custom?.[lang] || 'Experiencia única';
+  return HAB_NAMES[id]?.[lang] || HAB_NAMES[id]?.es || id.replace(/_/g,' ');
+};
+
 export default function Explorar() {
   const { lang } = useLang();
   const [sellers, setSellers] = useState([]);
@@ -163,7 +201,7 @@ export default function Explorar() {
                 {s.habilidades && s.habilidades.length > 0 && (
                   <div style={{display:'flex',flexWrap:'wrap',gap:4}}>
                     {(expanded[s._id] ? s.habilidades : s.habilidades.slice(0,4)).map((h,i) => {
-                      const nombre = typeof h === 'string' ? h : (h.id||'').replace(/_/g,' ');
+                      const nombre = getHabName(h, lang);
                       const precio = typeof h === 'object' && h.precio ? h.precio : null;
                       const dur = typeof h === 'object' && h.duracion ? h.duracion : null;
                       return (
@@ -260,7 +298,7 @@ export default function Explorar() {
                 <p style={{fontWeight:700,fontSize:14,margin:'0 0 12px',color:'#222'}}>🎯 Experiencias que ofrece</p>
                 <div style={{display:'flex',flexDirection:'column',gap:10}}>
                   {modalHost.habilidades.map((h,i) => {
-                    if (typeof h === 'string') return <div key={i} style={{background:'#EBF2FF',borderRadius:10,padding:'10px 14px',fontSize:13,color:'#4B6CB7',fontWeight:600}}>{h}</div>;
+                    if (typeof h === 'string') return <div key={i} style={{background:'#EBF2FF',borderRadius:10,padding:'10px 14px',fontSize:13,color:'#4B6CB7',fontWeight:600}}>{getHabName(h, lang)}</div>;
                     if (h.esCustom) return (
                       <div key={i} style={{background:'linear-gradient(90deg,#fffbea,#fef3c7)',borderRadius:12,padding:'14px 16px',border:'2px solid #fcd34d'}}>
                         <div style={{fontWeight:700,fontSize:14,color:'#92400e',marginBottom:6}}>✨ Experiencia única</div>
