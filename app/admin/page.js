@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Nav from '../components/Nav';
 import api from '../../lib/api';
 
-const ADMINS = ['gonrobtor@gmail.com', 'info.knowan@gmail.com'];
+const ADMINS = ['info.knowan@gmail.com', 'info.knowan@gmail.com'];
 
 export default function Admin() {
   const router = useRouter();
