@@ -81,7 +81,7 @@ export default function EventosPage() {
     setLoading(true);
     setBuscado(true);
     try {
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/eventos?q=${encodeURIComponent(busqueda)}&ciudad=${encodeURIComponent(ciudad)}`;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/eventos?q=${encodeURIComponent(busqueda)}&ciudad=${encodeURIComponent(ciudad)}&lang=${lang}`;
       const r = await fetch(url);
       const data = await r.json();
       setEventos(Array.isArray(data) ? data : []);
