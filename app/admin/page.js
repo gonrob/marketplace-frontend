@@ -14,6 +14,21 @@ export default function Admin() {
   const [tab, setTab] = useState('anfitriones');
   const [stats, setStats] = useState(null);
   const [emailTodos, setEmailTodos] = useState('');
+  const [asunto, setAsunto] = useState('');
+  const [mensaje, setMensaje] = useState('');
+  const [enviando, setEnviando] = useState(false);
+  const [emailMsg, setEmailMsg] = useState('');
+
+  const enviarEmailMasivo = async (role) => {
+    if (!asunto || !mensaje) { setEmailMsg('Completá asunto y mensaje.'); return; }
+    if (!confirm('Enviar email a todos los ' + (role === 'buyer' ? 'viajeros' : 'anfitriones') + ' verificados?')) return;
+    setEnviando(true); setEmailMsg('');
+    try {
+      const r = await api.post('/api/users/email-masivo', { asunto, mensaje, role });
+      setEmailMsg('OK: ' + r.data.message);
+    } catch { setEmailMsg('Error al enviar.'); }
+    finally { setEnviando(false); }
+  };
 
   const borrarCuenta = async (id, nombre) => {
     if (!confirm(`¿Borrar la cuenta de ${nombre}?`)) return;
@@ -185,19 +200,27 @@ export default function Admin() {
         )}
 
         {tab === 'emails' && (
-          <div className="card">
-            <h2 style={{marginBottom:12}}>📋 Lista de emails</h2>
-            {sellers.map((s) => (
-              <div key={s._id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 0',borderBottom:'1px solid #f0f0f0'}}>
-                <div>
-                  <div style={{fontWeight:600,fontSize:14}}>{s.nombre||'Sin nombre'}</div>
-                  <div style={{fontSize:13,color:'#555'}}>{s.email}</div>
-                </div>
-                <div style={{display:'flex',gap:8}}>
-                  <a href={`mailto:${s.email}`}>
-                    <button style={{width:'auto',padding:'6px 12px',fontSize:12,marginBottom:0}}>📧</button>
-                  </a>
-                  <button onClick={() => borrarCuenta(s._id, s.nombre)} style={{width:'auto',padding:'6px 12px',fontSize:12,background:'#cc0000',marginBottom:0}}>🗑️</button>
+          <div>
+            <h2 style={{marginBottom:16}}>Email masivo desde Knowan</h2>
+            <div style={{marginBottom:12}}>
+              <label style={{fontSize:13,fontWeight:600,display:'block',marginBottom:6}}>Asunto</label>
+              <input value={asunto} onChange={e=>setAsunto(e.target.value)} placeholder="Novedades de Knowan" style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1.5px solid #d1d5db',fontSize:14,outline:'none',boxSizing:'border-box'}} />
+            </div>
+            <div style={{marginBottom:16}}>
+              <label style={{fontSize:13,fontWeight:600,display:'block',marginBottom:6}}>Mensaje</label>
+              <textarea value={mensaje} onChange={e=>setMensaje(e.target.value)} placeholder="Escribi el mensaje aqui..." rows={6} style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1.5px solid #d1d5db',fontSize:14,outline:'none',boxSizing:'border-box',resize:'vertical'}} />
+            </div>
+            {emailMsg && <div style={{padding:'10px 14px',borderRadius:10,marginBottom:12,background:'#f0fdf4',color:'#15803d',fontWeight:600,fontSize:13}}>{emailMsg}</div>}
+            <div style={{display:'flex',gap:10}}>
+              <button onClick={() => enviarEmailMasivo('seller')} disabled={enviando} style={{flex:1,padding:'12px',background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',color:'#fff',border:'none',borderRadius:10,fontWeight:700,cursor:'pointer'}}>
+                {enviando ? 'Enviando...' : 'Enviar a anfitriones'}
+              </button>
+              <button onClick={() => enviarEmailMasivo('buyer')} disabled={enviando} style={{flex:1,padding:'12px',background:'linear-gradient(90deg,#C94B4B,#F4A020)',color:'#fff',border:'none',borderRadius:10,fontWeight:700,cursor:'pointer'}}>
+                {enviando ? 'Enviando...' : 'Enviar a viajeros'}
+              </button>
+            </div>
+          </div>
+        )} style={{width:'auto',padding:'6px 12px',fontSize:12,background:'#cc0000',marginBottom:0}}>🗑️</button>
                 </div>
               </div>
             ))}
