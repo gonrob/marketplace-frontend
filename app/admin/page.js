@@ -112,9 +112,6 @@ export default function Admin() {
                     <div style={{ fontSize: 11, color: '#aaa' }}>{s.ciudad} · {s.totalContactos || 0} contactos · USD {s.ganancias || 0}</div>
                   </div>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    <a href={'mailto:' + s.email}>
-                      <button style={{ padding: '6px 10px', fontSize: 12, background: '#4B6CB7', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>EMAIL</button>
-                    </a>
                     <button onClick={() => borrarCuenta(s._id, s.nombre)} style={{ padding: '6px 10px', fontSize: 12, background: '#cc0000', color: 'white', border: 'none', borderRadius: 8, cursor: 'pointer' }}>BORRAR</button>
                   </div>
                 </div>
