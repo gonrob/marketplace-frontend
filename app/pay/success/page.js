@@ -46,10 +46,14 @@ function SuccessContent() {
   const sellerId = params.get('seller');
   const [valorado, setValorado] = useState(false);
   const [lang, setLang] = useState('es');
+  const [seller, setSeller] = useState(null);
 
   useEffect(() => {
     const savedLang = localStorage.getItem('lang') || 'es';
     setLang(savedLang);
+    if (sellerId) {
+      api.get('/api/users/sellers/' + sellerId).then(r => setSeller(r.data)).catch(() => {});
+    }
   }, []);
 
   const valorar = async (puntos) => {
@@ -78,6 +82,16 @@ function SuccessContent() {
   return (
     <div className="container">
       <div className="card" style={{textAlign:'center'}}>
+        {seller?.telefono && (
+          <div style={{background:'#f0fff4',borderRadius:14,padding:20,marginBottom:20,border:'2px solid #22c55e'}}>
+            <div style={{fontSize:32,marginBottom:8}}>📱</div>
+            <div style={{fontWeight:800,fontSize:18,color:'#15803d',marginBottom:4}}>WhatsApp del anfitrión</div>
+            <div style={{fontSize:22,fontWeight:700,color:'#1a1a1a',marginBottom:12}}>{seller.telefono}</div>
+            <a href={'https://wa.me/' + seller.telefono.replace(/[^0-9]/g,'')} target="_blank" rel="noopener noreferrer" style={{display:'inline-block',background:'#25D366',color:'white',padding:'12px 24px',borderRadius:12,fontWeight:700,textDecoration:'none',fontSize:15}}>
+              Abrir WhatsApp
+            </a>
+          </div>
+        )}
         <div style={{fontSize:64,marginBottom:16}}>🎉</div>
         <h1>{t.titulo}</h1>
         <p style={{color:'#666',marginBottom:8}}>{t.sub}</p>
