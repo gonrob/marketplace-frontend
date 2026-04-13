@@ -228,7 +228,7 @@ export default function EventosPage() {
 
             {modalEvento.ticket_url && (
               <a href={`/tickets?evento=${encodeURIComponent(modalEvento.nombre)}&url=${encodeURIComponent(modalEvento.ticket_url)}`} style={{ display: 'block', width: '100%', padding: '13px', borderRadius: 12, border: 'none', background: '#25D366', color: '#fff', fontSize: 15, fontWeight: 800, cursor: 'pointer', textAlign: 'center', textDecoration: 'none' }}>
-                🎟️ Comprar ticket · USD 1 gestion
+                {t.comprar}
               </a>
             )}
 

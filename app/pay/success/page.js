@@ -85,15 +85,15 @@ function SuccessContent() {
         {seller?.telefono && (
           <div style={{background:'#f0fff4',borderRadius:14,padding:20,marginBottom:20,border:'2px solid #22c55e'}}>
             <div style={{fontSize:32,marginBottom:8}}>📱</div>
-            <div style={{fontWeight:800,fontSize:18,color:'#15803d',marginBottom:4}}>WhatsApp del anfitrión</div>
+            <div style={{fontWeight:800,fontSize:18,color:'#15803d',marginBottom:4}}>{lang==='en'?'Host WhatsApp':lang==='zh'?'主人WhatsApp':lang==='ru'?'WhatsApp хозяина':'WhatsApp del anfitrión'}</div>
             <div style={{fontSize:18,fontWeight:700,color:'#1a1a1a',marginBottom:8}}>{seller.telefono}</div>
             <div style={{background:'#fff',borderRadius:10,padding:12,marginBottom:12,textAlign:'left',fontSize:13,color:'#555'}}>
-              <p style={{margin:'0 0 6px'}}><strong>📞 Desde el extranjero:</strong> +54 {seller.telefono.replace(/^0/,'').replace(/^15/,'9')}</p>
-              <p style={{margin:'0 0 6px'}}><strong>📱 Con SIM argentina:</strong> {seller.telefono}</p>
+              <p style={{margin:'0 0 6px'}}><strong>📞 {lang==='en'?'From abroad':lang==='zh'?'从国外':'Desde el extranjero'}:</strong> +54 {seller.telefono.replace(/^0/,'').replace(/^15/,'9')}</p>
+              <p style={{margin:'0 0 6px'}}><strong>📱 {lang==='en'?'With Argentine SIM':lang==='zh'?'使用阿根廷SIM卡':'Con SIM argentina'}:</strong> {seller.telefono}</p>
               <p style={{margin:0,fontSize:11,color:'#aaa'}}>Si no responde al primer número, probá el segundo</p>
             </div>
             <a href={'https://wa.me/54' + seller.telefono.replace(/[^0-9]/g,'').replace(/^0/,'').replace(/^15/,'9')} target="_blank" rel="noopener noreferrer" style={{display:'inline-block',background:'#25D366',color:'white',padding:'12px 24px',borderRadius:12,fontWeight:700,textDecoration:'none',fontSize:15}}>
-              Abrir WhatsApp
+              {lang==='en'?'Open WhatsApp':lang==='zh'?'打开WhatsApp':lang==='ru'?'Открыть WhatsApp':'Abrir WhatsApp'}
             </a>
           </div>
         )}

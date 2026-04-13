@@ -102,7 +102,7 @@ function ChatContent() {
         {mensajes.length === 0 && (
           <div style={{textAlign:'center',color:'#888',marginTop:40,fontSize:14}}>
             <div style={{fontSize:40,marginBottom:8}}>💬</div>
-            <p>Empieza la conversacion!</p>
+            <p>{lang==='en'?'Start the conversation!':lang==='pt'?'Comece a conversa!':lang==='fr'?'Commencez la conversation!':lang==='de'?'Starten Sie das Gespräch!':lang==='zh'?'开始对话！':lang==='ru'?'Начните разговор!':'Empezá la conversación!'}</p>
           </div>
         )}
         {mensajes.map((m, i) => {
@@ -133,11 +133,11 @@ function ChatContent() {
         <div style={{padding:'10px 16px',background:'#f8faff',borderTop:'1px solid #e5e7eb',textAlign:'center'}}>
           {!showValorar ? (
             <button onClick={() => setShowValorar(true)} style={{background:'transparent',border:'1.5px solid #4B6CB7',color:'#4B6CB7',borderRadius:20,padding:'6px 16px',fontSize:13,fontWeight:600,cursor:'pointer'}}>
-              ⭐ Valorar a {contacto.nombre}
+              ⭐ {lang==='en'?'Rate':lang==='zh'?'评价':lang==='ru'?'Оценить':'Valorar'} {contacto.nombre}
             </button>
           ) : (
             <div>
-              <p style={{fontSize:13,color:'#555',margin:'0 0 8px'}}>¿Cómo fue tu experiencia con {contacto.nombre}?</p>
+              <p style={{fontSize:13,color:'#555',margin:'0 0 8px'}}>{lang==='en'?'How was your experience with':lang==='zh'?'您与...的体验如何':lang==='ru'?'Каков был ваш опыт с':'¿Cómo fue tu experiencia con'} {contacto.nombre}?</p>
               <div style={{display:'flex',justifyContent:'center',gap:8}}>
                 {[1,2,3,4,5].map(n => (
                   <button key={n} onClick={() => valorar(n)} style={{fontSize:28,background:'none',border:'none',cursor:'pointer',opacity:estrellas>=n?1:0.3}} onMouseEnter={() => setEstrellas(n)} onMouseLeave={() => setEstrellas(0)}>
@@ -151,7 +151,7 @@ function ChatContent() {
       )}
       {valorado && (
         <div style={{padding:'10px 16px',background:'#f0fdf4',borderTop:'1px solid #6ee7b7',textAlign:'center',fontSize:13,color:'#15803d',fontWeight:600}}>
-          ✅ Gracias por tu valoracion!
+          ✅ {lang==='en'?'Thanks for your rating!':lang==='zh'?'感谢您的评价！':lang==='ru'?'Спасибо за вашу оценку!':'¡Gracias por tu valoración!'}
         </div>
       )}
       <div style={{padding:'12px 16px',background:'white',borderTop:'1px solid #f0f0f0',display:'flex',gap:10}}>
