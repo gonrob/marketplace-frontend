@@ -160,7 +160,7 @@ export default function EventosPage() {
       {buscado && (
         <div style={{ maxWidth: 700, margin: '0 auto', padding: '20px 16px 60px' }}>
           <button onClick={() => { setBuscado(false); setEventos([]); setQuery(''); }} style={{ background: 'transparent', border: 'none', color: '#4B6CB7', fontSize: 14, fontWeight: 600, cursor: 'pointer', marginBottom: 16, padding: 0 }}>
-            ← Volver a categorías
+            {t.volver || '← Volver a categorías'}
           </button>
           {loading ? (
             <p style={{ textAlign: 'center', color: '#4B6CB7', padding: 40 }}>{t.cargando}</p>
@@ -187,7 +187,7 @@ export default function EventosPage() {
                     {e.direccion && <div style={{ fontSize: 12, color: '#888', marginBottom: 6 }}>📍 {e.direccion}</div>}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       {e.ticket_precio && <span style={{ fontSize: 13, fontWeight: 700, color: '#C94B4B' }}>{e.ticket_precio}</span>}
-                      <span style={{ fontSize: 12, color: '#4B6CB7', fontWeight: 600 }}>Ver más →</span>
+                      <span style={{ fontSize: 12, color: '#4B6CB7', fontWeight: 600 }}>{t.vermas || 'Ver más →'}</span>
                     </div>
                   </div>
                 </div>
@@ -219,8 +219,8 @@ export default function EventosPage() {
 
             {/* Info como funciona */}
             <div style={{ background: '#f8faff', borderRadius: 12, padding: 14, marginBottom: 14, border: '1.5px solid #e5e7eb' }}>
-              <p style={{ fontWeight: 700, fontSize: 13, margin: '0 0 6px', color: '#222' }}>🇦🇷 ¿Cómo conseguir entradas?</p>
-              <p style={{ fontSize: 12, color: '#555', margin: 0, lineHeight: 1.5 }}>Contactá un anfitrión local por USD 0.50 y te ayuda a conseguir entradas, llegar al lugar y vivir el evento como un local.</p>
+              <p style={{ fontWeight: 700, fontSize: 13, margin: '0 0 6px', color: '#222' }}>🇦🇷 {t.como || '¿Cómo conseguir entradas?'}</p>
+              <p style={{ fontSize: 12, color: '#555', margin: 0, lineHeight: 1.5 }}>{t.comoDesc || 'Contactá un anfitrión local por USD 0.50 y te ayuda.'}</p>
             </div>
 
             <Link href="/explorar">
