@@ -133,7 +133,7 @@ export default function Home() {
                 </Link>
               ))}
             </div>
-            <Link href="/explorar" style={{display:'block',textAlign:'center',marginTop:12,color:'#4B6CB7',fontSize:14,fontWeight:600,textDecoration:'none'}}>{t.vertodos}</Link>
+            <Link href="/explorar" style={{display:'block',textAlign:'center',marginTop:16,textDecoration:'none'}}><button style={{width:'100%',padding:'14px',background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',color:'#fff',border:'none',borderRadius:12,fontWeight:800,fontSize:16,cursor:'pointer'}}>{t.vertodos}</button></Link>
           </div>
         )}
 
