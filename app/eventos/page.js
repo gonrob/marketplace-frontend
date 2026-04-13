@@ -217,17 +217,7 @@ export default function EventosPage() {
 
             {modalEvento.descripcion && <p style={{ fontSize: 13, color: '#555', lineHeight: 1.6, marginBottom: 20 }}>{modalEvento.descripcion}</p>}
 
-            {/* Info como funciona */}
-            <div style={{ background: '#f8faff', borderRadius: 12, padding: 14, marginBottom: 14, border: '1.5px solid #e5e7eb' }}>
-              <p style={{ fontWeight: 700, fontSize: 13, margin: '0 0 6px', color: '#222' }}>🇦🇷 {t.como || '¿Cómo conseguir entradas?'}</p>
-              <p style={{ fontSize: 12, color: '#555', margin: 0, lineHeight: 1.5 }}>{t.comoDesc || 'Contactá un anfitrión local por USD 0.50 y te ayuda.'}</p>
-            </div>
 
-            <Link href="/explorar">
-              <button style={{ width: '100%', padding: '14px', borderRadius: 12, border: 'none', background: 'linear-gradient(90deg,#4B6CB7,#C94B4B)', color: '#fff', fontSize: 15, fontWeight: 800, cursor: 'pointer', marginBottom: 10 }}>
-                {t.contactar}
-              </button>
-            </Link>
 
             {modalEvento.ticket_url && (
               <a href={`/tickets?evento=${encodeURIComponent(modalEvento.nombre)}&url=${encodeURIComponent(modalEvento.ticket_url)}`} style={{ display: 'block', width: '100%', padding: '13px', borderRadius: 12, border: 'none', background: '#25D366', color: '#fff', fontSize: 15, fontWeight: 800, cursor: 'pointer', textAlign: 'center', textDecoration: 'none' }}>
