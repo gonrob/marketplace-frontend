@@ -183,6 +183,17 @@ export default function Admin() {
                 {enviando ? 'Enviando...' : 'Enviar a viajeros'}
               </button>}
             </div>
+            {!emailIndividual && (
+              <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
+                <button onClick={async () => { setEnviando(true); try { const r = await api.post('/api/users/email-masivo', { asunto, mensaje, role: 'seller', soloNoVerificados: true }); setEmailMsg('OK: ' + r.data.message); } catch { setEmailMsg('Error'); } finally { setEnviando(false); } }} disabled={enviando} style={{ flex: 1, padding: '12px', background: '#888', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, cursor: 'pointer' }}>
+                  Recordar verificar a anfitriones
+                </button>
+                <button onClick={async () => { setEnviando(true); try { const r = await api.post('/api/users/email-masivo', { asunto, mensaje, role: 'buyer', soloNoVerificados: true }); setEmailMsg('OK: ' + r.data.message); } catch { setEmailMsg('Error'); } finally { setEnviando(false); } }} disabled={enviando} style={{ flex: 1, padding: '12px', background: '#888', color: '#fff', border: 'none', borderRadius: 10, fontWeight: 700, cursor: 'pointer' }}>
+                  Recordar verificar a viajeros
+                </button>
+              </div>
+            )}
+            </div>
           </div>
         )}
       </div>
