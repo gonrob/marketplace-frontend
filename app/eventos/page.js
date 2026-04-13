@@ -230,14 +230,9 @@ export default function EventosPage() {
             </Link>
 
             {modalEvento.ticket_url && (
-              <div>
-                <a href={`/tickets?evento=${encodeURIComponent(modalEvento.nombre)}&url=${encodeURIComponent(modalEvento.ticket_url)}`} style={{ display: 'block', width: '100%', padding: '13px', borderRadius: 12, border: 'none', background: '#25D366', color: '#fff', fontSize: 15, fontWeight: 800, cursor: 'pointer', textAlign: 'center', textDecoration: 'none', marginBottom: 8 }}>
-                  🎟️ Comprar ticket · USD 1 servicio
-                </a>
-                <a href={modalEvento.ticket_url} target="_blank" rel="noopener noreferrer" style={{ display: 'block', textAlign: 'center', color: '#888', fontSize: 13, textDecoration: 'none' }}>
-                  {t.buscarSolo}
-                </a>
-              </div>
+              <a href={`/tickets?evento=${encodeURIComponent(modalEvento.nombre)}&url=${encodeURIComponent(modalEvento.ticket_url)}`} style={{ display: 'block', width: '100%', padding: '13px', borderRadius: 12, border: 'none', background: '#25D366', color: '#fff', fontSize: 15, fontWeight: 800, cursor: 'pointer', textAlign: 'center', textDecoration: 'none' }}>
+                🎟️ Comprar ticket · USD 1 gestion
+              </a>
             )}
 
           </div>
