@@ -152,7 +152,7 @@ export default function PerfilPage() {
 
       setMsg(t.guardadoOk);
     } catch {
-      setMsg('❌ Error al guardar');
+      setMsg('❌ ' + (t.bajaError || 'Error al guardar'));
     } finally {
       setGuardando(false);
     }
@@ -175,7 +175,7 @@ export default function PerfilPage() {
 
   if (!user) return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <p style={{ color: '#4B6CB7' }}>Cargando...</p>
+      <p style={{ color: '#4B6CB7' }}>{t.cargando || 'Cargando...'}</p>
     </div>
   );
 
