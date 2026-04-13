@@ -150,7 +150,7 @@ export default function EventosPage() {
                 }}
               >
                 <span style={{ fontSize: 28 }}>{cat.emoji}</span>
-                <span style={{ fontWeight: 600, fontSize: 14, color: '#222' }}>{lang === 'en' ? cat.en : cat.es}</span>
+                <span style={{ fontWeight: 600, fontSize: 14, color: '#222' }}>{cat[lang] || cat.es}</span>
               </button>
             ))}
           </div>
