@@ -337,7 +337,7 @@ export default function Explorar() {
 
             <Link href={`/pay?seller=${modalHost._id}&nombre=${encodeURIComponent(modalHost.nombre||'')}&precio=${modalHost.precio}`}>
               <button style={{width:'100%',padding:'14px',borderRadius:12,border:'none',background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',color:'#fff',fontSize:16,fontWeight:800,cursor:'pointer'}}>
-                Contactar · USD {modalHost.precio} / hora
+                {t.contactar} · USD {modalHost.precio} {t.porHora}
               </button>
             </Link>
           </div>
