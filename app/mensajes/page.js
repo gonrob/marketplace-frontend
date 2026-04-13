@@ -70,12 +70,14 @@ function ChatContent() {
 
   const enviar = () => {
     if (!texto.trim() || !socket || !conId || !user) return;
-    socket.emit('mensaje', {
+    const msg = {
       de: user._id,
       para: conId,
       texto: texto.trim(),
       nombre: user.nombre || user.email
-    });
+    };
+    socket.emit('mensaje', msg);
+    setMensajes(prev => [...prev, msg]);
     setTexto('');
   };
 
