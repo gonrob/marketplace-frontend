@@ -44,7 +44,7 @@ function ChatContent() {
         api.get(`/api/users/sellers/${conId}`).then(s => setContacto(s.data)).catch(() => {});
       }
 
-      const s = io(process.env.NEXT_PUBLIC_API_URL, { transports: ['websocket'] });
+      const s = io(process.env.NEXT_PUBLIC_API_URL, { transports: ['polling', 'websocket'] });
       s.on('connect', () => {
         s.emit('join', r.data._id);
       });
