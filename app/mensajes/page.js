@@ -1,10 +1,8 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Suspense } from 'react';
 import Nav from '../components/Nav';
 import api from '../../lib/api';
-import { io } from 'socket.io-client';
 
 function ChatContent() {
   const params = useSearchParams();
@@ -17,9 +15,10 @@ function ChatContent() {
   const [valorado, setValorado] = useState(false);
   const [user, setUser] = useState(null);
   const [contacto, setContacto] = useState(null);
-  const [socket, setSocket] = useState(null);
   const [lang, setLang] = useState('es');
+  const [enviando, setEnviando] = useState(false);
   const bottomRef = useRef(null);
+  const intervalRef = useRef(null);
 
   const T = {
     es:{placeholder:'Escribe un mensaje...',enviar:'Enviar',conectando:'Conectando...'},
@@ -30,6 +29,14 @@ function ChatContent() {
     de:{placeholder:'Schreib eine Nachricht...',enviar:'Senden',conectando:'Verbindung...'},
     zh:{placeholder:'写一条消息...',enviar:'发送',conectando:'连接中...'},
     ru:{placeholder:'Напишите сообщение...',enviar:'Отправить',conectando:'Подключение...'},
+  };
+
+  const cargarMensajes = async () => {
+    if (!conId) return;
+    try {
+      const r = await api.get(`/api/mensajes/${conId}`);
+      setMensajes(r.data || []);
+    } catch {}
   };
 
   useEffect(() => {
@@ -43,18 +50,12 @@ function ChatContent() {
       if (conId) {
         api.get(`/api/users/sellers/${conId}`).then(s => setContacto(s.data)).catch(() => {});
       }
-
-      const s = io(process.env.NEXT_PUBLIC_API_URL, { transports: ['polling', 'websocket'] });
-      s.on('connect', () => {
-        s.emit('join', r.data._id);
-      });
-      s.on('mensaje', (msg) => {
-        setMensajes(prev => [...prev, msg]);
-      });
-      setSocket(s);
-      return () => s.disconnect();
+      cargarMensajes();
+      intervalRef.current = setInterval(cargarMensajes, 3000);
     }).catch(() => router.push('/login'));
-  }, []);
+
+    return () => clearInterval(intervalRef.current);
+  }, [conId]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -68,20 +69,19 @@ function ChatContent() {
     } catch {}
   };
 
-  const enviar = () => {
-    if (!texto.trim() || !socket || !conId || !user) return;
-    const msgData = {
-      de: user._id,
-      para: conId,
-      texto: texto.trim(),
-      nombre: user.nombre || user.email
-    };
-    socket.emit('mensaje', msgData);
-    setMensajes(prev => [...prev, { ...msgData, propio: true, timestamp: new Date() }]);
+  const enviar = async () => {
+    if (!texto.trim() || !conId || !user || enviando) return;
+    setEnviando(true);
+    const txt = texto.trim();
     setTexto('');
+    try {
+      await api.post(`/api/mensajes/${conId}`, { texto: txt });
+      await cargarMensajes();
+    } catch {}
+    setEnviando(false);
   };
 
-  const t = T[lang] || T.en;
+  const t = T[lang] || T.es;
 
   return (
     <div style={{display:'flex',flexDirection:'column',height:'calc(100vh - 60px)'}}>
@@ -105,23 +105,27 @@ function ChatContent() {
             <p>Empieza la conversacion!</p>
           </div>
         )}
-        {mensajes.map((m, i) => (
-          <div key={i} style={{display:'flex',justifyContent:m.propio?'flex-end':'flex-start'}}>
-            <div style={{
-              maxWidth:'75%',padding:'10px 14px',borderRadius:m.propio?'18px 18px 4px 18px':'18px 18px 18px 4px',
-              background:m.propio?'#4B6CB7':'white',
-              color:m.propio?'white':'#1a1a1a',
-              boxShadow:'0 1px 4px rgba(0,0,0,0.1)',
-              fontSize:14,lineHeight:1.5
-            }}>
-              {!m.propio && <div style={{fontSize:11,fontWeight:600,marginBottom:4,opacity:0.7}}>{m.nombre}</div>}
-              {m.texto}
-              <div style={{fontSize:10,opacity:0.6,marginTop:4,textAlign:'right'}}>
-                {new Date(m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}
+        {mensajes.map((m, i) => {
+          const propio = m.de === user?._id || m.de?._id === user?._id;
+          return (
+            <div key={i} style={{display:'flex',justifyContent:propio?'flex-end':'flex-start'}}>
+              <div style={{
+                maxWidth:'75%',padding:'10px 14px',
+                borderRadius:propio?'18px 18px 4px 18px':'18px 18px 18px 4px',
+                background:propio?'#4B6CB7':'white',
+                color:propio?'white':'#1a1a1a',
+                boxShadow:'0 1px 4px rgba(0,0,0,0.1)',
+                fontSize:14,lineHeight:1.5
+              }}>
+                {!propio && <div style={{fontSize:11,fontWeight:600,marginBottom:4,opacity:0.7}}>{m.nombre}</div>}
+                {m.texto}
+                <div style={{fontSize:10,opacity:0.6,marginTop:4,textAlign:'right'}}>
+                  {new Date(m.createdAt || m.timestamp).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
         <div ref={bottomRef} />
       </div>
 
@@ -147,7 +151,7 @@ function ChatContent() {
       )}
       {valorado && (
         <div style={{padding:'10px 16px',background:'#f0fdf4',borderTop:'1px solid #6ee7b7',textAlign:'center',fontSize:13,color:'#15803d',fontWeight:600}}>
-          ✅ ¡Gracias por tu valoración!
+          ✅ Gracias por tu valoracion!
         </div>
       )}
       <div style={{padding:'12px 16px',background:'white',borderTop:'1px solid #f0f0f0',display:'flex',gap:10}}>
@@ -158,8 +162,8 @@ function ChatContent() {
           placeholder={t.placeholder}
           style={{flex:1,margin:0,borderRadius:24,padding:'10px 16px'}}
         />
-        <button onClick={enviar} className="btn-orange" style={{width:'auto',padding:'10px 20px',borderRadius:24,flexShrink:0}}>
-          {t.enviar}
+        <button onClick={enviar} disabled={enviando} className="btn-orange" style={{width:'auto',padding:'10px 20px',borderRadius:24,flexShrink:0}}>
+          {enviando ? '...' : t.enviar}
         </button>
       </div>
     </div>
