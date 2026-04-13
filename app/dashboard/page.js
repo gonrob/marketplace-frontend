@@ -7,7 +7,7 @@ import api from '../../lib/api';
 import useLang from '../../lib/useLang';
 import HostOnboarding from '../components/HostOnboarding';
 
-const ADMIN = 'gonrobtor@gmail.com';
+const ADMIN = 'info.knowan@gmail.com';
 
 const T = {
   es:{retirar:'Retirar ganancias',retirando:'Procesando...',minimoRetiro:'Minimo USD 1 para retirar.',retiroOk:'Solicitud de retiro enviada. Te contactaremos pronto.',creditos:'Contactos disponibles',comprar:'Comprar contactos',ganancias:'Ganancias',contactos:'Contactos',disponible:'Disponible',verificado:'Verificado',anfitrion:'Anfitrion',viajero:'Viajero',editarPerfil:'Editar mi perfil',verificarId:'Verificar identidad',buscarAnfitriones:'Buscar anfitriones',aprender:'Aprender sobre Argentina',admin:'Panel Admin',salir:'Salir'},
@@ -90,7 +90,7 @@ function DashboardContent() {
 
   return (
     <>
-      {user && !user.emailVerificado && user.email !== 'gonrobtor@gmail.com' && (
+      {user && !user.emailVerificado && user.email !== 'info.knowan@gmail.com' && (
         <div style={{position:'fixed',inset:0,zIndex:9998,background:'rgba(255,255,255,0.97)',display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
           <div style={{textAlign:'center',maxWidth:400}}>
             <div style={{fontSize:60,marginBottom:16}}>📧</div>
