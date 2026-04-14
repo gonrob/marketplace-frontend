@@ -102,7 +102,15 @@ function DashboardContent() {
             </div>
             <div style={{background:'#fff3cd',borderRadius:12,padding:'14px 18px',border:'2px solid #ffc107',textAlign:'center'}}>
               <p style={{color:'#856404',fontSize:16,fontWeight:800,margin:'0 0 4px'}}>⚠️ Si no lo ves, buscalo en SPAM</p>
-              <p style={{color:'#856404',fontSize:13,margin:0}}>A veces los emails van a la carpeta de spam o correo no deseado</p>
+              <p style={{color:'#856404',fontSize:13,margin:'0 0 12px'}}>A veces los emails van a la carpeta de spam o correo no deseado</p>
+              <button onClick={async () => {
+                try {
+                  await api.post('/api/auth/reenviar-verificacion');
+                  alert('Email reenviado. Revisá tu bandeja y spam.');
+                } catch { alert('Error al reenviar. Intentá más tarde.'); }
+              }} style={{background:'#4B6CB7',border:'none',color:'#fff',borderRadius:10,padding:'8px 20px',fontSize:13,fontWeight:600,cursor:'pointer'}}>
+                📧 Reenviar email de verificación
+              </button>
             </div>
           </div>
         </div>
