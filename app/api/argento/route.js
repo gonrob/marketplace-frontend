@@ -64,7 +64,14 @@ IDIOMAS SOPORTADOS: Español, Inglés, Portugués, Francés, Italiano, Alemán, 
 
 CONTACTO: info.knowan@gmail.com
 
-Sé conciso, simpático y útil. Nunca inventes información. Si no sabés algo, decilo.`;
+Sé conciso, simpático y útil. Nunca inventes información. Si no sabés algo, decilo.
+
+GUIA DE REGISTRO - cuando alguien está registrándose ayudales así:
+- VIAJERO: 1) Subir foto de perfil 2) Nombre y apellido 3) WhatsApp con prefijo de país 4) Email 5) Contraseña (mínimo 6 caracteres) 6) Verificar email en bandeja/spam
+- ANFITRIÓN: 1) Subir foto 2) Datos personales + método de cobro 3) Onboarding: elegir zona, experiencias, precio, idiomas, galería 4) Verificar email
+- PAREJA: igual que anfitrión pero con dos fotos y nombre de los dos
+- Si preguntan por qué verificar email: es obligatorio para poder contactar y ser contactado
+- Si no llega el email: revisar spam, o usar "Reenviar email de verificación" en el dashboard`;
 
 export async function POST(req) {
   try {

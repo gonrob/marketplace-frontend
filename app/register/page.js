@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Nav from '../components/Nav';
 import HostOnboarding from '../components/HostOnboarding';
+import Argento from '../components/Argento';
 
 const T = {
   es:{titulo:'Crear cuenta',elige:'¿Sos anfitrión o viajero?',anfitrion:'🏠 Soy anfitrión',anfitrionDesc:'Quiero compartir mi cultura y ganar dinero',pareja:'👫 Somos anfitriones pareja',parejaDesc:'Ofrecemos experiencias juntos como pareja',viajero:'🌍 Soy viajero',viajeroDesc:'Quiero conectar con argentinos reales',nombre:'Nombre',apellido:'Apellido',email:'Email',telefono:'Teléfono (para comunicarte con el anfitrión)',password:'Contraseña',siguiente:'Siguiente',registrar:'Crear cuenta',cargando:'Creando cuenta...',login:'Iniciar sesión',yaRegistrado:'Ya tengo cuenta',metodoPago:'Método de cobro',mercadopago:'Mercado Pago',transferencia:'Transferencia bancaria',cuentaPago:'Email MP o CBU/Alias',error:'Error al crear cuenta.',confirmar:'¡Cuenta creada! Revisá tu email para confirmar.'},
@@ -210,6 +211,7 @@ export default function Register() {
           </div>
         </div>
       </div>
+      <Argento />
     </>
   );
 
@@ -311,6 +313,7 @@ export default function Register() {
           <button onClick={() => setPaso(1)} style={{background:'none',border:'none',color:'#888',cursor:'pointer',marginTop:12,fontSize:13,display:'block',width:'100%'}}>← Volver</button>
         </div>
       </div>
+      <Argento />
     </>
   );
 
