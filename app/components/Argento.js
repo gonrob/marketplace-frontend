@@ -84,10 +84,11 @@ export default function Argento() {
       <button onClick={() => setOpen(p => !p)} style={{
         position: 'fixed', bottom: 24, right: 20, zIndex: 9998,
         background: 'linear-gradient(135deg,#4B6CB7,#C94B4B)',
-        border: 'none', borderRadius: 20, padding: '10px 16px',
-        color: '#fff', fontWeight: 700, fontSize: 13,
+        border: 'none', borderRadius: '50px', padding: '10px 16px',
+        color: '#fff', fontWeight: 700, fontSize: 12,
         cursor: 'pointer', boxShadow: '0 4px 20px rgba(75,108,183,0.4)',
         display: 'flex', alignItems: 'center', gap: 8,
+        maxWidth: 220,
       }}>
         <MuñecoSVG />
         <span>{t.duda}</span>
