@@ -9,7 +9,7 @@ Knowan (knowan.net) conecta viajeros extranjeros con anfitriones argentinos real
 
 MODELO DE NEGOCIO:
 - El primer contacto con un anfitrión es GRATIS (regalo de bienvenida)
-- Siguientes contactos: USD 0.50 c/u (anfitrión recibe USD 0.15, Knowan USD 0.35)
+- Siguientes contactos: USD 0.50 c/u (anfitrión recibe USD 0.25, Knowan USD 0.25)
 - Tickets de eventos: Knowan cobra 1 euro por ticket vendido
 - Paquetes: 5 contactos USD 2.00 / 10 contactos USD 3.50 / 25 contactos USD 7.00
 - Los anfitriones fijan su precio por hora y lo reciben íntegro
