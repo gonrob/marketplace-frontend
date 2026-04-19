@@ -163,7 +163,13 @@ export default function Home() {
             <span style={{color:'#ccc'}}>·</span>
             <span style={{fontSize:13,color:'#888'}}>✅ Perfiles verificados</span>
           </div>
-          <p style={{fontSize:11,color:'#bbb',margin:0}}>© 2026 Knowan · knowan.net</p>
+          <p style={{fontSize:11,color:'#bbb',margin:'0 0 12px'}}>© 2026 KNOWAN · knowan.net</p>
+          <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
+            <Link href="/viajar-a-argentina" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar a Argentina</Link>
+            <Link href="/conocer-gente-buenos-aires" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Conocer gente en Buenos Aires</Link>
+            <Link href="/viajar-patagonia" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar a la Patagonia</Link>
+            <Link href="/viajar-solo-argentina" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar solo a Argentina</Link>
+          </div>
         </div>
       </div>
 
