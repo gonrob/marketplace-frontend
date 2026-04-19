@@ -47,6 +47,7 @@ const MuñecoSVG = () => (
 );
 
 export default function Argento() {
+  const inputRef = useRef(null);
   const { lang } = useLang();
   const t = T[lang] || T.en;
   const [open, setOpen] = useState(false);
