@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import useLang from '../../lib/useLang';
 
 const T = {
@@ -174,7 +174,8 @@ export default function Argento() {
           <div style={{padding:10,borderTop:'1px solid #f0f0f0',display:'flex',gap:8,background:'white'}}>
             <input
               value={input}
-              onChange={e => setInput(e.target.value)}
+              ref={inputRef}
+          onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && enviar()}
               placeholder={t.placeholder}
               style={{flex:1,margin:0,borderRadius:20,padding:'8px 14px',fontSize:13,border:'1.5px solid #ddd'}}
