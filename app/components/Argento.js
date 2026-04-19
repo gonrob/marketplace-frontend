@@ -110,7 +110,7 @@ export default function Argento() {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && enviar()}
                 placeholder={t.placeholder}
-                style={{ flex: 1, padding: '10px 14px', borderRadius: 20, border: '2px solid #4B6CB7', fontSize: 13, outline: 'none', minWidth: 0 }}
+                style={{ flex: 1, padding: '10px 14px', borderRadius: 20, border: '2px solid #4B6CB7', fontSize: 13, outline: 'none', minWidth: 0, width: '100%', height: 42, boxSizing: 'border-box', display: 'block', appearance: 'none', WebkitAppearance: 'none', background: '#fff', color: '#000' }}
               />
               <button onClick={enviar} disabled={loading} style={{ padding: '10px 14px', background: 'linear-gradient(135deg,#4B6CB7,#C94B4B)', color: '#fff', border: 'none', borderRadius: 20, fontWeight: 700, cursor: 'pointer', fontSize: 13, flexShrink: 0 }}>
                 {t.enviar}
