@@ -169,6 +169,10 @@ export default function Home() {
             <Link href="/conocer-gente-buenos-aires" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Conocer gente en Buenos Aires</Link>
             <Link href="/viajar-patagonia" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar a la Patagonia</Link>
             <Link href="/viajar-solo-argentina" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar solo a Argentina</Link>
+            <Link href="/travel-argentina" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Travel to Argentina</Link>
+            <Link href="/meet-people-buenos-aires" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Meet people in Buenos Aires</Link>
+            <Link href="/travel-patagonia" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Travel to Patagonia</Link>
+            <Link href="/solo-travel-argentina" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Solo travel Argentina</Link>
           </div>
         </div>
       </div>
