@@ -105,6 +105,10 @@ export default function PerfilPage() {
   const [fotoPreview, setFotoPreview] = useState(null);
   const [msg, setMsg] = useState('');
   const [guardando, setGuardando] = useState(false);
+  const [showCambiarPass, setShowCambiarPass] = useState(false);
+  const [passActual, setPassActual] = useState('');
+  const [passNueva, setPassNueva] = useState('');
+  const [cambiandoPass, setCambiandoPass] = useState(false);
   const [showBaja, setShowBaja] = useState(false);
   const [eliminando, setEliminando] = useState(false);
 
@@ -137,6 +141,19 @@ export default function PerfilPage() {
     if (!file) return;
     setFoto(file);
     setFotoPreview(URL.createObjectURL(file));
+  };
+
+  const handleCambiarPass = async () => {
+    if (!passActual || !passNueva) return setMsg('Completá ambos campos.');
+    if (passNueva.length < 6) return setMsg('La nueva contraseña debe tener al menos 6 caracteres.');
+    setCambiandoPass(true);
+    try {
+      await api.put('/api/users/cambiar-password', { passwordActual: passActual, passwordNueva: passNueva });
+      setMsg('✅ Contraseña actualizada.');
+      setPassActual(''); setPassNueva(''); setShowCambiarPass(false);
+    } catch (err) {
+      setMsg('❌ ' + (err.response?.data?.error || 'Error al cambiar contraseña.'));
+    } finally { setCambiandoPass(false); }
   };
 
   const handleGuardar = async () => {
@@ -336,6 +353,28 @@ export default function PerfilPage() {
             {msg}
           </div>
         )}
+
+        {/* CAMBIAR PASSWORD */}
+        <div style={{marginBottom:20}}>
+          <button onClick={() => setShowCambiarPass(!showCambiarPass)} style={{background:'transparent',border:'1.5px solid #4B6CB7',color:'#4B6CB7',borderRadius:10,padding:'10px 20px',fontSize:13,fontWeight:600,cursor:'pointer',width:'100%'}}>
+            🔑 {showCambiarPass ? 'Cancelar' : 'Cambiar contraseña'}
+          </button>
+          {showCambiarPass && (
+            <div style={{marginTop:12,padding:16,background:'#f8faff',borderRadius:12,border:'1.5px solid #e5e7eb'}}>
+              <div style={{marginBottom:10}}>
+                <label style={{fontSize:13,fontWeight:600,color:'#555',display:'block',marginBottom:4}}>Contraseña actual</label>
+                <input type="password" value={passActual} onChange={e=>setPassActual(e.target.value)} style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1.5px solid #d1d5db',fontSize:14,outline:'none',boxSizing:'border-box'}} />
+              </div>
+              <div style={{marginBottom:12}}>
+                <label style={{fontSize:13,fontWeight:600,color:'#555',display:'block',marginBottom:4}}>Nueva contraseña</label>
+                <input type="password" value={passNueva} onChange={e=>setPassNueva(e.target.value)} style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1.5px solid #d1d5db',fontSize:14,outline:'none',boxSizing:'border-box'}} />
+              </div>
+              <button onClick={handleCambiarPass} disabled={cambiandoPass} style={{width:'100%',padding:'10px',background:'linear-gradient(90deg,#4B6CB7,#C94B4B)',color:'#fff',border:'none',borderRadius:10,fontWeight:700,fontSize:14,cursor:'pointer'}}>
+                {cambiandoPass ? 'Guardando...' : 'Actualizar contraseña'}
+              </button>
+            </div>
+          )}
+        </div>
 
         {/* GUARDAR */}
         <button onClick={handleGuardar} disabled={guardando} style={{
