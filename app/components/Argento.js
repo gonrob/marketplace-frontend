@@ -3,18 +3,18 @@ import { useState, useRef, useEffect } from 'react';
 import useLang from '../../lib/useLang';
 
 const T = {
-  es:{placeholder:'Preguntale algo a Argento...',enviar:'Enviar',bienvenida:'¡Hola! Soy Argento 🇦🇷\n¿En qué te puedo ayudar?',duda:'🇦🇷 ¿ALGUNA DUDA?'},
-  en:{placeholder:'Ask Argento something...',enviar:'Send',bienvenida:"Hey! I'm Argento 🇦🇷\nHow can I help you?",duda:'🇦🇷 ANY QUESTIONS?'},
-  pt:{placeholder:'Pergunte algo ao Argento...',enviar:'Enviar',bienvenida:'Oi! Sou o Argento 🇦🇷\nComo posso te ajudar?',duda:'🇦🇷 ALGUMA DÚVIDA?'},
-  fr:{placeholder:"Posez une question à Argento...",enviar:'Envoyer',bienvenida:"Salut! Je suis Argento 🇦🇷\nComment puis-je vous aider?",duda:"🇦🇷 UNE QUESTION?"},
-  it:{placeholder:'Chiedi qualcosa ad Argento...',enviar:'Invia',bienvenida:'Ciao! Sono Argento 🇦🇷\nCome posso aiutarti?',duda:"🇦🇷 DUBBI?"},
-  de:{placeholder:'Frag Argento etwas...',enviar:'Senden',bienvenida:'Hallo! Ich bin Argento 🇦🇷\nWie kann ich helfen?',duda:'🇦🇷 FRAGEN?'},
-  zh:{placeholder:'问问Argento...',enviar:'发送',bienvenida:'你好！我是Argento 🇦🇷\n我能帮你什么？',duda:'🇦🇷 有疑问吗？'},
-  ru:{placeholder:'Спросите Argento...',enviar:'Отправить',bienvenida:'Привет! Я Argento 🇦🇷\nКак я могу помочь?',duda:'🇦🇷 ВОПРОСЫ?'},
+  es:{placeholder:'Preguntale algo a Argento...',enviar:'Enviar',bienvenida:'¡Hola! Soy Argento 🇦🇷\n¿En qué te puedo ayudar?',duda:'¿Dudas sobre la app?'},
+  en:{placeholder:'Ask Argento something...',enviar:'Send',bienvenida:"Hey! I'm Argento 🇦🇷\nHow can I help you?",duda:'Questions about the app?'},
+  pt:{placeholder:'Pergunte algo ao Argento...',enviar:'Enviar',bienvenida:'Oi! Sou o Argento 🇦🇷\nComo posso te ajudar?',duda:'Dúvidas sobre o app?'},
+  fr:{placeholder:"Posez une question à Argento...",enviar:'Envoyer',bienvenida:"Salut! Je suis Argento 🇦🇷\nComment puis-je vous aider?",duda:"Des questions sur l'app?"},
+  it:{placeholder:'Chiedi qualcosa ad Argento...',enviar:'Invia',bienvenida:'Ciao! Sono Argento 🇦🇷\nCome posso aiutarti?',duda:"Dubbi sull'app?"},
+  de:{placeholder:'Frag Argento etwas...',enviar:'Senden',bienvenida:'Hallo! Ich bin Argento 🇦🇷\nWie kann ich helfen?',duda:'Fragen zur App?'},
+  zh:{placeholder:'问问Argento...',enviar:'发送',bienvenida:'你好！我是Argento 🇦🇷\n我能帮你什么？',duda:'对App有疑问吗？'},
+  ru:{placeholder:'Спросите Argento...',enviar:'Отправить',bienvenida:'Привет! Я Argento 🇦🇷\nКак я могу помочь?',duda:'Вопросы о приложении?'},
 };
 
-const Muneco = () => (
-  <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+const Muneco = ({ size = 54 }) => (
+  <svg width={size} height={size} viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
     <ellipse cx="22" cy="10" rx="12" ry="4" fill="#75BBFD"/>
     <rect x="10" y="9" width="24" height="5" rx="2.5" fill="#4B6CB7"/>
     <circle cx="22" cy="18" r="9" fill="#FFDBA4"/>
@@ -34,6 +34,35 @@ const Muneco = () => (
     <rect x="24" y="38" width="6" height="5" rx="2" fill="#333"/>
   </svg>
 );
+
+const styles = `
+  @keyframes argentoBounce {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes argentoAppear {
+    from { opacity: 0; transform: scale(0.85) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes argentoBubble {
+    0%   { opacity: 0; transform: translateY(6px); }
+    10%  { opacity: 1; transform: translateY(0); }
+    85%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  .argento-bounce {
+    animation: argentoBounce 1.8s ease-in-out infinite;
+  }
+  .argento-chat {
+    animation: argentoAppear 0.22s ease;
+  }
+  .argento-bubble {
+    animation: argentoBubble 4s ease-in-out infinite;
+  }
+  .argento-btn:hover .argento-bounce {
+    animation-play-state: paused;
+  }
+`;
 
 export default function Argento() {
   const { lang } = useLang();
@@ -71,37 +100,96 @@ export default function Argento() {
 
   return (
     <>
-      <button onClick={() => setOpen(p => !p)} style={{
-        position: 'fixed', bottom: 24, right: 20, zIndex: 9998,
-        background: 'linear-gradient(135deg,#4B6CB7,#C94B4B)',
-        border: 'none', borderRadius: 30, padding: '10px 16px',
-        color: '#fff', fontWeight: 700, fontSize: 12,
-        cursor: 'pointer', boxShadow: '0 4px 20px rgba(75,108,183,0.5)',
-        display: 'flex', alignItems: 'center', gap: 8,
-      }}>
-        <Muneco />
-        <span style={{whiteSpace:'nowrap'}}>{t.duda}</span>
-      </button>
+      <style>{styles}</style>
 
-      {open && (
+      {/* Muñeco flotante */}
+      {!open && (
         <div style={{
-          position: 'fixed', bottom: 90, right: 16, zIndex: 9999,
+          position: 'fixed', bottom: 24, right: 24, zIndex: 9998,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+          cursor: 'pointer',
+        }}
+          onClick={() => setOpen(true)}
+          className="argento-btn"
+        >
+          {/* Burbuja de texto */}
+          <div className="argento-bubble" style={{
+            background: '#fff',
+            border: '2px solid #4B6CB7',
+            borderRadius: 14,
+            padding: '6px 12px',
+            fontSize: 12,
+            fontWeight: 700,
+            color: '#4B6CB7',
+            whiteSpace: 'nowrap',
+            boxShadow: '0 2px 10px rgba(75,108,183,0.2)',
+            position: 'relative',
+          }}>
+            {t.duda}
+            {/* triangulito abajo */}
+            <span style={{
+              position: 'absolute', bottom: -8, left: '50%', transform: 'translateX(-50%)',
+              width: 0, height: 0,
+              borderLeft: '7px solid transparent',
+              borderRight: '7px solid transparent',
+              borderTop: '8px solid #4B6CB7',
+            }}/>
+          </div>
+
+          {/* Muñeco con sombra y bounce */}
+          <div className="argento-bounce" style={{
+            background: 'linear-gradient(135deg,#4B6CB7,#C94B4B)',
+            borderRadius: '50%',
+            width: 68, height: 68,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            boxShadow: '0 6px 24px rgba(75,108,183,0.45)',
+          }}>
+            <Muneco size={46} />
+          </div>
+        </div>
+      )}
+
+      {/* Chat panel */}
+      {open && (
+        <div className="argento-chat" style={{
+          position: 'fixed', bottom: 24, right: 16, zIndex: 9999,
           width: 320, maxWidth: 'calc(100vw - 32px)',
           background: '#fff', borderRadius: 20,
           boxShadow: '0 8px 40px rgba(0,0,0,0.2)',
           display: 'flex', flexDirection: 'column',
           maxHeight: '65vh', overflow: 'hidden',
         }}>
-          <div style={{ background: 'linear-gradient(90deg,#4B6CB7,#C94B4B)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 10, borderRadius: '20px 20px 0 0', flexShrink: 0 }}>
-            <Muneco />
+          {/* Header */}
+          <div style={{
+            background: 'linear-gradient(90deg,#4B6CB7,#C94B4B)',
+            padding: '12px 16px',
+            display: 'flex', alignItems: 'center', gap: 10,
+            borderRadius: '20px 20px 0 0', flexShrink: 0,
+            cursor: 'pointer',
+          }}
+            onClick={() => setOpen(false)}
+          >
+            <div style={{ flexShrink: 0 }}>
+              <Muneco size={40} />
+            </div>
             <div style={{ flex: 1 }}>
               <div style={{ color: '#fff', fontWeight: 700, fontSize: 15 }}>Argento</div>
               <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: 11 }}>Asistente de KNOWAN 🇦🇷</div>
             </div>
-            <button onClick={() => setOpen(false)} style={{ background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: 28, height: 28, color: '#fff', cursor: 'pointer', fontSize: 14, flexShrink: 0 }}>✕</button>
+            <button
+              onClick={e => { e.stopPropagation(); setOpen(false); }}
+              style={{
+                background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%',
+                width: 28, height: 28, color: '#fff', cursor: 'pointer', fontSize: 14, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', lineHeight: 1,
+              }}
+            >✕</button>
           </div>
 
-          <div style={{ flex: 1, overflowY: 'auto', padding: 14, display: 'flex', flexDirection: 'column', gap: 10, background: '#f8f9fa' }}>
+          {/* Mensajes */}
+          <div style={{
+            flex: 1, overflowY: 'auto', padding: 14,
+            display: 'flex', flexDirection: 'column', gap: 10, background: '#f8f9fa',
+          }}>
             {msgs.map((m, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: m.rol === 'user' ? 'flex-end' : 'flex-start' }}>
                 <div style={{
@@ -116,10 +204,16 @@ export default function Argento() {
                 </div>
               </div>
             ))}
-            {loading && <div style={{ background: '#fff', padding: '10px 14px', borderRadius: '18px 18px 18px 4px', fontSize: 13, color: '#888' }}>✍️ ...</div>}
+            {loading && (
+              <div style={{
+                background: '#fff', padding: '10px 14px',
+                borderRadius: '18px 18px 18px 4px', fontSize: 13, color: '#888',
+              }}>✍️ ...</div>
+            )}
             <div ref={bottomRef} />
           </div>
 
+          {/* Input */}
           <div style={{ padding: 12, background: '#fff', borderTop: '1px solid #eee', flexShrink: 0 }}>
             <textarea
               value={input}

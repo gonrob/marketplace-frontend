@@ -78,6 +78,7 @@ export default function Home() {
           <div style={{display:'flex',gap:12,justifyContent:'center',flexWrap:'wrap'}}>
             <Link href="/explorar"><button style={{padding:'14px 32px',background:'white',color:'#C94B4B',border:'none',borderRadius:12,fontWeight:700,fontSize:15,cursor:'pointer',boxShadow:'0 4px 12px rgba(0,0,0,0.2)'}}>{t.buscar}</button></Link>
             <Link href="/eventos"><button style={{padding:'14px 32px',background:'transparent',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>🎉 {t.eventos}</button></Link>
+            <Link href="/mapa-turistico"><button style={{padding:"14px 32px",background:"transparent",border:"2px solid white",color:"white",borderRadius:12,fontWeight:600,fontSize:15,cursor:"pointer"}}>🌍 Mapa turístico</button></Link>
             <Link href="/mapa"><button style={{padding:'14px 32px',background:'transparent',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>🗺️ {t.mapa}</button></Link>
             <Link href="/register"><button style={{padding:'14px 32px',background:'transparent',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>{t.inscribirse}</button></Link>
             <button onClick={() => setShowPwa(true)} style={{padding:'14px 32px',background:'rgba(255,255,255,0.15)',border:'2px solid white',color:'white',borderRadius:12,fontWeight:600,fontSize:15,cursor:'pointer'}}>{t.descargar}</button>
