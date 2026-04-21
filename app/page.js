@@ -174,6 +174,18 @@ export default function Home() {
             <Link href="/meet-people-buenos-aires" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Meet people in Buenos Aires</Link>
             <Link href="/travel-patagonia" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Travel to Patagonia</Link>
             <Link href="/solo-travel-argentina" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Solo travel Argentina</Link>
+            <Link href="/viajar-mendoza" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar a Mendoza</Link>
+            <Link href="/viajar-bariloche" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar a Bariloche</Link>
+            <Link href="/viajar-salta" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar a Salta</Link>
+            <Link href="/viajar-cordoba" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar a Córdoba</Link>
+            <Link href="/viajar-rosario" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar a Rosario</Link>
+            <Link href="/viajar-ushuaia" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Viajar a Ushuaia</Link>
+            <Link href="/travel-mendoza" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Travel to Mendoza</Link>
+            <Link href="/travel-bariloche" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Travel to Bariloche</Link>
+            <Link href="/travel-salta" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Travel to Salta</Link>
+            <Link href="/travel-cordoba" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Travel to Córdoba</Link>
+            <Link href="/travel-rosario" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Travel to Rosario</Link>
+            <Link href="/travel-ushuaia" style={{color:'#aaa',fontSize:12,textDecoration:'none'}}>Travel to Ushuaia</Link>
           </div>
         </div>
       </div>
