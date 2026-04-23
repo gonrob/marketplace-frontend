@@ -2,6 +2,8 @@ import './globals.css';
 import Argento from './components/Argento';
 
 export const metadata = {
+  metadataBase: new URL("https://knowan.net"),
+  alternates: { canonical: "/" },
   title: 'Knowan',
   description: 'Conectá con argentinos reales. Viví la cultura.',
   manifest: '/manifest.json',
