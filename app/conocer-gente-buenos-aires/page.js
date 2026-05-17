@@ -5,6 +5,12 @@ export const metadata = {
   title: 'Conocer gente en Buenos Aires | KNOWAN',
   description: 'Conocé argentinos reales en Buenos Aires. Recorrés Palermo, San Telmo, La Boca con un local. Tu primer contacto es GRATIS.',
   keywords: 'conocer gente buenos aires, amigos buenos aires, guía local buenos aires, turismo buenos aires',
+  alternates: {
+    languages: {
+      'es': 'https://knowan.net/conocer-gente-buenos-aires',
+      'en': 'https://knowan.net/meet-people-buenos-aires',
+    },
+  },
 };
 
 export default function ConocerGenteBuenosAires() {

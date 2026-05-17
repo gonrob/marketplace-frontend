@@ -5,6 +5,12 @@ export const metadata = {
   title: 'Viajar a la Patagonia con locales | KNOWAN',
   description: 'Descubrí la Patagonia argentina con anfitriones locales. Bariloche, Ushuaia, El Calafate y más. Tu primer contacto es GRATIS.',
   keywords: 'viajar patagonia, bariloche viaje, ushuaia turismo, patagonia argentina, guía local patagonia',
+  alternates: {
+    languages: {
+      'es': 'https://knowan.net/viajar-patagonia',
+      'en': 'https://knowan.net/travel-patagonia',
+    },
+  },
 };
 
 export default function ViajarPatagonia() {

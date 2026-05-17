@@ -5,6 +5,12 @@ export const metadata = {
   title: 'Solo travel to Argentina and meet people | KNOWAN',
   description: 'Traveling solo to Argentina and want to meet people? KNOWAN connects solo travelers with real Argentinians. First contact FREE.',
   keywords: 'solo travel argentina, travel alone buenos aires, meet people solo travel argentina, backpacker argentina',
+  alternates: {
+    languages: {
+      'en': 'https://knowan.net/solo-travel-argentina',
+      'es': 'https://knowan.net/viajar-solo-argentina',
+    },
+  },
 };
 
 export default function SoloTravelArgentina() {

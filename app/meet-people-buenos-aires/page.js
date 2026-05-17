@@ -5,6 +5,12 @@ export const metadata = {
   title: 'Meet people in Buenos Aires | KNOWAN',
   description: 'Meet real locals in Buenos Aires. Explore Palermo, San Telmo, La Boca with a local. Your first contact is FREE.',
   keywords: 'meet people buenos aires, locals buenos aires, friends buenos aires, local guide buenos aires, buenos aires tourism',
+  alternates: {
+    languages: {
+      'en': 'https://knowan.net/meet-people-buenos-aires',
+      'es': 'https://knowan.net/conocer-gente-buenos-aires',
+    },
+  },
 };
 
 export default function MeetPeopleBuenosAires() {

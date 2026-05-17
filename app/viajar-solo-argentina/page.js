@@ -5,6 +5,12 @@ export const metadata = {
   title: 'Viajar solo a Argentina y conocer gente | KNOWAN',
   description: 'Viajás solo a Argentina y querés conocer gente local? KNOWAN conecta viajeros solitarios con argentinos reales. Primer contacto GRATIS.',
   keywords: 'viajar solo argentina, viaje solo buenos aires, conocer gente viajando solo argentina, turismo mochilero argentina',
+  alternates: {
+    languages: {
+      'es': 'https://knowan.net/viajar-solo-argentina',
+      'en': 'https://knowan.net/solo-travel-argentina',
+    },
+  },
 };
 
 export default function ViajarSoloArgentina() {

@@ -5,6 +5,12 @@ export const metadata = {
   title: 'Travel to Patagonia with locals | KNOWAN',
   description: 'Discover Argentine Patagonia with local hosts. Bariloche, Ushuaia, El Calafate and more. Your first contact is FREE.',
   keywords: 'travel patagonia, bariloche travel, ushuaia tourism, patagonia argentina, local guide patagonia',
+  alternates: {
+    languages: {
+      'en': 'https://knowan.net/travel-patagonia',
+      'es': 'https://knowan.net/viajar-patagonia',
+    },
+  },
 };
 
 export default function TravelPatagonia() {
