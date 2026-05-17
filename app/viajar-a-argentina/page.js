@@ -5,6 +5,12 @@ export const metadata = {
   title: 'Viajar a Argentina y conocer gente local | KNOWAN',
   description: 'Conectá con argentinos reales para viajar por Argentina. Asados, fútbol, tango, mate y mucho más. Tu primer contacto es GRATIS.',
   keywords: 'viajar a argentina, conocer gente argentina, viaje argentina, anfitriones argentina, turismo argentina',
+  alternates: {
+    languages: {
+      'es': 'https://knowan.net/viajar-a-argentina',
+      'en': 'https://knowan.net/travel-argentina',
+    },
+  },
 };
 
 export default function ViajarArgentina() {
@@ -12,14 +18,12 @@ export default function ViajarArgentina() {
     <>
       <Nav />
       <div style={{ maxWidth: 700, margin: '0 auto', padding: '40px 20px 80px', fontFamily: 'sans-serif' }}>
-
         <h1 style={{ fontSize: 32, fontWeight: 900, color: '#1a1a1a', marginBottom: 12, lineHeight: 1.2 }}>
           Viajar a Argentina y conocer gente local 🇦🇷
         </h1>
         <p style={{ fontSize: 18, color: '#555', marginBottom: 32, lineHeight: 1.7 }}>
           ¿Querés viajar a Argentina y vivirlo como un local? Con <strong>KNOWAN</strong> podés conectar con argentinos reales que te muestran su cultura, su ciudad y sus experiencias auténticas.
         </p>
-
         <Link href="/register">
           <button style={{ padding: '16px 32px', background: 'linear-gradient(90deg,#4B6CB7,#C94B4B)', color: '#fff', border: 'none', borderRadius: 14, fontWeight: 800, fontSize: 18, cursor: 'pointer', marginBottom: 48, display: 'block', width: '100%', textAlign: 'center' }}>
             🎁 Tu primer contacto es GRATIS — Empezá ahora
@@ -62,13 +66,6 @@ export default function ViajarArgentina() {
           ))}
         </div>
 
-        <h2 style={{ fontSize: 24, fontWeight: 800, color: '#1a1a1a', marginBottom: 16 }}>¿Por qué KNOWAN?</h2>
-        <div style={{ background: '#f0f4ff', borderRadius: 14, padding: 24, marginBottom: 40 }}>
-          <p style={{ fontSize: 15, color: '#333', lineHeight: 1.8, margin: 0 }}>
-            Argentina no se entiende sin sus personas. El lunfardo, el asado del domingo, el partido de Boca, el mate a las 6 de la tarde — todo eso solo lo podés vivir con un local. <strong>KNOWAN</strong> conecta viajeros con argentinos reales que quieren compartir su cultura y su vida cotidiana.
-          </p>
-        </div>
-
         <h2 style={{ fontSize: 24, fontWeight: 800, color: '#1a1a1a', marginBottom: 16 }}>Ciudades disponibles</h2>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 40 }}>
           {['Buenos Aires','Bariloche','Mendoza','Córdoba','Salta','Mar del Plata','Ushuaia','Rosario','Tucumán'].map(c => (
@@ -85,7 +82,6 @@ export default function ViajarArgentina() {
             </button>
           </Link>
         </div>
-
       </div>
     </>
   );

@@ -5,6 +5,12 @@ export const metadata = {
   title: 'Travel to Argentina and meet locals | KNOWAN',
   description: 'Connect with real Argentinians when traveling to Argentina. BBQ, football, tango, mate and more. Your first contact is FREE.',
   keywords: 'travel argentina, meet locals argentina, argentina travel, host argentina, tourism argentina, buenos aires locals',
+  alternates: {
+    languages: {
+      'en': 'https://knowan.net/travel-argentina',
+      'es': 'https://knowan.net/viajar-a-argentina',
+    },
+  },
 };
 
 export default function TravelArgentina() {
